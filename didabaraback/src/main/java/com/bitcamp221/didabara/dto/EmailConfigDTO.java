@@ -29,7 +29,7 @@ public class EmailConfigDTO {
     this.modifiedDate = emailConfigEntity.getModifiedDate();
   }
 
-  public static EmailConfigEntity emailConfigEntity(final EmailConfigDTO emailConfigDTO) {
+  public static EmailConfigEntity toEmailConfigEntity(final EmailConfigDTO emailConfigDTO) {
 
     return EmailConfigEntity.builder()
             .id(emailConfigDTO.getId())

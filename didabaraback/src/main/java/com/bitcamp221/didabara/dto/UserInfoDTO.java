@@ -35,7 +35,7 @@ public class UserInfoDTO {
     this.modifiedDate = userInfoEntity.getModifiedDate();
   }
 
-  public static UserInfoEntity userInfoEntity(final UserInfoDTO userInfoDTO) {
+  public static UserInfoEntity toUserInfoEntity(final UserInfoDTO userInfoDTO) {
 
     return UserInfoEntity.builder()
             .id(userInfoDTO.getId())

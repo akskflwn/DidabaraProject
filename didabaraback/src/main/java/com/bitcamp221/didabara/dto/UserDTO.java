@@ -36,7 +36,7 @@ public class UserDTO {
 
 //  DB에 데이터를 전송하기 이전에 해당 메소드를 거쳐서 Entity타입으로 변환 후에
 //  DB에 접근!
-  public static UserEntity userEntity(final UserDTO userDTO) {
+  public static UserEntity toUserEntity(final UserDTO userDTO) {
 
     return UserEntity.builder()
             .id(userDTO.getId())

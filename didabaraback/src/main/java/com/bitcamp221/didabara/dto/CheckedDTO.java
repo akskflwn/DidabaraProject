@@ -29,7 +29,7 @@ public class CheckedDTO {
     this.createdDate = checkedEntity.getCreatedDate();
     this.modifiedDate = checkedEntity.getModifiedDate();
   }
-  public static CheckedEntity checkedEntity(final CheckedDTO checkedDTO) {
+  public static CheckedEntity toCheckedEntity(final CheckedDTO checkedDTO) {
 
     return CheckedEntity.builder()
             .id(checkedDTO.getId())
