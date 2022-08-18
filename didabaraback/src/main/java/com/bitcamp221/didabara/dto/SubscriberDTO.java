@@ -31,7 +31,7 @@ public class SubscriberDTO {
 
   }
 
-  public static SubscriberEntity subscriberEntity(final SubscriberDTO subscriberDTO) {
+  public static SubscriberEntity toSubscriberEntity(final SubscriberDTO subscriberDTO) {
 
     return SubscriberEntity.builder()
             .id(subscriberDTO.getId())

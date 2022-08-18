@@ -32,7 +32,7 @@ public class ReplyDTO {
     this.modifiedDate = replyEntity.getModifiedDate();
   }
 
-  public static ReplyEntity replyEntity(final ReplyDTO replyDTO) {
+  public static ReplyEntity toReplyEntity(final ReplyDTO replyDTO) {
 
     return ReplyEntity.builder()
             .id(replyDTO.getId())

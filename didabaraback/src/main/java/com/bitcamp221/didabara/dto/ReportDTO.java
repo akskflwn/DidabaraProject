@@ -34,7 +34,7 @@ public class ReportDTO {
     this.modifiedDate = reportEntity.getModifiedDate();
   }
 
-  public static ReportEntity reportEntity(final ReportDTO reportDTO) {
+  public static ReportEntity toReportEntity(final ReportDTO reportDTO) {
 
     return ReportEntity.builder()
             .id(reportDTO.getId())

@@ -32,7 +32,7 @@ public class CategoryDTO {
     this.inviteCode = categoryEntity.getInviteCode();
     this.profileImageUrl = categoryEntity.getProfileImageUrl();
     this.createdDate = categoryEntity.getCreatedDate();
-    this.modifiedDate = categoryEntity.getModifiedDate();
+    this.modifiedDate = categoryEntity.getModifiedDate();g
   }
 
   //  DTO를 Entity로 변환

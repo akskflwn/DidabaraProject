@@ -36,7 +36,7 @@ public class CategoryItemDTO {
     this.modifiedDate = categoryItemEntity.getModifiedDate();
   }
 
-  public static CategoryItemEntity categoryItemEntity(final CategoryItemDTO categoryItemDTO) {
+  public static CategoryItemEntity toCategoryItemEntity(final CategoryItemDTO categoryItemDTO) {
 
     return CategoryItemEntity.builder()
             .id(categoryItemDTO.getId())
