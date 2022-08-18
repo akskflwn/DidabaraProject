@@ -8,6 +8,5 @@ import org.springframework.web.bind.annotation.RestController;
 @RestController
 @RequestMapping("/category")
 public class CategoryController {
-    int test = 0;
-    int test2 = 1;
+
 }
