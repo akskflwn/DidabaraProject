@@ -2,6 +2,8 @@ import React from "react";
 import { Button, Grid, Input, InputLabel } from "@mui/material";
 import styled from "styled-components";
 import { FormControl } from "@mui/material";
+import { KakaoLoginAPI } from "../config/KakaoApi";
+import { useNavigate } from "react-router-dom";
 
 const StyledInput = styled(FormControl)`
   && {
@@ -11,6 +13,7 @@ const StyledInput = styled(FormControl)`
 const StyledContainer = styled(Grid)`
   && {
     height: 80%;
+    min-height: 685px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -32,6 +35,11 @@ const StyledButton = styled(Button)`
   }
 `;
 function LoginInput() {
+  const navi = useNavigate();
+  const openKakaoLogin = () => {
+    window.open(KakaoLoginAPI, "_blank", "location=0");
+  };
+
   return (
     <StyledContainer container>
       <StyledGrid item>
@@ -56,7 +64,9 @@ function LoginInput() {
       </StyledGrid>
       <StyledGrid>
         <Grid item xs={12}>
-          <StyledButton style={{ width: "90%" }}>kakao</StyledButton>
+          <StyledButton style={{ width: "90%" }} onClick={openKakaoLogin}>
+            kakao
+          </StyledButton>
         </Grid>
       </StyledGrid>
     </StyledContainer>
