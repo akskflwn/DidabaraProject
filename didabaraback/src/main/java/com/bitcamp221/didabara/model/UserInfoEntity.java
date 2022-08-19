@@ -22,12 +22,6 @@ public class UserInfoEntity extends BaseTimeEntity {
   @Column(name = "id")
   private Long id;
 
-//  외래키를 가져와서 기본키로 설정하기 위한 설정.
-  @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @MapsId
-  @JoinColumn(name = "id")
-  private UserEntity user;
-
   @Column(name = "job", nullable = false)
   private String job;
 

@@ -29,23 +29,4 @@ public class UserEntity extends BaseTimeEntity {
 
   @Column(name = "nickname", nullable = false, length = 30, unique = true)
   private String nickname;
-
-  @OneToOne(mappedBy = "user")
-  private UserInfoEntity userInfoEntity;
-
-  @OneToOne(mappedBy = "user")
-  private EmailConfigEntity emailConfigEntity;
-
-  @OneToMany(mappedBy = "user")
-  private List<SubscriberEntity> subscriberEntities = new ArrayList<SubscriberEntity>();
-
-  @OneToMany(mappedBy = "host")
-  private List<ReportEntity> reportEntities = new ArrayList<ReportEntity>();
-
-  @OneToMany(mappedBy = "user")
-  private List<ReportEntity> reportEntities2 = new ArrayList<ReportEntity>();
-
-  @OneToMany(mappedBy = "host")
-  private List<CategoryEntity> categoryEntities = new ArrayList<CategoryEntity>();
-
 }
