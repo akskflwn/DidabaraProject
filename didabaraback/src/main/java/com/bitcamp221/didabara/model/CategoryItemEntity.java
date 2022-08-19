@@ -26,7 +26,7 @@ public class CategoryItemEntity extends BaseTimeEntity {
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "category_id", nullable = false)
-  private CategoryEntity category;
+  private Long category;
 
   @Column(name = "item_path", nullable = false)
   private String itemPath;

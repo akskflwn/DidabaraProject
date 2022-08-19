@@ -6,6 +6,7 @@ import com.bitcamp221.didabara.presistence.UserRepository;
 import com.bitcamp221.didabara.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -179,6 +180,38 @@ public class UserController {
 
     // https://kauth.kakao.com/oauth/authorize?client_id=4af7c95054f7e1d31cff647965678936&redirect_uri=http://localhost:8080/auth/kakao&response_type=code
 
+            return ResponseEntity.ok().body(ResponseUserDTO);
+        }
+
+        catch (Exception e) {
+            ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+            log.error("업데이트 실패");
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+
+    }
+    //삭제
+    @DeleteMapping("/user")
+    public void deletUser(@RequestBody UserDTO userDTO){
+        userService.deleteUser(userDTO.getId());
+        log.info("삭제완료");
+    }
+
+
+    //프론트에서 인가코드 받아오는 url
+    /* 카카오 로그인 */
+    @GetMapping("/kakao")
+    public ResponseEntity<?> kakaoCallback(@Param("code") String code) {
+        log.info("code={}", code);
+
+        String access_Token = userService.getKaKaoAccessToken(code);
+        userService.createKakaoUser(access_Token);
+
+
+        return ResponseEntity.ok().body(access_Token);
+    }
+
+    // https://kauth.kakao.com/oauth/authorize?client_id=4af7c95054f7e1d31cff647965678936&redirect_uri=http://localhost:8080/auth/kakao&response_type=code
+
 
 }
-

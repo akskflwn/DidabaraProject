@@ -21,12 +21,6 @@ public class EmailConfigEntity extends BaseTimeEntity {
     @Column(name = "id")
     private Long id;
 
-    //  외래키를 가져와서 기본키로 설정하기 위한 설정.
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @MapsId
-    @JoinColumn(name = "id", unique = true, nullable = false)
-    private UserEntity user;
-
     @Column(name = "auth_code", length = 30)
     private String authCode;
 }

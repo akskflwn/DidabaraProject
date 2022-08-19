@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class CategoryDTO {
 
   private Long id;
-  private UserEntity host;
+  private Long host;
   private String title;
   private String content;
   private String inviteCode;

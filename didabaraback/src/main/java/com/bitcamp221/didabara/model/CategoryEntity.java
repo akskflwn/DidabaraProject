@@ -25,7 +25,7 @@ public class CategoryEntity extends BaseTimeEntity {
 
   @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
   @JoinColumn(name = "host_id", nullable = false)
-  private UserEntity host;
+  private Long host;
 
   @Column(name = "title", nullable = false)
   private String title;

@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class EmailConfigDTO {
 
   private Long id;
-  private UserEntity user;
+  private Long user;
   private String authCode;
   private LocalDateTime createdDate;
   private LocalDateTime modifiedDate;
