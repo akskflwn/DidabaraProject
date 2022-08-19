@@ -2,13 +2,13 @@ package com.bitcamp221.didabara.controller;
 
 
 import com.bitcamp221.didabara.model.UserEntity;
+import com.bitcamp221.didabara.presistence.UserRepository;
+import com.bitcamp221.didabara.service.EmailConfigService;
 import com.bitcamp221.didabara.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.bitcamp221.didabara.dto.ResponseDTO;
 import com.bitcamp221.didabara.dto.UserDTO;
 import com.bitcamp221.didabara.model.UserEntity;
@@ -19,8 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -28,8 +26,16 @@ import java.time.LocalDate;
 
 @Slf4j
 @RestController
-@RequestMapping
+@RequestMapping("/auth") // 매핑 주소 추가 : 김남주
 public class UserController {
+
+
+    @Autowired
+    private UserRepository userRepository;
+
+
+    @Autowired
+    private EmailConfigService emailConfigService;
 
     @Autowired
     private UserService userService;
@@ -38,6 +44,52 @@ public class UserController {
 
     @Autowired
     private TokenProvider tokenProvider;
+
+    /** 회원 수정 (수정 해야됌)
+     * 작성자 : 김남주
+     *
+     * @param
+     * @return int | 1 이면 성공 0 이면 실패
+     */
+    /*@PutMapping
+    public ResponseEntity<?> updateUser(@RequestBody UserEntity userEntity) {
+        // 입력 받은 userEntity 객체가 DB에 있는 값이랑 같은지 확인
+
+        if (userService.checkUserInDB(userEntity.getUsername())){
+
+            userEntity.setRegistDate(LocalDate.now());
+            userEntity.setPassword(passwordEncoder.encode(userEntity.getPassword()));
+
+            int userRow = userMapper.updateUser(userEntity);
+
+
+            return ResponseEntity.ok().body(userRow);
+        }
+        //
+        return ResponseEntity.badRequest().body("일치하지 않는 유저");
+    }*/
+
+
+
+    // https://kauth.kakao.com/oauth/authorize?client_id=4af7c95054f7e1d31cff647965678936&redirect_uri=http://localhost:8080/auth/kakao&response_type=code
+
+    /* 카카오 로그인 */
+    @GetMapping("/kakao")
+    public ResponseEntity<?> kakaoCallback(String code) {
+        log.info("code={}",code);
+
+        String access_Token = userService.getKaKaoAccessToken(code);
+        userService.createKakaoUser(access_Token);
+
+        // 나중에 수정(리다이렉트 해야함)
+        /*HttpHeaders headers = new HttpHeaders();
+        headers.add("Location", "localhost:3000/MainPage");
+
+        String redirect_uri="localhost:3000/";
+        response.sendRedirect(redirect_uri);*/
+
+        return ResponseEntity.ok().body(access_Token);
+    }
 
     //  회원가입
 //  http://localhost:8080/auth/signup
