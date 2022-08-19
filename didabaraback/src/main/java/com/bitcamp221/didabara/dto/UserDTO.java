@@ -20,6 +20,8 @@ public class UserDTO {
   private String username;
   private String password;
   private String nickname;
+
+  private String token;
   private LocalDateTime createdDate;
   private LocalDateTime modifiedDate;
 
