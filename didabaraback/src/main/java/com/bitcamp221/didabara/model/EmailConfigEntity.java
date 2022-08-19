@@ -27,6 +27,6 @@ public class EmailConfigEntity extends BaseTimeEntity {
     @JoinColumn(name = "id", unique = true, nullable = false)
     private UserEntity user;
 
-    @Column(name = "auth_code", nullable = false, length = 30)
+    @Column(name = "auth_code", length = 30)
     private String authCode;
 }
