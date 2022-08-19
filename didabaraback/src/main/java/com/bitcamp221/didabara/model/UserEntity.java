@@ -1,6 +1,9 @@
 package com.bitcamp221.didabara.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -8,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Builder
-@Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -29,4 +31,13 @@ public class UserEntity extends BaseTimeEntity {
 
   @Column(name = "nickname", nullable = false, length = 30, unique = true)
   private String nickname;
+
+  public void changePassword(String password){
+    this.password = password;
+  }
+
+  public  void changeNickname(String nickname){
+    this.nickname=nickname;
+  }
+
 }

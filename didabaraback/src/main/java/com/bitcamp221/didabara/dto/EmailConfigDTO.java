@@ -23,7 +23,6 @@ public class EmailConfigDTO {
 
   public EmailConfigDTO (EmailConfigEntity emailConfigEntity) {
     this.id = emailConfigEntity.getId();
-    this.user = emailConfigEntity.getUser();
     this.authCode = emailConfigEntity.getAuthCode();
     this.createdDate = emailConfigEntity.getCreatedDate();
     this.modifiedDate = emailConfigEntity.getModifiedDate();
@@ -33,7 +32,6 @@ public class EmailConfigDTO {
 
     return EmailConfigEntity.builder()
             .id(emailConfigDTO.getId())
-            .user(emailConfigDTO.getUser())
             .authCode(emailConfigDTO.getAuthCode())
             .build();
   }
