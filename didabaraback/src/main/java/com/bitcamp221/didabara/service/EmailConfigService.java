@@ -60,11 +60,7 @@ public class EmailConfigService {
         try {
             haveAuthCodeUser = userMapper.selectUsernameAndAuthCode(emailAuthCodeMap);
             log.info("checkEmailConfigEntity={}",haveAuthCodeUser);
-            Object email = haveAuthCodeUser.get("email");
-            Object authCode = haveAuthCodeUser.get("authCode");
-            log.info("email={}", email.toString());
-            log.info("authCode={}", authCode.toString());
-            if (!email.equals(emailAuthCodeMap.get("email")) || authCode.equals(emailAuthCodeMap.get("authCode"))) {
+            if (!haveAuthCodeUser.get("auth_code").equals(emailAuthCodeMap.get("authCode"))) {
                 throw new Exception("일치하지 않는 계정, 코드");
             }
             return true;
@@ -95,7 +91,6 @@ public class EmailConfigService {
         log.info("userIdByEmail.getUsername={}",userIdByEmail.getUsername());
 
         // emailconfig 테이블에 찾은 아이디 값,이메일,인증코드 저장
-        userIdByEmail.setId(userIdByEmail.getId()-1); // fk 키 -1 해야함
         int checkRow = emailConfigMapper.saveUserIntoEmailconfig(userIdByEmail, code);
         log.info("checkRow={}", checkRow);
 
