@@ -1,6 +1,9 @@
 package com.bitcamp221.didabara.model;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
@@ -8,7 +11,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Builder
-@Setter
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -47,5 +49,14 @@ public class UserEntity extends BaseTimeEntity {
 
   @OneToMany(mappedBy = "host")
   private List<CategoryEntity> categoryEntities = new ArrayList<CategoryEntity>();
+
+
+  public void changePassword(String password){
+    this.password = password;
+  }
+
+  public  void changeNickname(String nickname){
+    this.nickname=nickname;
+  }
 
 }
