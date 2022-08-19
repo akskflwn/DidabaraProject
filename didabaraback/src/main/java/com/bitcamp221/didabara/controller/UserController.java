@@ -74,6 +74,7 @@ public class UserController {
                     .username(userDTO.getUsername())
                     .password(passwordEncoder.encode(userDTO.getPassword()))
                     .nickname(userDTO.getNickname())
+//                    .emailConfigEntity(emailConfigEntity)
                     .build();
 
 
