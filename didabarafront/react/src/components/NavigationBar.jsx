@@ -13,7 +13,7 @@ function NavigationBar() {
       justifyContent="center"
       alignItems="center"
       style={{
-        position: "fixed",
+        position: "sticky",
         top: 0,
         backgroundColor: "orange",
         padding: "10px",

@@ -20,6 +20,7 @@ const StyledForm = styled(motion.div)`
   position: absolute;
   transform-origin: right;
   min-width: 380px;
+  z-index: 10;
 `;
 
 const Img = styled.img`
@@ -32,17 +33,17 @@ const Img = styled.img`
 
 const loginFormAnimation = {
   start: {
-    scaleX: 0,
+    x: 700,
   },
   show: {
-    scaleX: 1,
+    x: 0,
     transition: {
       duration: 0.5,
       type: "tween",
     },
   },
   exit: {
-    scaleX: 0,
+    x: 700,
     transition: {
       duration: 0.5,
     },
