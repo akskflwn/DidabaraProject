@@ -1,8 +1,10 @@
 import { Button, Grid } from "@mui/material";
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import InfoHardCodingText from "../items/InfoHardCodingText";
+import { Link } from "react-router-dom";
 
+/**컴포넌트들 스타일 정의 */
 const StyledGrid = styled(Grid)`
   width: 100%;
   height: 100vh;
@@ -41,6 +43,10 @@ const StyledButton = styled(Button)`
 `;
 
 function IntroPartOne() {
+  //유저 로그인상태 관리. 유저가 로그인이면 시작해보기 버튼은 대시보드 기능을하고
+  //유저가 비 로그인 상태라면 시작해보기 버튼은 로그인창을 불러온다.
+  const [login, setLogin] = useState(false);
+
   return (
     <StyledGrid container justifyContent="center" gap={0}>
       <StyledInnerGridLeft item lg={4} md={5} sm={11} xs={11}>
@@ -49,7 +55,9 @@ function IntroPartOne() {
       <StyledInnerGridRight container item lg={4} md={5} sm={11} xs={11}>
         <InfoHardCodingText />
         버튼클릭시 로그인여부에따라 로그인창을 띄우거나
-        <StyledButton variant="contained">지금 바로 시작해보기</StyledButton>
+        <Link to={login ? "/dashboard" : "/login"}>
+          <StyledButton variant="contained">지금 바로 시작해보기</StyledButton>
+        </Link>
       </StyledInnerGridRight>
     </StyledGrid>
   );

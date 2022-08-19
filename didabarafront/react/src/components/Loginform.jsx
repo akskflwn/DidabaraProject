@@ -20,7 +20,7 @@ const StyledForm = styled(motion.div)`
   position: absolute;
   transform-origin: right;
   min-width: 380px;
-  z-index: 5;
+  z-index: 10;
 `;
 
 const Img = styled.img`
