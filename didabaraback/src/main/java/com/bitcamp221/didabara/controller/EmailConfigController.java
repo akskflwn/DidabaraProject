@@ -18,7 +18,7 @@ public class EmailConfigController {
     private EmailConfigService emailConfigService;
 
   
-    /** (아직 테스트 못함) //TODO 먼저 구현하기
+    /**
      * 작성자 : 김남주
      * 메서드 기능 : 인증코드 일치 확인
      * 마지막 작성자 : 김남주
