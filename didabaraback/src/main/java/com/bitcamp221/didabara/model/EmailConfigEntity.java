@@ -1,9 +1,6 @@
 package com.bitcamp221.didabara.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -21,6 +18,6 @@ public class EmailConfigEntity extends BaseTimeEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "auth_code", length = 30)
+    @Column(name = "auth_code", nullable = false, length = 30)
     private String authCode;
 }

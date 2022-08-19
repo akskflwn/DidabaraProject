@@ -23,8 +23,7 @@ public class CategoryEntity extends BaseTimeEntity {
   @Column(name = "id", unique = true, nullable = false)
   private Long id;
 
-  @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-  @JoinColumn(name = "host_id", nullable = false)
+  @Column(name = "host_id", nullable = false)
   private Long host;
 
   @Column(name = "title", nullable = false)
@@ -39,10 +38,4 @@ public class CategoryEntity extends BaseTimeEntity {
   @Column(name = "profile_image_url", nullable = false)
 //  @ColumnDefault("카테고리 기본 이미지")
   private String profileImageUrl;
-
-  @OneToMany(mappedBy = "category")
-  private List<CategoryItemEntity> categoryItemEntities = new ArrayList<CategoryItemEntity>();
-
-  @OneToMany(mappedBy = "category")
-  private List<SubscriberEntity> subscriberEntities = new ArrayList<SubscriberEntity>();
 }

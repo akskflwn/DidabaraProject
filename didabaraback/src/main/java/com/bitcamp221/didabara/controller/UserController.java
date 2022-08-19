@@ -1,12 +1,15 @@
 package com.bitcamp221.didabara.controller;
 
 
+import com.bitcamp221.didabara.dto.EmailConfigDTO;
+import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
+import com.bitcamp221.didabara.presistence.EmailConfigRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
+import com.bitcamp221.didabara.service.EmailConfigService;
 import com.bitcamp221.didabara.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.catalina.User;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -38,9 +42,11 @@ public class UserController {
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-
     @Autowired
     private TokenProvider tokenProvider;
+
+    @Autowired
+    private EmailConfigRepository emailConfigRepository;
 
     //  회원가입
 //  http://localhost:8080/auth/signup
@@ -51,35 +57,53 @@ public class UserController {
             if (userDTO == null || userDTO.getPassword() == null) {
                 throw new RuntimeException("Invalid Password value");
             }
+            //난수생성
+            String code = UUID.randomUUID().toString().substring(0, 6);
+            log.info(code);
 
+            //
+            EmailConfigEntity emailConfigEntity = EmailConfigEntity.builder()
+                    .authCode(code)
+                    .build();
+            emailConfigRepository.save(emailConfigEntity);
+
+            //
 //      요청을 이용해 저장할 유저 객체 생성
             UserEntity userEntity = UserEntity.builder()
 
                     .username(userDTO.getUsername())
                     .password(passwordEncoder.encode(userDTO.getPassword()))
                     .nickname(userDTO.getNickname())
-
+//                    .emailConfigEntity(emailConfigEntity)
                     .build();
 
-            System.out.println("usertime:" + userEntity.getModifiedDate());
-            System.out.println("usertime:" + userEntity.getCreatedDate());
+
+
 //      서비스를 이용해 리포지터리에 유저 저장
+
 
             UserEntity registeredUser = userService.creat(userEntity);
 
+
+
+
+
+//
             System.out.println("registerdUser Datetiem:" + registeredUser.getCreatedDate());
             System.out.println("registerdUser Modifiedtime:" + registeredUser.getModifiedDate());
 
-//      응답객체 만들기(패스워드 제외)
+            //응답객체 만들기(패스워드 제외)
             UserDTO responseUserDTO = UserDTO.builder()
                     .id(registeredUser.getId())
                     .username(registeredUser.getUsername())
                     .nickname(registeredUser.getNickname())
                     .build();
 
-//      유저 정보는 현재 하나이므로 리스트로 만들 필요 없음
-//      ResponseDTO를 사용하지 않고 UserDTO 타입으로 반환
+            //유저 정보는 현재 하나이므로 리스트로 만들 필요 없음
+            //ResponseDTO를 사용하지 않고 UserDTO 타입으로 반환
             log.info("회원가입 완료");
+
+
             return ResponseEntity.ok().body(responseUserDTO);
 
         } catch (Exception e) {
@@ -174,39 +198,6 @@ public class UserController {
 
         String access_Token = userService.getKaKaoAccessToken(code);
         userService.createKakaoUser(access_Token);
-
-        return ResponseEntity.ok().body(access_Token);
-    }
-
-    // https://kauth.kakao.com/oauth/authorize?client_id=4af7c95054f7e1d31cff647965678936&redirect_uri=http://localhost:8080/auth/kakao&response_type=code
-
-            return ResponseEntity.ok().body(ResponseUserDTO);
-        }
-
-        catch (Exception e) {
-            ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
-            log.error("업데이트 실패");
-            return ResponseEntity.badRequest().body(responseDTO);
-        }
-
-    }
-    //삭제
-    @DeleteMapping("/user")
-    public void deletUser(@RequestBody UserDTO userDTO){
-        userService.deleteUser(userDTO.getId());
-        log.info("삭제완료");
-    }
-
-
-    //프론트에서 인가코드 받아오는 url
-    /* 카카오 로그인 */
-    @GetMapping("/kakao")
-    public ResponseEntity<?> kakaoCallback(@Param("code") String code) {
-        log.info("code={}", code);
-
-        String access_Token = userService.getKaKaoAccessToken(code);
-        userService.createKakaoUser(access_Token);
-
 
         return ResponseEntity.ok().body(access_Token);
     }
