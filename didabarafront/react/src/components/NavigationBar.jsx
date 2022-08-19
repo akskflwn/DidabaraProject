@@ -56,7 +56,14 @@ function NavigationBar() {
         )}
 
         <Grid item mr={2}>
-          <Button variant="black">Join</Button>
+          <Button
+            variant="black"
+            onClick={() => {
+              navi("/join");
+            }}
+          >
+            Join
+          </Button>
         </Grid>
       </Grid>
     </Grid>
