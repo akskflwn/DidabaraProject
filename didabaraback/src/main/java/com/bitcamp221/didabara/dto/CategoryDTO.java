@@ -30,12 +30,11 @@ public class CategoryDTO {
     this.title = categoryEntity.getTitle();
     this.content = categoryEntity.getContent();
     this.inviteCode = categoryEntity.getInviteCode();
-    this.profileImageUrl = categoryEntity.getProfileImageUrl();
+    this.profileImageUrl = categoryEntity.getProfileIm  ageUrl();
     this.createdDate = categoryEntity.getCreatedDate();
     this.modifiedDate = categoryEntity.getModifiedDate();
   }
 
-  //  DTO를 Entity로 변환
   public static CategoryEntity toCategoryEntity(final CategoryDTO categoryDTO) {
 
     return CategoryEntity.builder()
