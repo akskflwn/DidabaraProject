@@ -38,6 +38,7 @@ public class UserController {
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+
     @Autowired
     private TokenProvider tokenProvider;
 
@@ -146,6 +147,38 @@ public class UserController {
                     .nickname(updatedUser.getNickname())
                     .build();
             log.info("업데이트 완료");
+
+            return ResponseEntity.ok().body(ResponseUserDTO);
+        }
+
+        catch (Exception e) {
+            ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+            log.error("업데이트 실패");
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+
+    }
+    //삭제
+    @DeleteMapping("/user")
+    public void deletUser(@RequestBody UserDTO userDTO){
+        userService.deleteUser(userDTO.getId());
+        log.info("삭제완료");
+    }
+
+
+    //프론트에서 인가코드 받아오는 url
+    /* 카카오 로그인 */
+    @GetMapping("/kakao")
+    public ResponseEntity<?> kakaoCallback(String code) {
+        log.info("code={}", code);
+
+        String access_Token = userService.getKaKaoAccessToken(code);
+        userService.createKakaoUser(access_Token);
+
+        return ResponseEntity.ok().body(access_Token);
+    }
+
+    // https://kauth.kakao.com/oauth/authorize?client_id=4af7c95054f7e1d31cff647965678936&redirect_uri=http://localhost:8080/auth/kakao&response_type=code
 
             return ResponseEntity.ok().body(ResponseUserDTO);
         }
