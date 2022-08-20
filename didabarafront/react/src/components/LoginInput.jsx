@@ -1,9 +1,14 @@
 import React from "react";
-import { Button, Grid, Input, InputLabel } from "@mui/material";
+import { Button, Grid, Input, InputLabel, Typography } from "@mui/material";
 import styled from "styled-components";
 import { FormControl } from "@mui/material";
 import { KakaoLoginAPI } from "../config/KakaoApi";
-import { SendingLoginRequest } from "../config/NormalLoginApi";
+import axios from "axios";
+import { useRecoilState } from "recoil";
+import { userState } from "../config/Atom";
+import { useNavigate } from "react-router-dom";
+
+const LOGIN_REQUEST_ADDRESS = "http://192.168.0.187:8080/auth/signin";
 
 const StyledInput = styled(FormControl)`
   && {
@@ -15,7 +20,6 @@ const StyledContainer = styled(Grid)`
     height: 80%;
     min-height: 685px;
     display: flex;
-    /* align-items: center; */
     justify-content: center;
     flex-direction: column;
   }
@@ -41,16 +45,31 @@ const StyledForm = styled.form`
   align-items: center;
 `;
 function LoginInput() {
+  const [user, setUser] = useRecoilState(userState);
+  const navi = useNavigate();
+
   const openKakaoLogin = () => {
     window.open(KakaoLoginAPI, "_blank", "location=0");
   };
+
   const sendLoginRequest = (e) => {
     e.preventDefault();
-    const data = new FormData(e.target);
-    const username = data.get("username");
-    const password = data.get("password");
+    const loginFormData = new FormData(e.target);
+    const username = loginFormData.get("username");
+    const password = loginFormData.get("password");
 
-    SendingLoginRequest(username, password);
+    const data = { username, password };
+
+    axios
+      .post(LOGIN_REQUEST_ADDRESS, data)
+      .then((res) => {
+        if (res.status === 200 && res.data.id) {
+          setUser(res.data);
+          console.log("data response printing....:", res);
+          navi("/dashboard");
+        }
+      })
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -84,6 +103,12 @@ function LoginInput() {
           </Grid>
         </StyledGrid>
       </StyledForm>
+      <Typography variant="body2" color="textSecondary" align="center">
+        Copyright ©{" "}
+        <i className="fa-brands fa-github" style={{ fontSize: "2rem" }}></i>{" "}
+        {new Date().getFullYear()}
+        BitCamp 221기 2022
+      </Typography>
     </StyledContainer>
   );
 }

@@ -1,12 +1,18 @@
-import React, { useState } from "react";
-import { Grid, Button } from "@mui/material";
+import React from "react";
+import { Grid, Button, Typography } from "@mui/material";
 import PictureAsPdfSharpIcon from "@mui/icons-material/PictureAsPdfSharp";
 import LoginSharpIcon from "@mui/icons-material/LoginSharp";
+import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState, useResetRecoilState } from "recoil";
+import { userState } from "../config/Atom";
 
 function NavigationBar() {
   const navi = useNavigate();
-  const [userLogin, setUserLogin] = useState(false);
+  const userLogout = useResetRecoilState(userState);
+  const [user, setUser] = useRecoilState(userState);
+
+  // console.log(user);
   return (
     <Grid
       container
@@ -29,42 +35,68 @@ function NavigationBar() {
         justifyContent="start"
       >
         <Grid item display="flex" alignItems="center" ml={2}>
-          <PictureAsPdfSharpIcon fontSize="large" />
-        </Grid>
-        <Grid item>
-          <Button variant="black">My Page</Button>
+          <PictureAsPdfSharpIcon
+            style={{
+              cursor: "pointer",
+            }}
+            fontSize="large"
+            onClick={() => {
+              navi("/");
+            }}
+          />
         </Grid>
       </Grid>
 
       <Grid container item xs={6} md={5} justifyContent="end">
-        {userLogin ? null : (
-          <>
-            <Grid item display="flex" alignItems="center">
+        {user.id ? (
+          <Grid item display="flex" alignItems="center" mr={3}>
+            <Button
+              variant="black"
+              onClick={() => {
+                userLogout();
+                navi("/");
+              }}
+            >
               <LoginSharpIcon />
-            </Grid>
-            <Grid item mr={3}>
-              <Button
-                variant="black"
-                onClick={() => {
-                  navi("/login");
-                }}
-              >
-                Login
-              </Button>
-            </Grid>
-          </>
+              <Typography ml={1}>logout</Typography>
+            </Button>
+          </Grid>
+        ) : (
+          <Grid item display="flex" alignItems="center" mr={3}>
+            <Button
+              variant="black"
+              onClick={() => {
+                navi("/login");
+              }}
+            >
+              <LoginSharpIcon />
+              <Typography ml={1}>login</Typography>
+            </Button>
+          </Grid>
         )}
-
-        <Grid item mr={2}>
-          <Button
-            variant="black"
-            onClick={() => {
-              navi("/join");
-            }}
-          >
-            Join
-          </Button>
-        </Grid>
+        {user.id ? (
+          <Grid item mr={2}>
+            <Button
+              variant="black"
+              onClick={() => {
+                navi("/");
+              }}
+            >
+              <Typography>maypage</Typography>
+            </Button>
+          </Grid>
+        ) : (
+          <Grid item mr={2}>
+            <Button
+              variant="black"
+              onClick={() => {
+                navi("/join");
+              }}
+            >
+              <Typography>Join</Typography>
+            </Button>
+          </Grid>
+        )}
       </Grid>
     </Grid>
   );
