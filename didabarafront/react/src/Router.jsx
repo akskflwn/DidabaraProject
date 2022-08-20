@@ -13,18 +13,36 @@ function Router() {
   return (
     <BrowserRouter>
       <NavigationBar />
-      <Routes>
+      {user.id ? (
+        <>
+          <Routes>
+            <Route path="/" element={<Home />}>
+              <Route path="/login" elemnet={<Home />} />
+            </Route>
+            <Route path="/join" element={<Join />} />
+            <Route path="/kakaologin" element={<KakaoLogin />} />
+            <Route path="/dashboard" element={<DashBoard />} />
+          </Routes>
+        </>
+      ) : (
+        <>
+          <Routes>
+            <Route path="/" element={<Home />}>
+              <Route path="/login" elemnet={<Home />} />
+            </Route>
+            <Route path="/join" element={<Join />} />
+            <Route path="/kakaologin" element={<KakaoLogin />} />
+          </Routes>
+        </>
+      )}
+      {/* <Routes>
         <Route path="/" element={<Home />}>
           <Route path="/login" elemnet={<Home />} />
         </Route>
         <Route path="/join" element={<Join />} />
-        {user.id ? (
-          <>
-            <Route path="/kakaologin" element={<KakaoLogin />} />
-            <Route path="/dashboard" element={<DashBoard />} />
-          </>
-        ) : null}
-      </Routes>
+        <Route path="/kakaologin" element={<KakaoLogin />} />
+        <Route path="/dashboard" element={<DashBoard />} />
+      </Routes> */}
     </BrowserRouter>
   );
 }

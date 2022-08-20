@@ -49,7 +49,7 @@ function LoginInput() {
   const navi = useNavigate();
 
   const openKakaoLogin = () => {
-    window.open(KakaoLoginAPI, "_blank", "location=0");
+    window.open(KakaoLoginAPI);
   };
 
   const sendLoginRequest = (e) => {
