@@ -4,6 +4,7 @@ import { useMatch, useNavigate } from "react-router-dom";
 import Loginform from "../components/Loginform";
 import IntroPartOne from "../components/IntroPartOne";
 import IntroPartTwo from "../components/IntroPartTwo";
+import NavigationBar from "../components/NavigationBar";
 
 function Home() {
   /**유저가 현재 /login 에 있지 않으면 null / login 이면 정보가 담긴 객체를 반환하므로 true 로 활용 가능 */
@@ -14,6 +15,7 @@ function Home() {
 
   return (
     <>
+      <NavigationBar />
       <AnimatePresence>{LoginMatch ? <Loginform /> : null}</AnimatePresence>
       <IntroPartOne />
       <IntroPartTwo />

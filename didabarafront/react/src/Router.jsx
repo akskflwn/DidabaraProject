@@ -12,37 +12,17 @@ function Router() {
   const user = useRecoilValue(userState);
   return (
     <BrowserRouter>
-      <NavigationBar />
-      {user.id ? (
-        <>
-          <Routes>
-            <Route path="/" element={<Home />}>
-              <Route path="/login" elemnet={<Home />} />
-            </Route>
-            <Route path="/join" element={<Join />} />
-            <Route path="/kakaologin" element={<KakaoLogin />} />
-            <Route path="/dashboard" element={<DashBoard />} />
-          </Routes>
-        </>
-      ) : (
-        <>
-          <Routes>
-            <Route path="/" element={<Home />}>
-              <Route path="/login" elemnet={<Home />} />
-            </Route>
-            <Route path="/join" element={<Join />} />
-            <Route path="/kakaologin" element={<KakaoLogin />} />
-          </Routes>
-        </>
-      )}
-      {/* <Routes>
+      {/* <NavigationBar /> */}
+      <Routes>
         <Route path="/" element={<Home />}>
           <Route path="/login" elemnet={<Home />} />
         </Route>
         <Route path="/join" element={<Join />} />
+
         <Route path="/kakaologin" element={<KakaoLogin />} />
+
         <Route path="/dashboard" element={<DashBoard />} />
-      </Routes> */}
+      </Routes>
     </BrowserRouter>
   );
 }
