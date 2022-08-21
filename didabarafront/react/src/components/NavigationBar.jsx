@@ -4,10 +4,18 @@ import PictureAsPdfSharpIcon from "@mui/icons-material/PictureAsPdfSharp";
 import LoginSharpIcon from "@mui/icons-material/LoginSharp";
 import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useResetRecoilState } from "recoil";
-import { userState } from "../config/Atom";
+import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { loginState, userState } from "../config/Atom";
+import styled from "styled-components";
+
+const StyledButton = styled(Button)`
+  && {
+    color: rgba(220, 221, 225, 1);
+  }
+`;
 
 function NavigationBar() {
+  const setLoginState = useSetRecoilState(loginState);
   const navi = useNavigate();
 
   /**로그아웃 버튼 이벤트시
@@ -28,7 +36,7 @@ function NavigationBar() {
       style={{
         position: "sticky",
         top: 0,
-        backgroundColor: "orange",
+        backgroundColor: "rgba(47, 54, 64,1.0)",
         padding: "10px",
       }}
     >
@@ -45,6 +53,7 @@ function NavigationBar() {
           <PictureAsPdfSharpIcon
             style={{
               cursor: "pointer",
+              color: "rgba(220, 221, 225, 1)",
             }}
             fontSize="large"
             onClick={() => {
@@ -57,7 +66,7 @@ function NavigationBar() {
       <Grid container item xs={6} md={5} justifyContent="end">
         {user.id ? (
           <Grid item display="flex" alignItems="center" mr={3}>
-            <Button
+            <StyledButton
               variant="black"
               onClick={() => {
                 userLogout();
@@ -66,19 +75,19 @@ function NavigationBar() {
             >
               <LogoutSharpIcon />
               <Typography ml={1}>logout</Typography>
-            </Button>
+            </StyledButton>
           </Grid>
         ) : (
           <Grid item display="flex" alignItems="center" mr={3}>
-            <Button
+            <StyledButton
               variant="black"
               onClick={() => {
-                navi("/login");
+                setLoginState(true);
               }}
             >
               <LoginSharpIcon />
               <Typography ml={1}>login</Typography>
-            </Button>
+            </StyledButton>
           </Grid>
         )}
         {user.id ? (
@@ -94,14 +103,14 @@ function NavigationBar() {
           </Grid>
         ) : (
           <Grid item mr={2}>
-            <Button
+            <StyledButton
               variant="black"
               onClick={() => {
                 navi("/join");
               }}
             >
               <Typography>Join</Typography>
-            </Button>
+            </StyledButton>
           </Grid>
         )}
       </Grid>

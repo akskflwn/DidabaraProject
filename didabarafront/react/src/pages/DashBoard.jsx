@@ -1,27 +1,23 @@
-import { Button } from "@mui/material";
 import React from "react";
-import { useRecoilState } from "recoil";
-import { userState } from "../config/Atom";
 import { Grid } from "@mui/material";
 import styled from "styled-components";
+import Profile from "../components/Profile";
 
 const Item = styled.div`
-  border: 1px solid black;
+  /* border: 1px solid black; */
 `;
 
 function DashBoard() {
-  const [user, setUser] = useRecoilState(userState);
-
-  console.log(user);
-
   return (
     <div>
       <Grid container>
-        <Grid item xs={1}>
-          <Item>ddsa</Item>
+        <Grid item xs={2}>
+          <Item>
+            <Profile />
+          </Item>
         </Grid>
-        <Grid item xs={11}>
-          <Item>ddd</Item>
+        <Grid item xs={10}>
+          <Item>dashboard main</Item>
         </Grid>
       </Grid>
     </div>

@@ -1,7 +1,8 @@
 import { motion } from "framer-motion";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useSetRecoilState } from "recoil";
 import styled from "styled-components";
+import { loginState } from "../config/Atom";
 import LoginInput from "./LoginInput";
 
 /**컴포넌트들 스타일 정의 */
@@ -57,14 +58,13 @@ const loginFormAnimation = {
   },
 };
 function Loginform() {
-  /** 페이지 리디렉션을 위한 useNavigate  */
-  const navigate = useNavigate();
+  const setLoginState = useSetRecoilState(loginState);
 
   /** 반투명 배경이미지 클릭시 유저를 home 으로 이동시킨다.
    * url 에서 /login 이 사라지므로 로그인폼이 사라지는 애니메이션을 작동시킨다.
    */
   const returnToHome = () => {
-    navigate("/");
+    setLoginState(false);
   };
 
   return (

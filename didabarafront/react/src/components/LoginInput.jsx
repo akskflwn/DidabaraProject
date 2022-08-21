@@ -4,9 +4,10 @@ import styled from "styled-components";
 import { FormControl } from "@mui/material";
 import { KakaoLoginAPI } from "../config/KakaoApi";
 import axios from "axios";
-import { useRecoilState } from "recoil";
+import { useSetRecoilState } from "recoil";
 import { userState } from "../config/Atom";
 import { useNavigate } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 /**백엔드 로그인 어노테이션 주소 */
 const LOGIN_REQUEST_ADDRESS = "http://192.168.0.187:8080/auth/signin";
@@ -47,9 +48,10 @@ const StyledForm = styled.form`
   align-items: center;
 `;
 function LoginInput() {
+  const { register, watch, handleSubmit } = useForm();
   /**유저 상태관리를 위한 Recoil 호출.
    * 괄호안에들어가는 userState 는 config 폴더의 Atom 에 정의해 두었습니다.*/
-  const [user, setUser] = useRecoilState(userState);
+  const setUser = useSetRecoilState(userState);
 
   /**페이지 리디렉션용 useNavigate */
   const navi = useNavigate();
@@ -70,13 +72,8 @@ function LoginInput() {
    *
    * Recoil 의 setUser 함수로 유저의 상태를 로그인 상태로 만든다.
    */
-  const sendLoginRequest = (e) => {
-    e.preventDefault();
-    const loginFormData = new FormData(e.target);
-    const username = loginFormData.get("username");
-    const password = loginFormData.get("password");
-
-    const data = { username, password };
+  const sendLoginRequest = (data) => {
+    console.log(data);
 
     axios
       .post(LOGIN_REQUEST_ADDRESS, data)
@@ -92,17 +89,17 @@ function LoginInput() {
 
   return (
     <StyledContainer container>
-      <StyledForm onSubmit={sendLoginRequest}>
+      <StyledForm onSubmit={handleSubmit(sendLoginRequest)}>
         <StyledGrid item>
           <StyledInput variant="standard">
             <InputLabel htmlFor="username">ID</InputLabel>
-            <Input id="username" name="username" />
+            <Input {...register("username" , {required:""})} id="username" name="username" />
           </StyledInput>
         </StyledGrid>
         <StyledGrid item>
           <StyledInput variant="standard">
             <InputLabel htmlFor="password">Password</InputLabel>
-            <Input id="password" name="password" />
+            <Input {...register("password")} id="password" name="password" />
           </StyledInput>
         </StyledGrid>
         <StyledGrid container item justifyContent="center" gap={3}>
