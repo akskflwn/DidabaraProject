@@ -8,8 +8,10 @@ import { useRecoilState } from "recoil";
 import { userState } from "../config/Atom";
 import { useNavigate } from "react-router-dom";
 
+/**백엔드 로그인 어노테이션 주소 */
 const LOGIN_REQUEST_ADDRESS = "http://192.168.0.187:8080/auth/signin";
 
+/**컴포넌트 스타일 정의 */
 const StyledInput = styled(FormControl)`
   && {
     width: 90%;
@@ -45,13 +47,29 @@ const StyledForm = styled.form`
   align-items: center;
 `;
 function LoginInput() {
+  /**유저 상태관리를 위한 Recoil 호출.
+   * 괄호안에들어가는 userState 는 config 폴더의 Atom 에 정의해 두었습니다.*/
   const [user, setUser] = useRecoilState(userState);
+
+  /**페이지 리디렉션용 useNavigate */
   const navi = useNavigate();
 
+  /**온클릭 이벤트
+   * 카카오 로그인용 새창을 띄운다.
+   */
   const openKakaoLogin = () => {
     window.open(KakaoLoginAPI);
   };
 
+  /**이벤트 발생 폼으로부터 데이터를 받아
+   * 각각 username 과 password 로 할당하여
+   * 백엔드 로그인 주소로 보내준다.
+   *
+   * respone 값이 200(ok)이고 응답데이터에 유저의 아이디가 비어있지 않으면
+   * (response 가 200인데도 유저의 데이터가 null 인경우도 있을수 있으므로)
+   *
+   * Recoil 의 setUser 함수로 유저의 상태를 로그인 상태로 만든다.
+   */
   const sendLoginRequest = (e) => {
     e.preventDefault();
     const loginFormData = new FormData(e.target);

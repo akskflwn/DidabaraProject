@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import LoginInput from "./LoginInput";
 
+/**컴포넌트들 스타일 정의 */
 const StyledOverLay = styled(motion.div)`
   position: fixed;
   top: 0;
@@ -33,6 +34,10 @@ const Img = styled.img`
   margin-top: 25px;
 `;
 
+/** 로그인 화면 에니메이션 정의 부분.
+ * 초기 값은 아무것도 보이지 않는 상태에서 url 이 `localhost:3000/login` 으로 바뀌면
+ * 로그인 페이지가 나타난다. x값으로 로그인폼을 나타내고 사라지게 함.
+ */
 const loginFormAnimation = {
   start: {
     x: 700,
@@ -52,10 +57,16 @@ const loginFormAnimation = {
   },
 };
 function Loginform() {
+  /** 페이지 리디렉션을 위한 useNavigate  */
   const navigate = useNavigate();
+
+  /** 반투명 배경이미지 클릭시 유저를 home 으로 이동시킨다.
+   * url 에서 /login 이 사라지므로 로그인폼이 사라지는 애니메이션을 작동시킨다.
+   */
   const returnToHome = () => {
     navigate("/");
   };
+
   return (
     <>
       <StyledOverLay

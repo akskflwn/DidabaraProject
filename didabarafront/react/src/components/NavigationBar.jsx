@@ -9,7 +9,14 @@ import { userState } from "../config/Atom";
 
 function NavigationBar() {
   const navi = useNavigate();
+
+  /**로그아웃 버튼 이벤트시
+   * Recoil 의 정보를 리셋시키는 함수.
+   * user 의 defautl 값인 id:null 이 된다.
+   */
   const userLogout = useResetRecoilState(userState);
+
+  /** 이벤트에 따라 유저의 상태를 관리하기 위한 Recoil */
   const [user, setUser] = useRecoilState(userState);
 
   // console.log(user);
@@ -57,7 +64,7 @@ function NavigationBar() {
                 navi("/");
               }}
             >
-              <LoginSharpIcon />
+              <LogoutSharpIcon />
               <Typography ml={1}>logout</Typography>
             </Button>
           </Grid>

@@ -52,6 +52,7 @@ function IntroPartOne() {
   return (
     <StyledGrid container justifyContent="center" gap={0}>
       <StyledInnerGridLeft item lg={4} md={5} sm={11} xs={11}>
+        {/**해당 img here 자리에 디다바라 일러스트? 추가 하고 싶어요*/}
         <StyledH2>img here</StyledH2>
       </StyledInnerGridLeft>
       <StyledInnerGridRight container item lg={4} md={5} sm={11} xs={11}>
