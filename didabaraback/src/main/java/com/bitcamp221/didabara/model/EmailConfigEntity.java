@@ -5,6 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import lombok.*;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
 @Builder
 @Getter
 @Entity

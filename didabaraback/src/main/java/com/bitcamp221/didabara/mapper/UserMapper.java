@@ -1,5 +1,7 @@
 package com.bitcamp221.didabara.mapper;
 
+import com.bitcamp221.didabara.dto.UserDTO;
+import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
@@ -21,10 +23,10 @@ public interface UserMapper {
             "FROM user " +
             "JOIN emailconfig " +
             "ON user.id = emailconfig.id " +
-            "WHERE emailconfig.auth_code = #{user.authCode}")
-    Map selectUsernameAndAuthCode(@Param("user") Map map);
+            "WHERE emailconfig.auth_code = #{map.authCode}")
+    Map selectUsernameAndAuthCode(@Param("map") Map map);
 
-    @Select("SELECT username,emailconfig.auth_code FROM USER JOIN EMAILCONFIG ON USER.ID =EMAILCONFIG.ID" +
+    @Select("SELECT username,emailconfig.auth_code FROM USER JOIN emailconfig ON USER.ID =emailconfig.ID" +
             "WHERE USER.USERNAME=#{username}")
     String findByUserName(@Param("username")String username);
 

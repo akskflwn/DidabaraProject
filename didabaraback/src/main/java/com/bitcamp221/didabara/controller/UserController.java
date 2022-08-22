@@ -1,33 +1,26 @@
 package com.bitcamp221.didabara.controller;
 
 
-import com.bitcamp221.didabara.dto.EmailConfigDTO;
 import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
-import com.bitcamp221.didabara.service.EmailConfigService;
 import com.bitcamp221.didabara.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.bitcamp221.didabara.dto.ResponseDTO;
 import com.bitcamp221.didabara.dto.UserDTO;
-import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.security.TokenProvider;
-import com.bitcamp221.didabara.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
@@ -135,6 +128,7 @@ public class UserController {
         }
 
     }
+
     //조회
     // url로 접근할떄 토큰을 확인한다던가 보안성 로직이 필요할듯함?
     @GetMapping("/user/{id}")
@@ -170,8 +164,8 @@ public class UserController {
             log.error("업데이트 실패");
             return ResponseEntity.badRequest().body(responseDTO);
         }
-
     }
+
     //삭제
     @DeleteMapping("/user")
     public void deletUser(@RequestBody UserDTO userDTO){
@@ -179,20 +173,24 @@ public class UserController {
         log.info("삭제완료");
     }
 
-
     //프론트에서 인가코드 받아오는 url
     /* 카카오 로그인 */
     @GetMapping("/kakao")
-    public ResponseEntity<?> kakaoCallback(String code) {
+    public Map kakaoCallback(@Param("code") String code) {
         log.info("code={}", code);
 
-        String access_Token = userService.getKaKaoAccessToken(code);
-        userService.createKakaoUser(access_Token);
+        String[] access_Token = userService.getKaKaoAccessToken(code);
+        String access_found_in_token = access_Token[0];
+        // 배열로 받은 토큰들의 accsess_token만 createKaKaoUser 메서드로 전달
+        UserEntity kakaoUser = userService.createKakaoUser(access_found_in_token);
 
-        return ResponseEntity.ok().body(access_Token);
+        Map map = new HashMap();
+        map.put("kakaoUser", kakaoUser);
+        map.put("access_Token", access_Token[0]);
+        map.put("refresh_Token", access_Token[1]);
+        map.put("id_Token", access_Token[2]);
+
+        return map;
     }
-
     // https://kauth.kakao.com/oauth/authorize?client_id=4af7c95054f7e1d31cff647965678936&redirect_uri=http://localhost:8080/auth/kakao&response_type=code
-
-
 }
