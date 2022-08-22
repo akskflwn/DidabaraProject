@@ -70,5 +70,4 @@ public class EmailConfigController {
         }
         return ResponseEntity.ok().body("전송 완료");
     }
-
 }
