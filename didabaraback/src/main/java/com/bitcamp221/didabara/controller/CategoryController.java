@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
-import java.util.Map;
 
 @Slf4j
 @RestController
@@ -243,6 +242,5 @@ public class CategoryController {
       return ResponseEntity.badRequest().body(responseDTO);
     }
   }
-}
 }
 

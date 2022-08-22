@@ -2,15 +2,12 @@ package com.bitcamp221.didabara.service;
 
 import com.bitcamp221.didabara.mapper.EmailConfigMapper;
 import com.bitcamp221.didabara.mapper.UserMapper;
-import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.UserRepository;
 import com.bitcamp221.didabara.security.TokenProvider;
-import com.google.gson.Gson;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
