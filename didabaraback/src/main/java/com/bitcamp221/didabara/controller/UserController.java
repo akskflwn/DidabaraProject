@@ -1,14 +1,19 @@
 package com.bitcamp221.didabara.controller;
 
 
+import com.bitcamp221.didabara.dto.EmailConfigDTO;
+import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
+import com.bitcamp221.didabara.presistence.EmailConfigRepository;
+import com.bitcamp221.didabara.presistence.UserRepository;
+import com.bitcamp221.didabara.service.EmailConfigService;
 import com.bitcamp221.didabara.service.UserService;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.User;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import com.bitcamp221.didabara.dto.ResponseDTO;
 import com.bitcamp221.didabara.dto.UserDTO;
 import com.bitcamp221.didabara.model.UserEntity;
@@ -19,25 +24,32 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping
+@RequestMapping("auth")
 public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private UserRepository userRepository;
 
     private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     @Autowired
     private TokenProvider tokenProvider;
+
+    @Autowired
+    private EmailConfigRepository emailConfigRepository;
 
     //  회원가입
 //  http://localhost:8080/auth/signup
@@ -48,28 +60,46 @@ public class UserController {
             if (userDTO == null || userDTO.getPassword() == null) {
                 throw new RuntimeException("Invalid Password value");
             }
+            //난수생성
+            String code = UUID.randomUUID().toString().substring(0, 6);
+            log.info(code);
 
+            //
+            EmailConfigEntity emailConfigEntity = EmailConfigEntity.builder()
+                    .authCode(code)
+                    .build();
+            emailConfigRepository.save(emailConfigEntity);
 
+            //
 //      요청을 이용해 저장할 유저 객체 생성
             UserEntity userEntity = UserEntity.builder()
+
                     .username(userDTO.getUsername())
                     .password(passwordEncoder.encode(userDTO.getPassword()))
                     .nickname(userDTO.getNickname())
-//              .password(userDTO.getPassword())
+//                    .emailConfigEntity(emailConfigEntity)
                     .build();
+
+
 
 //      서비스를 이용해 리포지터리에 유저 저장
             UserEntity registeredUser = userService.creat(userEntity);
 
-//      응답객체 만들기(패스워드 제외)
+//
+            System.out.println("registerdUser Datetiem:" + registeredUser.getCreatedDate());
+            System.out.println("registerdUser Modifiedtime:" + registeredUser.getModifiedDate());
+
+            //응답객체 만들기(패스워드 제외)
             UserDTO responseUserDTO = UserDTO.builder()
                     .id(registeredUser.getId())
                     .username(registeredUser.getUsername())
                     .nickname(registeredUser.getNickname())
                     .build();
 
-//      유저 정보는 현재 하나이므로 리스트로 만들 필요 없음
-//      ResponseDTO를 사용하지 않고 UserDTO 타입으로 반환
+            //유저 정보는 현재 하나이므로 리스트로 만들 필요 없음
+            //ResponseDTO를 사용하지 않고 UserDTO 타입으로 반환
+            log.info("회원가입 완료");
+
 
             return ResponseEntity.ok().body(responseUserDTO);
 
@@ -96,9 +126,10 @@ public class UserController {
             final String token = tokenProvider.create(user);
 
             final UserDTO responsUserDTO = UserDTO.builder()
-                    .username(user.getUsername())
                     .id(user.getId())
-//                    .token(token)
+                    .username(user.getUsername())
+                    .nickname(user.getNickname())
+                    .token(token)
                     .build();
 
             return ResponseEntity.ok().body(responsUserDTO);
@@ -111,8 +142,72 @@ public class UserController {
         }
 
     }
+    //조회
+    // url로 접근할떄 토큰을 확인한다던가 보안성 로직이 필요할듯함?
+    @GetMapping("/user/{id}")
+    public UserEntity findbyId(@PathVariable Long id){
+        return userService.findById(id);
+    }
 
+    //수정
+    //patch --> 엔티티의 일부만 업데이트하고싶을때
+    //put --> 엔티티의 전체를 변경할떄
+    //put 을 사용하면 전달한값 외는 모두 null or 초기값으로 처리된다고함..
+    @PatchMapping("/user")
+    public ResponseEntity<?> update(@RequestBody UserDTO userDTO){
+        try {
+            UserEntity userEntity = UserEntity.builder()
+                    .id(userDTO.getId())
+                    .nickname(userDTO.getNickname())
+                    .password(passwordEncoder.encode(userDTO.getPassword()))
+                    .build();
+            UserEntity updatedUser = userService.update(userEntity);
+
+            UserDTO ResponseUserDTO = UserDTO.builder()
+                    .id(updatedUser.getId())
+                    .nickname(updatedUser.getNickname())
+                    .build();
+            log.info("업데이트 완료");
+
+            return ResponseEntity.ok().body(ResponseUserDTO);
+        }
+
+        catch (Exception e) {
+            ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+            log.error("업데이트 실패");
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+
+    }
+    //삭제
+    @DeleteMapping("/user")
+    public void deletUser(@RequestBody UserDTO userDTO){
+        userService.deleteUser(userDTO.getId());
+        log.info("삭제완료");
+    }
+
+
+    //프론트에서 인가코드 받아오는 url
+    /* 카카오 로그인 */
+    @GetMapping("/kakao")
+    public Map kakaoCallback(@Param("code") String code) {
+        log.info("code={}", code);
+
+        String[] access_Token = userService.getKaKaoAccessToken(code);
+        String access_found_in_token = access_Token[0];
+        // 배열로 받은 토큰들의 accsess_token만 createKaKaoUser 메서드로 전달
+        UserEntity kakaoUser = userService.createKakaoUser(access_found_in_token);
+
+        Map map = new HashMap();
+        map.put("kakaoUser", kakaoUser);
+        map.put("access_Token", access_Token[0]);
+        map.put("refresh_Token", access_Token[1]);
+        map.put("id_Token", access_Token[2]);
+
+        return map;
+    }
+
+    // https://kauth.kakao.com/oauth/authorize?client_id=4af7c95054f7e1d31cff647965678936&redirect_uri=http://localhost:8080/auth/kakao&response_type=code
 
 
 }
-

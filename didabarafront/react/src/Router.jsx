@@ -6,11 +6,17 @@ import Home from "./pages/Home";
 import Join from "./pages/Join";
 import KakaoLogin from "./pages/KakaoLogin";
 import EmailAuth from "./pages/EmailAuth";
+import { useRecoilValue } from "recoil";
+import { loginState } from "./config/Atom";
+import { AnimatePresence } from "framer-motion";
+import Loginform from "./components/Loginform";
 
 function Router() {
+  const isLogin = useRecoilValue(loginState);
   return (
     <BrowserRouter>
       <NavigationBar />
+      <AnimatePresence>{isLogin ? <Loginform /> : null}</AnimatePresence>
       <Routes>
         <Route path="/" element={<Home />}>
           <Route path="/login" elemnet={<Home />} />

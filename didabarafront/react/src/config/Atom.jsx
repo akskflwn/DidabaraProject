@@ -1,13 +1,16 @@
-import { atom, selector } from "recoil";
+import { atom } from "recoil";
+
+export const User = {
+  id: null,
+  password: null,
+};
 
 export const userState = atom({
   key: "userState",
-  default: {
-    id: null,
-    username: null,
-    nickname: null,
-    token: null,
-    createdDate: null,
-    modifiedDate: null,
-  },
+  default: User,
+});
+
+export const loginState = atom({
+  key: "loginState",
+  default: false,
 });

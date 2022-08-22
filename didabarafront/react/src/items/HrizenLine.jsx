@@ -1,3 +1,4 @@
+/** 해당 컴포넌트는 실험적으로 만들어봄 */
 import React from "react";
 import styled from "styled-components";
 

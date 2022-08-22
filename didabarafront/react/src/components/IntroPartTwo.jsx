@@ -8,7 +8,7 @@ const StyledGrid = styled(Grid)`
   background-color: lightBlue;
 `;
 function IntroPartTwo() {
-  return <StyledGrid>IntroPartTwo</StyledGrid>;
+  return <StyledGrid>{/**소개 페이지 2번 */}IntroPartTwo</StyledGrid>;
 }
 
 export default IntroPartTwo;
