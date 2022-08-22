@@ -13,7 +13,7 @@ import {
   FormControl,
   Typography,
 } from "@mui/material";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Join = () => {
   const validationSchema = Yup.object().shape({
@@ -40,8 +40,11 @@ const Join = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
 
-  const onSubmit = (a) => {
-    console.log(a);
+  const navi = useNavigate();
+
+  const onSubmit = (data) => {
+    console.log(data.username);
+    navi(`/email/config/${data.username}`);
   };
 
   return (

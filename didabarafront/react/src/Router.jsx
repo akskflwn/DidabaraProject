@@ -5,6 +5,7 @@ import DashBoard from "./pages/DashBoard";
 import Home from "./pages/Home";
 import Join from "./pages/Join";
 import KakaoLogin from "./pages/KakaoLogin";
+import EmailAuth from "./pages/EmailAuth";
 
 function Router() {
   return (
@@ -14,9 +15,10 @@ function Router() {
         <Route path="/" element={<Home />}>
           <Route path="/login" elemnet={<Home />} />
         </Route>
-          <Route path="/join" element={<Join />} />
+        <Route path="/join" element={<Join />} />
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/kakaologin" element={<KakaoLogin />} />
+        <Route path="/email/config/:username" element={<EmailAuth />} />
       </Routes>
     </BrowserRouter>
   );
