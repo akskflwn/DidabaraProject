@@ -107,7 +107,13 @@ function LoginInput() {
             <StyledButton type="submit">로그인</StyledButton>
           </Grid>
           <Grid item xs={5}>
-            <StyledButton>회원가입</StyledButton>
+            <StyledButton
+              onClick={() => {
+                navi("/join");
+              }}
+            >
+              회원가입
+            </StyledButton>
           </Grid>
         </StyledGrid>
         <StyledGrid>

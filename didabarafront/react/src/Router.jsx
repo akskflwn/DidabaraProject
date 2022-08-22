@@ -5,6 +5,7 @@ import DashBoard from "./pages/DashBoard";
 import Home from "./pages/Home";
 import Join from "./pages/Join";
 import KakaoLogin from "./pages/KakaoLogin";
+import EmailAuth from "./pages/EmailAuth";
 import { useRecoilValue } from "recoil";
 import { loginState } from "./config/Atom";
 import { AnimatePresence } from "framer-motion";
@@ -21,10 +22,9 @@ function Router() {
           <Route path="/login" elemnet={<Home />} />
         </Route>
         <Route path="/join" element={<Join />} />
-
-        <Route path="/kakaologin" element={<KakaoLogin />} />
-
         <Route path="/dashboard" element={<DashBoard />} />
+        <Route path="/kakaologin" element={<KakaoLogin />} />
+        <Route path="/email/config/:username" element={<EmailAuth />} />
       </Routes>
     </BrowserRouter>
   );
