@@ -1,6 +1,5 @@
 package com.bitcamp221.didabara.service;
 
-import com.bitcamp221.didabara.mapper.CategoryMapper;
 import com.bitcamp221.didabara.model.CategoryEntity;
 import com.bitcamp221.didabara.presistence.CategoryRepository;
 import lombok.extern.slf4j.Slf4j;
