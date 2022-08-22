@@ -18,8 +18,7 @@ public class CategoryService {
   @Autowired
   private CategoryRepository categoryRepository;
 
-  //  ---------------------------------------------------
-//  작성자 : 문병훈
+  //  작성자 : 문병훈
 //  메소드 정보 : DB로부터 받아온 Entity에 대해서 사전 검사
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
@@ -114,12 +113,12 @@ public class CategoryService {
     }
   }
 
-  public boolean existByCategory (final Long categoryId) {
+  public boolean existByCategory(final Long categoryId) {
     try {
       log.info("exist join success");
 
       return categoryRepository.findById(categoryId).isEmpty();
-    } catch (Exception e){
+    } catch (Exception e) {
       log.info("exist join failed");
 
       return false;

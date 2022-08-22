@@ -1,6 +1,5 @@
 package com.bitcamp221.didabara.controller;
 
-
 import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
