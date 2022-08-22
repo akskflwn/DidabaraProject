@@ -30,7 +30,6 @@ public class CategoryDTO {
     this.title = categoryEntity.getTitle();
     this.content = categoryEntity.getContent();
     this.inviteCode = categoryEntity.getInviteCode();
-    this.profileImageUrl = categoryEntity.getProfileIm  ageUrl();
     this.createdDate = categoryEntity.getCreatedDate();
     this.modifiedDate = categoryEntity.getModifiedDate();
   }

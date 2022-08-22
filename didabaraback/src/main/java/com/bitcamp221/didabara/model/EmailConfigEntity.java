@@ -5,6 +5,11 @@ import lombok.*;
 import javax.persistence.*;
 import java.io.Serializable;
 
+import lombok.*;
+
+import javax.persistence.*;
+import java.io.Serializable;
+
 @Builder
 @Getter
 @Entity
@@ -14,7 +19,7 @@ import java.io.Serializable;
 public class EmailConfigEntity extends BaseTimeEntity {
 
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private Long id;
 
