@@ -1,34 +1,25 @@
 package com.bitcamp221.didabara.controller;
 
 
-import com.bitcamp221.didabara.dto.EmailConfigDTO;
+
 import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
-import com.bitcamp221.didabara.service.EmailConfigService;
 import com.bitcamp221.didabara.service.UserService;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.catalina.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import com.bitcamp221.didabara.dto.ResponseDTO;
 import com.bitcamp221.didabara.dto.UserDTO;
-import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.security.TokenProvider;
-import com.bitcamp221.didabara.service.UserService;
-import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;

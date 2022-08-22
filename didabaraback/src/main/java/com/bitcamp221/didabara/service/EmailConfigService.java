@@ -2,7 +2,6 @@ package com.bitcamp221.didabara.service;
 
 import com.bitcamp221.didabara.mapper.EmailConfigMapper;
 import com.bitcamp221.didabara.mapper.UserMapper;
-import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
@@ -13,10 +12,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
-import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 

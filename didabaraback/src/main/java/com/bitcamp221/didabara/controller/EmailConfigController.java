@@ -1,7 +1,5 @@
 package com.bitcamp221.didabara.controller;
 
-import com.bitcamp221.didabara.model.EmailConfigEntity;
-import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
 import com.bitcamp221.didabara.service.EmailConfigService;
 import lombok.extern.slf4j.Slf4j;
@@ -10,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
-import java.util.UUID;
 
 @Slf4j
 @RestController
