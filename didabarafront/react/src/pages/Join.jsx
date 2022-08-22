@@ -11,7 +11,9 @@ import {
   MenuItem,
   InputLabel,
   FormControl,
+  Typography,
 } from "@mui/material";
+import { Link } from "react-router-dom";
 
 const Join = () => {
   const validationSchema = Yup.object().shape({
@@ -45,7 +47,13 @@ const Join = () => {
   return (
     <Container>
       <Grid>
-        <h1>회원가입</h1>
+        <Typography variant="h5">DIDABARA 회원 가입</Typography>
+        <span>
+          이미 가입하셨나요?
+          <Link to="/login">
+            <span>로그인 하기</span>
+          </Link>
+        </span>
         <form>
           <TextField
             required
@@ -92,6 +100,7 @@ const Join = () => {
               id="demo-simple-select"
               // value={age}
               label="job"
+              defaultValue=""
               // onChange={handleChange}
               {...register("job")}
             >

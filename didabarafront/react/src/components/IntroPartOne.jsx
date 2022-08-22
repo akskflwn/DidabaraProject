@@ -45,7 +45,7 @@ const StyledButton = styled(Button)`
 function IntroPartOne() {
   //유저 로그인상태 관리. 유저가 로그인이면 시작해보기 버튼은 대시보드 기능을하고
   //유저가 비 로그인 상태라면 시작해보기 버튼은 로그인창을 불러온다.
-  const [login, setLogin] = useState(true);
+  const [login, setLogin] = useState();
 
   return (
     <StyledGrid container justifyContent="center" gap={0}>

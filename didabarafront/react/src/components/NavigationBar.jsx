@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { Grid, Button } from "@mui/material";
 import PictureAsPdfSharpIcon from "@mui/icons-material/PictureAsPdfSharp";
 import LoginSharpIcon from "@mui/icons-material/LoginSharp";
+import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import { useNavigate } from "react-router-dom";
 
 function NavigationBar() {
@@ -17,6 +18,7 @@ function NavigationBar() {
         top: 0,
         backgroundColor: "orange",
         padding: "10px",
+        zIndex: 3,
       }}
     >
       <Grid
@@ -37,7 +39,23 @@ function NavigationBar() {
       </Grid>
 
       <Grid container item xs={6} md={5} justifyContent="end">
-        {userLogin ? null : (
+        {userLogin ? (
+          <>
+            <Grid item display="flex" alignItems="center">
+              <LogoutSharpIcon />
+            </Grid>
+            <Grid item mr={3}>
+              <Button
+                variant="black"
+                onClick={() => {
+                  // navi("/join");
+                }}
+              >
+                Logout
+              </Button>
+            </Grid>
+          </>
+        ) : (
           <>
             <Grid item display="flex" alignItems="center">
               <LoginSharpIcon />

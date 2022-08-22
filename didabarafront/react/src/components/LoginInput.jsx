@@ -4,6 +4,7 @@ import styled from "styled-components";
 import { FormControl } from "@mui/material";
 import { KakaoLoginAPI } from "../config/KakaoApi";
 import { SendingLoginRequest } from "../config/NormalLoginApi";
+import { useNavigate } from "react-router-dom";
 
 const StyledInput = styled(FormControl)`
   && {
@@ -41,6 +42,8 @@ const StyledForm = styled.form`
   align-items: center;
 `;
 function LoginInput() {
+  const navi = useNavigate();
+
   const openKakaoLogin = () => {
     window.open(KakaoLoginAPI, "_blank", "location=0");
   };
@@ -73,7 +76,13 @@ function LoginInput() {
             <StyledButton type="submit">로그인</StyledButton>
           </Grid>
           <Grid item xs={5}>
-            <StyledButton>회원가입</StyledButton>
+            <StyledButton
+              onClick={() => {
+                navi("/join");
+              }}
+            >
+              회원가입
+            </StyledButton>
           </Grid>
         </StyledGrid>
         <StyledGrid>
