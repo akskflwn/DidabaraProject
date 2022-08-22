@@ -1,7 +1,7 @@
 import React from "react";
 import { Grid } from "@mui/material";
 import styled from "styled-components";
-import Profile from "../components/Profile";
+import DnDropContext from "../components/DnDropContext";
 
 const Item = styled.div`
   /* border: 1px solid black; */
@@ -10,14 +10,26 @@ const Item = styled.div`
 function DashBoard() {
   return (
     <div>
-      <Grid container>
+      <Grid container style={{ border: "1px solid black" }}>
         <Grid item xs={2}>
           <Item>
-            <Profile />
+            <Item style={{ border: "1px solid black" }}>Menu?</Item>
+            <DnDropContext />
           </Item>
         </Grid>
-        <Grid item xs={10}>
-          <Item>dashboard main</Item>
+        <Grid item xs={7} style={{ border: "1px solid black" }}>
+          <Item
+            style={{
+              border: "1px solid black",
+              position: "relative",
+            }}
+          >
+            Main document section
+          </Item>
+          <Item>Document here</Item>
+        </Grid>
+        <Grid item xs={3}>
+          <Item>Community tab</Item>
         </Grid>
       </Grid>
     </div>

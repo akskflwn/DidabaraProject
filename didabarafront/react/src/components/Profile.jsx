@@ -1,6 +1,7 @@
 import React from "react";
 import styled from "styled-components";
 import { Paper, Avatar } from "@mui/material";
+import { Draggable } from "react-beautiful-dnd";
 
 const StyledPaper = styled(Paper)`
   && {
@@ -50,21 +51,29 @@ const H5 = styled.h5`
   margin-block-end: 0.3rem;
 `;
 
-const Profile = function Profile({ img, username, title, text }) {
+function Profile({ img, username, title, text, idx, id }) {
   return (
-    <StyledPaper>
-      <Wrapper>
-        <ImgBlock>
-          <Img alt="userImage" src={img} />
-          <H4>이름{username}</H4>
-        </ImgBlock>
-        <InfoLine>
-          <H4 style={{ marginLeft: "5px" }}>title here{title}</H4>
-          <H5 style={{ marginLeft: "5px" }}>내용{text}</H5>
-        </InfoLine>
-      </Wrapper>
-    </StyledPaper>
+    <Draggable key={id} draggableId={title} index={idx}>
+      {(magic) => (
+        <StyledPaper
+          ref={magic.innerRef}
+          {...magic.dragHandleProps}
+          {...magic.draggableProps}
+        >
+          <Wrapper>
+            <ImgBlock>
+              <Img alt="userImage" src={img} />
+              <H4>{username}</H4>
+            </ImgBlock>
+            <InfoLine>
+              <H4 style={{ marginLeft: "5px" }}>{title}</H4>
+              <H5 style={{ marginLeft: "5px" }}>{text}</H5>
+            </InfoLine>
+          </Wrapper>
+        </StyledPaper>
+      )}
+    </Draggable>
   );
-};
+}
 
 export default Profile;

@@ -38,6 +38,7 @@ function NavigationBar() {
         top: 0,
         backgroundColor: "rgba(47, 54, 64,1.0)",
         padding: "10px",
+        zIndex: "5",
       }}
     >
       <Grid
