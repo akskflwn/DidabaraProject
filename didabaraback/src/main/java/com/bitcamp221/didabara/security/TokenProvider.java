@@ -4,10 +4,18 @@ import com.bitcamp221.didabara.model.UserEntity;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.io.IOException;
 import io.jsonwebtoken.security.Keys;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.tomcat.util.net.openssl.ciphers.Authentication;
+import org.springframework.boot.autoconfigure.neo4j.Neo4jProperties;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
+import javax.servlet.FilterChain;
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.time.Instant;
@@ -16,6 +24,7 @@ import java.util.Date;
 
 @Slf4j
 @Service
+@Component
 public class TokenProvider {
 
     private static final String SECRET_KEY = "auewiogerietognjbkbgjioj5490j9e5itBSJTIJGODFJBG945gujirgjrgwg5";
@@ -32,7 +41,7 @@ public class TokenProvider {
 //            해더(header)에 들어갈 내용 및 서명을 하기 위한 SECRET_KEY
                 .signWith(key, SignatureAlgorithm.HS256)
 //            페이로드(payload)에 들어갈 내용
-                .setSubject(userEntity.getId()+"")
+                .setSubject(userEntity.getId().toString())
                 .setIssuer("didabara app")
                 .setIssuedAt(new Date())// 현재 시간
                 .setExpiration(expiryDate) // 비교할 대상인 Token 생성시간

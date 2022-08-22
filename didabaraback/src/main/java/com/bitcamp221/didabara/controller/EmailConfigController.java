@@ -72,16 +72,16 @@ public class EmailConfigController {
         return ResponseEntity.ok().body("전송 완료");
     }
 
-    @PostMapping("/check")
-    public ResponseEntity<?> checkEmail(@RequestBody EmailConfigEntity emailConfigEntity) {
-
-        boolean checkEmail = emailConfigService.check(emailConfigEntity);
-
-        if (!checkEmail){
-            return ResponseEntity.badRequest().body("코드 불일치");
-        }
-        return ResponseEntity.ok().body("코드 인증 확인");
-    }
+//    @PostMapping("/check")
+//    public ResponseEntity<?> checkEmail(@RequestBody EmailConfigEntity emailConfigEntity) {
+//
+//        boolean checkEmail = emailConfigService.check(emailConfigEntity);
+//
+//        if (!checkEmail){
+//            return ResponseEntity.badRequest().body("코드 불일치");
+//        }
+//        return ResponseEntity.ok().body("코드 인증 확인");
+//    }
 
 
 

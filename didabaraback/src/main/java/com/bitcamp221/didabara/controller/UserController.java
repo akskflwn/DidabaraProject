@@ -70,24 +70,14 @@ public class UserController {
             //
 //      요청을 이용해 저장할 유저 객체 생성
             UserEntity userEntity = UserEntity.builder()
-
                     .username(userDTO.getUsername())
                     .password(passwordEncoder.encode(userDTO.getPassword()))
                     .nickname(userDTO.getNickname())
 //                    .emailConfigEntity(emailConfigEntity)
                     .build();
 
-
-
 //      서비스를 이용해 리포지터리에 유저 저장
-
-
             UserEntity registeredUser = userService.creat(userEntity);
-
-
-
-
-
 //
             System.out.println("registerdUser Datetiem:" + registeredUser.getCreatedDate());
             System.out.println("registerdUser Modifiedtime:" + registeredUser.getModifiedDate());
