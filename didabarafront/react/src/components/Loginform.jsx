@@ -25,6 +25,9 @@ const StyledForm = styled(motion.div)`
   transform-origin: right;
   min-width: 380px;
   z-index: 5;
+  @media screen and (max-width: 768px) {
+    min-width: 300px;
+  }
 `;
 
 const Img = styled.img`
@@ -32,7 +35,8 @@ const Img = styled.img`
   left: 0;
   right: 0;
   margin: 0 auto;
-  margin-top: 25px;
+  margin-top: 80px;
+  width: 250px;
 `;
 
 /** 로그인 화면 에니메이션 정의 부분.
@@ -83,7 +87,7 @@ function Loginform() {
         exit="exit"
       >
         {" "}
-        <Img src="./didabara.png" />
+        <Img src="./didabara_logo.png" />
         <LoginInput />
       </StyledForm>
     </>

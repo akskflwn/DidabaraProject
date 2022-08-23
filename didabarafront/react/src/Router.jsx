@@ -24,7 +24,7 @@ function Router() {
         <Route path="/join" element={<Join />} />
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/kakaologin" element={<KakaoLogin />} />
-        <Route path="/email/config/:username" element={<EmailAuth />} />
+        <Route path="/emailconfig/:username" element={<EmailAuth />} />
       </Routes>
     </BrowserRouter>
   );
