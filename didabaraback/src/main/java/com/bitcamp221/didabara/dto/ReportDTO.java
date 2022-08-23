@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -21,8 +22,8 @@ public class ReportDTO {
   private Long host;
   private String content;
   private String reportCategory;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
   public ReportDTO (ReportEntity reportEntity) {
     this.id = reportEntity.getId();

@@ -6,6 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -20,8 +21,8 @@ public class CategoryDTO {
   private String content;
   private String inviteCode;
   private String profileImageUrl;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
   public CategoryDTO(final CategoryEntity categoryEntity) {
     this.id = categoryEntity.getId();

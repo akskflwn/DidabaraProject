@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -19,8 +20,8 @@ public class SubscriberDTO {
   private Long id;
   private Long category;
   private Long user;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
   public SubscriberDTO (SubscriberEntity subscriberEntity) {
     this.id = subscriberEntity.getId();

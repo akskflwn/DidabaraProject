@@ -22,8 +22,8 @@ public class UserDTO {
   private String nickname;
 
   private String token;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
   //  DB에서 꺼내온 Entity를 new UserDTO(userEntity)를 하여서
 //  DTO로 변환해서 사용!

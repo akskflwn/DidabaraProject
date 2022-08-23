@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -20,8 +21,8 @@ public class UserInfoDTO {
   private int role;
   private boolean ban;
   private String profileImageUrl;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 //xpt
   public UserInfoDTO (UserInfoEntity userInfoEntity) {
     this.id = userInfoEntity.getId();

@@ -34,7 +34,6 @@ public class CategoryController {
   @GetMapping("/mylist")
   public ResponseEntity<?> myList(@AuthenticationPrincipal String userId) {
     try {
-
       if (userId == null) {
         log.error("category mylist get userId is null");
 
@@ -46,9 +45,7 @@ public class CategoryController {
       //      String 타입인 host를 롱 타입으로 변환
       Long id = Long.valueOf(userId);
 
-      final List<CategoryEntity> categoryEntities = categoryService.myList(id);
-
-      final List<CategoryDTO> categoryDTOS = categoryEntities.stream().map(CategoryDTO::new).collect(Collectors.toList());
+      final List<CategoryDTO> categoryDTOS = categoryService.myList(id).stream().map(CategoryDTO::new).collect(Collectors.toList());
 
       final ResponseDTO<CategoryDTO> responseDTO = ResponseDTO.<CategoryDTO>builder().resList(categoryDTOS).build();
 
@@ -72,7 +69,6 @@ public class CategoryController {
   @GetMapping("/{categoryId}")
   public ResponseEntity<?> findCategory(@PathVariable final Long categoryId) {
     try {
-
       if (categoryId == null) {
         log.error("category find id is null");
 
@@ -81,9 +77,7 @@ public class CategoryController {
 
       log.info("categoryId join success : {}", categoryId);
 
-      final CategoryEntity categoryEntity = categoryService.findByCategory(categoryId);
-
-      final CategoryDTO categoryDTO = new CategoryDTO(categoryEntity);
+      final CategoryDTO categoryDTO = new CategoryDTO(categoryService.findByCategory(categoryId));
 
       log.info("category find success");
 
@@ -105,7 +99,7 @@ public class CategoryController {
   @PostMapping
   public ResponseEntity<?> create(@AuthenticationPrincipal final String userId, @RequestBody final CategoryDTO categoryDTO) {
     try {
-      log.info("create join success : {}", categoryDTO.getId());
+      log.info("category create join success : {}", categoryDTO.getId());
 
       if (categoryDTO == null) {
         log.error("Category DTO is null");
@@ -113,17 +107,15 @@ public class CategoryController {
         throw new RuntimeException("Category DTO is null");
       }
 
-      Long host = Long.valueOf(userId);
+      final Long host = Long.valueOf(userId);
 
 //      랜덤 난수 초대 코드 생성.
-      String code = UUID.randomUUID().toString().substring(0, 8);
+      final String code = UUID.randomUUID().toString().substring(0, 8);
 
       categoryDTO.setInviteCode(code);
       categoryDTO.setHost(host);
 
-      final CategoryEntity categoryEntity = CategoryDTO.toCategoryEntity(categoryDTO);
-
-      final CategoryEntity entity = categoryService.create(categoryEntity);
+      final CategoryEntity entity = categoryService.create(CategoryDTO.toCategoryEntity(categoryDTO));
 
       final CategoryDTO DTO = new CategoryDTO(entity);
 
@@ -161,23 +153,22 @@ public class CategoryController {
       }
 
       //      String 타입인 host를 롱 타입으로 변환
-      Long host = Long.valueOf(userId);
+      final Long host = Long.valueOf(userId);
 
-      if (host == categoryDTO.getHost()) {
-
+      if (host == categoryService.findHost(categoryDTO.getId())) {
         log.info("category update join success : {}", categoryDTO.getId());
 
-        final CategoryEntity categoryEntity = CategoryDTO.toCategoryEntity(categoryDTO);
+        categoryDTO.setHost(host);
 
-        final CategoryEntity entity = categoryService.update(categoryEntity);
+        final CategoryEntity entity = categoryService.update(CategoryDTO.toCategoryEntity(categoryDTO));
 
         log.info("category update success");
 
         return ResponseEntity.ok().body(entity);
       } else {
-        log.error("userId does not match");
+        log.error("userId, host mismatch");
 
-        throw new RuntimeException("userId does not match");
+        throw new RuntimeException("userId, host mismatch");
       }
     } catch (Exception e) {
       log.error("category update failed");
@@ -194,14 +185,14 @@ public class CategoryController {
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
   @DeleteMapping
-  public ResponseEntity<?> delete(@AuthenticationPrincipal final String host, @RequestBody final CategoryDTO categoryDTO) {
+  public ResponseEntity<?> delete(@AuthenticationPrincipal final String userId, @RequestBody final CategoryDTO categoryDTO) {
     try {
-      log.info("category delete join success : {}", categoryDTO);
+      log.info("category delete join success : {}", categoryDTO.getId());
 
-      if (categoryDTO == null || host == null) {
-        log.error("category delete DTO or id is null");
+      if (categoryDTO.getId() == null || userId == null) {
+        log.error("category delete categoryId or host is null");
 
-        throw new RuntimeException("category delete DTO or id is null");
+        throw new RuntimeException("category delete categoryId or host is null");
       }
 
       if (categoryService.existByCategory(categoryDTO.getId())) {
@@ -211,13 +202,12 @@ public class CategoryController {
       }
 
 //      String 타입인 host를 롱 타입으로 변환
-      Long id = Long.valueOf(host);
+      final Long host = Long.valueOf(userId);
 
-      if (id == categoryDTO.getHost()) {
+      if (host == categoryService.findHost(categoryDTO.getId())) {
+        log.info("match success");
 
-        final CategoryEntity categoryEntity = CategoryDTO.toCategoryEntity(categoryDTO);
-
-        final List<CategoryEntity> categoryEntities = categoryService.delete(id, categoryEntity);
+        final List<CategoryEntity> categoryEntities = categoryService.delete(host ,categoryDTO.getId());
 
         final List<CategoryDTO> categoryDTOS = categoryEntities.stream().map(CategoryDTO::new).collect(Collectors.toList());
 
@@ -227,12 +217,11 @@ public class CategoryController {
 
         return ResponseEntity.ok().body(responseDTO);
       } else {
-        log.error("userId does not match");
+        log.error("userId, host mismatch");
 
-        throw new RuntimeException("userId does not match");
+        throw new RuntimeException("userId, host mismatch");
       }
     } catch (Exception e) {
-
       log.error("category delete failed");
 
       final String error = e.getMessage();

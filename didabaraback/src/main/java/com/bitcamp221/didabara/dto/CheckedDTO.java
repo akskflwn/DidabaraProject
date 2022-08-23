@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -19,8 +20,8 @@ public class CheckedDTO {
   private Long id;
   private Long user;
   private Long categoryItem;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
   public CheckedDTO (CheckedEntity checkedEntity) {
     this.id = checkedEntity.getId();

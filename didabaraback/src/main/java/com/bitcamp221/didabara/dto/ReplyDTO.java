@@ -8,6 +8,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -20,8 +21,8 @@ public class ReplyDTO {
   private Long categoryItem;
   private Long writer;
   private String content;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
   public ReplyDTO (ReplyEntity replyEntity) {
     this.id = replyEntity.getId();

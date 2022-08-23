@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 
 @Builder
@@ -18,8 +19,8 @@ public class EmailConfigDTO {
   private Long id;
   private Long user;
   private String authCode;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
   public EmailConfigDTO (EmailConfigEntity emailConfigEntity) {
     this.id = emailConfigEntity.getId();

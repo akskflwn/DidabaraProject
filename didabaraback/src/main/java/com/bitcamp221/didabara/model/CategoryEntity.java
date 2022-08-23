@@ -9,7 +9,6 @@ import java.util.List;
 
 @Builder
 @Getter
-@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -42,7 +41,6 @@ public class CategoryEntity extends BaseTimeEntity {
     this.host = categoryEntity.getHost();
     this.content = categoryEntity.getContent();
     this.title = categoryEntity.getTitle();
-    this.inviteCode = categoryEntity.getInviteCode();
     this.profileImageUrl = categoryEntity.getProfileImageUrl();
   }
 }
