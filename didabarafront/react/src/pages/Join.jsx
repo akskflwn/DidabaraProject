@@ -82,6 +82,9 @@ const Join = () => {
     })
       .then((response) => {
         if (response.status === 200 && response.data.username != null) {
+          axios.get(
+            `http://192.168.0.187:8080/emailconfig/${response.data.username}`
+          );
           navi(`/emailconfig/${response.data.username}`);
         }
       })

@@ -90,6 +90,7 @@ function LoginInput() {
       .post(LOGIN_REQUEST_ADDRESS, data)
       .then((res) => {
         if (res.status === 200 && res.data.id) {
+          setLoginState(false);
           setUser(res.data);
           console.log("data response printing....:", res);
           navi("/dashboard");

@@ -22,6 +22,7 @@ function EmailAuth() {
     })
       .then((response) => {
         console.log(response);
+        alert(response.data);
         navi("/");
       })
       .catch((error) => {
