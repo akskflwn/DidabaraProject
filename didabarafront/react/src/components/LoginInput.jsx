@@ -5,9 +5,10 @@ import { FormControl } from "@mui/material";
 import { KakaoLoginAPI } from "../config/KakaoApi";
 import axios from "axios";
 import { useSetRecoilState } from "recoil";
-import { userState } from "../config/Atom";
+import { loginState, userState } from "../config/Atom";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
+import ErrorMessage from "./ErrorMessage";
 
 /**백엔드 로그인 어노테이션 주소 */
 const LOGIN_REQUEST_ADDRESS = "http://192.168.0.187:8080/auth/signin";
@@ -26,6 +27,12 @@ const StyledContainer = styled(Grid)`
     justify-content: center;
     flex-direction: column;
   }
+`;
+const StyledDiv = styled.div`
+  width: 60%;
+  margin-left: 50%;
+
+  margin-top: 50px;
 `;
 const StyledGrid = styled(Grid)`
   && {
@@ -48,10 +55,15 @@ const StyledForm = styled.form`
   align-items: center;
 `;
 function LoginInput() {
-  const { register, watch, handleSubmit } = useForm();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
   /**유저 상태관리를 위한 Recoil 호출.
    * 괄호안에들어가는 userState 는 config 폴더의 Atom 에 정의해 두었습니다.*/
   const setUser = useSetRecoilState(userState);
+  const setLoginState = useSetRecoilState(loginState);
 
   /**페이지 리디렉션용 useNavigate */
   const navi = useNavigate();
@@ -72,9 +84,8 @@ function LoginInput() {
    *
    * Recoil 의 setUser 함수로 유저의 상태를 로그인 상태로 만든다.
    */
+  console.log(errors?.username?.message);
   const sendLoginRequest = (data) => {
-    console.log(data);
-
     axios
       .post(LOGIN_REQUEST_ADDRESS, data)
       .then((res) => {
@@ -93,13 +104,37 @@ function LoginInput() {
         <StyledGrid item>
           <StyledInput variant="standard">
             <InputLabel htmlFor="username">ID</InputLabel>
-            <Input {...register("username" , {required:""})} id="username" name="username" />
+            <Input
+              {...register("username", {
+                required: "ID (이메일) 을 입력해주세요.",
+                pattern: {
+                  value:
+                    /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,5}$/i,
+                  message: "이메일 형식에 맞게 입력하세요",
+                },
+              })}
+              id="username"
+              name="username"
+              autoComplete="email"
+            />
           </StyledInput>
         </StyledGrid>
         <StyledGrid item>
           <StyledInput variant="standard">
             <InputLabel htmlFor="password">Password</InputLabel>
-            <Input {...register("password")} id="password" name="password" />
+            <Input
+              {...register("password", {
+                minLength: {
+                  value: 4,
+                  message: "비밀번호는 8자이상 40자이하입니다.",
+                },
+                required: "비밀번호를 입력해 주세요",
+              })}
+              id="password"
+              name="password"
+              autoComplete="current-password"
+              type="password"
+            />
           </StyledInput>
         </StyledGrid>
         <StyledGrid container item justifyContent="center" gap={3}>
@@ -109,6 +144,7 @@ function LoginInput() {
           <Grid item xs={5}>
             <StyledButton
               onClick={() => {
+                setLoginState(false);
                 navi("/join");
               }}
             >
@@ -130,6 +166,14 @@ function LoginInput() {
         {new Date().getFullYear()}
         BitCamp 221기 2022
       </Typography>
+      <StyledDiv>
+        {errors?.username && (
+          <ErrorMessage>{errors?.username?.message}</ErrorMessage>
+        )}
+        {errors?.password && (
+          <ErrorMessage>{errors?.password?.message}</ErrorMessage>
+        )}
+      </StyledDiv>
     </StyledContainer>
   );
 }
