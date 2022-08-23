@@ -1,5 +1,5 @@
 import React from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import NavigationBar from "./components/NavigationBar";
 import DashBoard from "./pages/DashBoard";
 import Home from "./pages/Home";
@@ -7,26 +7,37 @@ import Join from "./pages/Join";
 import KakaoLogin from "./pages/KakaoLogin";
 import EmailAuth from "./pages/EmailAuth";
 import { useRecoilValue } from "recoil";
-import { loginState } from "./config/Atom";
 import { AnimatePresence } from "framer-motion";
 import Loginform from "./components/Loginform";
 import Create from "./pages/Create";
+import { loginState, userState } from "./config/Atom";
 
 function Router() {
+  const user = useRecoilValue(userState);
   const isLogin = useRecoilValue(loginState);
   return (
     <BrowserRouter>
       <NavigationBar />
       <AnimatePresence>{isLogin ? <Loginform /> : null}</AnimatePresence>
       <Routes>
-        <Route path="/" element={<Home />}>
-          <Route path="/login" elemnet={<Home />} />
-        </Route>
-        <Route path="/join" element={<Join />} />
-        <Route path="/dashboard" element={<DashBoard />} />
-        <Route path="/dashboard/create" element={<Create />} />
-        <Route path="/kakaologin" element={<KakaoLogin />} />
-        <Route path="/emailconfig/:username" element={<EmailAuth />} />
+        <Route
+          path="*"
+          element={<Navigate to={user.id ? "/dashboard" : "/"} />}
+        />
+        <Route path="/" element={<Home />} />
+        {!user.id && (
+          <>
+            <Route path="/kakaologin" element={<KakaoLogin />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="/emailconfig/:username" element={<EmailAuth />} />
+          </>
+        )}
+        {user.id && (
+          <>
+            <Route path="/dashboard" element={<DashBoard />} />
+            <Route path="/dashboard/create" element={<Create />} />
+          </>
+        )}
       </Routes>
     </BrowserRouter>
   );
