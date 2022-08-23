@@ -1,13 +1,19 @@
 import React from "react";
-import { Grid } from "@mui/material";
+import { Button, Grid } from "@mui/material";
 import styled from "styled-components";
 import DnDropContext from "../components/DnDropContext";
+import { useNavigate } from "react-router-dom";
 
 const Item = styled.div`
   /* border: 1px solid black; */
 `;
 
 function DashBoard() {
+  const navi = useNavigate();
+
+  const createDocument = () => {
+    navi("/dashboard/create");
+  };
   return (
     <div>
       <Grid container style={{ border: "1px solid black" }}>
@@ -26,7 +32,10 @@ function DashBoard() {
           >
             Main document section
           </Item>
-          <Item>Document here</Item>
+          <Item>
+            Document here
+            <Button onClick={createDocument}>만들기</Button>
+          </Item>
         </Grid>
         <Grid item xs={3}>
           <Item>Community tab</Item>

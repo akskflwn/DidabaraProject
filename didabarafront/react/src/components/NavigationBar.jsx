@@ -4,7 +4,12 @@ import PictureAsPdfSharpIcon from "@mui/icons-material/PictureAsPdfSharp";
 import LoginSharpIcon from "@mui/icons-material/LoginSharp";
 import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import {
+  useRecoilState,
+  useRecoilValue,
+  useResetRecoilState,
+  useSetRecoilState,
+} from "recoil";
 import { loginState, userState } from "../config/Atom";
 import styled from "styled-components";
 
@@ -16,6 +21,7 @@ const StyledButton = styled(Button)`
 
 function NavigationBar() {
   const setLoginState = useSetRecoilState(loginState);
+
   const navi = useNavigate();
 
   /**로그아웃 버튼 이벤트시
@@ -27,7 +33,6 @@ function NavigationBar() {
   /** 이벤트에 따라 유저의 상태를 관리하기 위한 Recoil */
   const [user, setUser] = useRecoilState(userState);
 
-  // console.log(user);
   return (
     <Grid
       container
@@ -58,7 +63,7 @@ function NavigationBar() {
             }}
             fontSize="large"
             onClick={() => {
-              navi("/");
+              return user.id ? navi("/dashboard") : navi("/");
             }}
           />
         </Grid>
@@ -70,6 +75,7 @@ function NavigationBar() {
             <StyledButton
               variant="black"
               onClick={() => {
+                localStorage.setItem("token", null);
                 userLogout();
                 navi("/");
               }}

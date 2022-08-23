@@ -72,7 +72,7 @@ function LoginInput() {
    * 카카오 로그인용 새창을 띄운다.
    */
   const openKakaoLogin = () => {
-    window.open(KakaoLoginAPI);
+    window.open(KakaoLoginAPI, "_self");
   };
 
   /**이벤트 발생 폼으로부터 데이터를 받아
@@ -92,7 +92,10 @@ function LoginInput() {
         if (res.status === 200 && res.data.id) {
           setLoginState(false);
           setUser(res.data);
+          localStorage.setItem("token", res.data.token);
+          localStorage.setItem("user", ...res.data);
           console.log("data response printing....:", res);
+
           navi("/dashboard");
         }
       })
