@@ -14,6 +14,7 @@ import {
   Typography,
   Tooltip,
   IconButton,
+  InputAdornment,
 } from "@mui/material";
 import { Link, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
@@ -44,8 +45,6 @@ const Join = () => {
         /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W))(?=.*[!@#$%^*+=-]).{8,40}$/,
         "비밀번호는 8~40자 사이로 영문, 숫자, 특수문자를 포함해야 합니다."
       ),
-    //   .min(3, "3글자 이상")
-    //   .max(40, "40자 이하"),
     confirmPassword: Yup.string()
       .required("비밀번호를 확인해 주세요.")
       .oneOf([Yup.ref("password"), null], "비밀번호가 일치하지 않습니다."),
@@ -65,6 +64,23 @@ const Join = () => {
   } = useForm({ resolver: yupResolver(validationSchema) });
 
   const navi = useNavigate();
+
+  const [values, setValues] = React.useState();
+
+  const handleChange = (prop) => (event) => {
+    setValues({ ...values, [prop]: event.target.value });
+  };
+
+  const handleClickShowPassword = () => {
+    setValues({
+      ...values,
+      showPassword: !values.showPassword,
+    });
+  };
+
+  const handleMouseDownPassword = (event) => {
+    event.preventDefault();
+  };
 
   const onSubmit = (data) => {
     const username = data.username;
@@ -99,7 +115,7 @@ const Join = () => {
         <Grid item xs={12}>
           <img src="./didabara_logo.png" style={{ width: "180px" }} />
         </Grid>
-        <Grid item xs={12} style={{ border: "1px solid red" }}>
+        <Grid item xs={12}>
           <Typography component="h1" variant="h5">
             회원가입
           </Typography>
@@ -110,7 +126,6 @@ const Join = () => {
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <TextField
-              required
               id="username"
               name="username"
               label="Email"
@@ -123,7 +138,6 @@ const Join = () => {
 
           <Grid item xs={12}>
             <TextField
-              required
               id="password"
               name="password"
               label="비밀번호"
@@ -136,7 +150,6 @@ const Join = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              required
               id="confirmPassword"
               name="confirmPassword"
               label="비밀번호 확인"
@@ -149,7 +162,6 @@ const Join = () => {
           </Grid>
           <Grid item xs={12}>
             <TextField
-              required
               id="nickname"
               name="nickname"
               label="닉네임"

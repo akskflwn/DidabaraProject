@@ -10,6 +10,7 @@ import { useRecoilValue } from "recoil";
 import { loginState } from "./config/Atom";
 import { AnimatePresence } from "framer-motion";
 import Loginform from "./components/Loginform";
+import Mypage from "./pages/Mypage";
 
 function Router() {
   const isLogin = useRecoilValue(loginState);
@@ -25,6 +26,7 @@ function Router() {
         <Route path="/dashboard" element={<DashBoard />} />
         <Route path="/kakaologin" element={<KakaoLogin />} />
         <Route path="/emailconfig/:username" element={<EmailAuth />} />
+        <Route path="/mypage" element={<Mypage />} />
       </Routes>
     </BrowserRouter>
   );
