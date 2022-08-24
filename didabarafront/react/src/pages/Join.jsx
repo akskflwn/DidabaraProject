@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { yupResolver } from "@hookform/resolvers/yup";
 import * as Yup from "yup";
 import { useForm, Controller } from "react-hook-form";
@@ -16,13 +16,17 @@ import {
   IconButton,
   InputAdornment,
 } from "@mui/material";
+import { VisibilityOff, Visibility } from "@mui/icons-material";
 import { Link, useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
 import { loginState } from "../config/Atom";
 import styled from "styled-components";
 import axios from "axios";
+import { KakaoLoginAPI } from "../config/KakaoApi";
 
-/**컴포넌트 스타일 정의*/
+/**
+ * 컴포넌트 스타일 정의
+ */
 const StyledButton = styled(Button)`
   && {
     width: 100%;
@@ -31,16 +35,42 @@ const StyledButton = styled(Button)`
   }
 `;
 
-const Join = () => {
-  const setLoginState = useSetRecoilState(loginState);
+const StyledKakaoButton = styled(Button)`
+  && {
+    width: 100%;
+    color: black;
+    background-color: #fee500;
+    :hover {
+      background-color: #fee500;
+    }
+  }
+`;
 
+const StyledTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "rgba(47, 54, 64,1.0)",
+  },
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: "rgba(47, 54, 64,1.0)",
+    },
+  },
+});
+
+const openKakaoLogin = () => {
+  window.open(KakaoLoginAPI);
+};
+
+const Join = () => {
+  /**
+   * 회원가입 유효성 검사 (Yup)
+   */
   const validationSchema = Yup.object().shape({
     username: Yup.string()
       .required("이메일을 입력해 주세요.")
       .email("올바른 형식으로 입력해 주세요."),
     password: Yup.string()
       .required("비밀번호를 입력해 주세요.")
-      // 실제로는 밑에꺼 사용!! 테스트 할때는 귀찮으니 사용안해요
       .matches(
         /^(?=.*[a-zA-Z])((?=.*\d)|(?=.*\W))(?=.*[!@#$%^*+=-]).{8,40}$/,
         "비밀번호는 8~40자 사이로 영문, 숫자, 특수문자를 포함해야 합니다."
@@ -63,25 +93,13 @@ const Join = () => {
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });
 
+  const setLoginState = useSetRecoilState(loginState);
+
   const navi = useNavigate();
 
-  const [values, setValues] = React.useState();
-
-  const handleChange = (prop) => (event) => {
-    setValues({ ...values, [prop]: event.target.value });
-  };
-
-  const handleClickShowPassword = () => {
-    setValues({
-      ...values,
-      showPassword: !values.showPassword,
-    });
-  };
-
-  const handleMouseDownPassword = (event) => {
-    event.preventDefault();
-  };
-
+  /**
+   * 서버에 데이터 보내기
+   */
   const onSubmit = (data) => {
     const username = data.username;
     const password = data.password;
@@ -109,6 +127,19 @@ const Join = () => {
       });
   }
 
+  /**
+   * 비밀번호 보이기/숨기기 기능
+   */
+  const [showPassword, setShowPassword] = useState(false);
+
+  function handleClickShowPassword() {
+    setShowPassword(!showPassword);
+  }
+
+  const handleChange = (prop) => (event) => {
+    setShowPassword({ ...showPassword, [prop]: event.target.value });
+  };
+
   return (
     <Container component="main" maxWidth="xs" style={{ marginTop: "5%" }}>
       <Grid container>
@@ -125,7 +156,7 @@ const Join = () => {
       <form onSubmit={handleSubmit(onSubmit)}>
         <Grid container spacing={2}>
           <Grid item xs={12}>
-            <TextField
+            <StyledTextField
               id="username"
               name="username"
               label="Email"
@@ -137,19 +168,33 @@ const Join = () => {
           </Grid>
 
           <Grid item xs={12}>
-            <TextField
+            <StyledTextField
               id="password"
               name="password"
               label="비밀번호"
-              type="password"
+              type={showPassword ? "text" : "password"}
               style={{ width: "100%" }}
               {...register("password")}
               error={errors.password ? true : false}
               helperText={errors.password?.message}
+              InputProps={{
+                endAdornment: (
+                  <InputAdornment position="end">
+                    <IconButton
+                      aria-label="toggle password visibility"
+                      onClick={handleClickShowPassword}
+                      edge="end"
+                    >
+                      {showPassword ? <VisibilityOff /> : <Visibility />}
+                    </IconButton>
+                  </InputAdornment>
+                ),
+              }}
+              onChange={(event) => handleChange(event)}
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <StyledTextField
               id="confirmPassword"
               name="confirmPassword"
               label="비밀번호 확인"
@@ -161,7 +206,7 @@ const Join = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <TextField
+            <StyledTextField
               id="nickname"
               name="nickname"
               label="닉네임"
@@ -175,7 +220,12 @@ const Join = () => {
             <StyledButton type="submit">가입하기</StyledButton>
           </Grid>
           <Grid item xs={12}>
-            <StyledButton>카카오톡 회원가입</StyledButton>
+            <StyledKakaoButton
+              onClick={openKakaoLogin}
+              startIcon={<img src="./kakao.png" style={{ width: "16px" }} />}
+            >
+              카카오로 시작하기
+            </StyledKakaoButton>
           </Grid>
           <Grid item xs={12}>
             <span>
@@ -188,6 +238,7 @@ const Join = () => {
                   cursor: "pointer",
                   borderBottom: "1px solid black",
                   marginLeft: "5px",
+                  color: "rgba(47, 54, 64,1.0)",
                 }}
               >
                 로그인 하기
