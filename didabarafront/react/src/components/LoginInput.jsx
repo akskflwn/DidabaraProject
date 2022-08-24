@@ -93,9 +93,7 @@ function LoginInput() {
           setLoginState(false);
           setUser(res.data);
           localStorage.setItem("token", res.data.token);
-          localStorage.setItem("user", ...res.data);
-          console.log("data response printing....:", res);
-
+          localStorage.setItem("user", JSON.stringify(res.data));
           navi("/dashboard");
         }
       })

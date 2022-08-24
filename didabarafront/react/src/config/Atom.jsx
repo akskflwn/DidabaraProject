@@ -2,13 +2,14 @@ import { atom } from "recoil";
 import axios from "axios";
 
 export const User = {
-  id: null,
-  password: null,
+  id: "",
+  password: "",
+  token: "",
 };
 
 export const userState = atom({
   key: "userState",
-  default: User,
+  default: User | null,
 });
 
 export const loginState = atom({
@@ -22,9 +23,8 @@ export const loginState = atom({
     console.log(token);
     axios
       .get("http://192.168.0.187:8080/userinfo", {
-        header: {
-          Authorization: `Bearer ${token}
-          `,
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
       .then((res) => console.log(res));

@@ -20,19 +20,16 @@ function Router() {
       <NavigationBar />
       <AnimatePresence>{isLogin ? <Loginform /> : null}</AnimatePresence>
       <Routes>
-        <Route
-          path="*"
-          element={<Navigate to={user.id ? "/dashboard" : "/"} />}
-        />
+        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} />} />
         <Route path="/" element={<Home />} />
-        {!user.id && (
+        {!user && (
           <>
             <Route path="/kakaologin" element={<KakaoLogin />} />
             <Route path="/join" element={<Join />} />
             <Route path="/emailconfig/:username" element={<EmailAuth />} />
           </>
         )}
-        {user.id && (
+        {user && (
           <>
             <Route path="/dashboard" element={<DashBoard />} />
             <Route path="/dashboard/create" element={<Create />} />
