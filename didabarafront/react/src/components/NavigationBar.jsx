@@ -98,10 +98,10 @@ function NavigationBar() {
             <Button
               variant="black"
               onClick={() => {
-                navi("/");
+                navi("/mypage");
               }}
             >
-              <Typography>maypage</Typography>
+              <Typography>mypage</Typography>
             </Button>
           </Grid>
         ) : (
