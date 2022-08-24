@@ -84,7 +84,6 @@ function LoginInput() {
    *
    * Recoil 의 setUser 함수로 유저의 상태를 로그인 상태로 만든다.
    */
-  console.log(errors?.username?.message);
   const sendLoginRequest = (data) => {
     axios
       .post(LOGIN_REQUEST_ADDRESS, data)
@@ -93,7 +92,6 @@ function LoginInput() {
           setLoginState(false);
           setUser(res.data);
           localStorage.setItem("token", res.data.token);
-          localStorage.setItem("user", JSON.stringify(res.data));
           navi("/dashboard");
         }
       })
