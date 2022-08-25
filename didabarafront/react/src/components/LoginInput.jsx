@@ -89,13 +89,26 @@ function LoginInput() {
       .post(LOGIN_REQUEST_ADDRESS, data)
       .then((res) => {
         if (res.status === 200 && res.data.id) {
+          axios
+            .get("http://192.168.0.187:8080/userinfo", {
+              headers: {
+                Authorization: "Bearer " + res.data.token,
+              },
+            })
+            .then((response) => {
+              localStorage.setItem("token", response.data);
+              setUser(response.data);
+            });
+
           setLoginState(false);
-          setUser(res.data);
-          localStorage.setItem("token", res.data.token);
           navi("/dashboard");
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        if (err.name === "AxiosError") {
+          alert("아이디와 비밀번호를 확인해주세요");
+        }
+      });
   };
 
   return (

@@ -3,6 +3,7 @@ import { Button, Grid } from "@mui/material";
 import styled from "styled-components";
 import DnDropContext from "../components/DnDropContext";
 import { useNavigate } from "react-router-dom";
+import CreateModal from "../components/CreateModal";
 
 const Item = styled.div`
   /* border: 1px solid black; */
@@ -16,7 +17,7 @@ function DashBoard() {
   };
   return (
     <div>
-      <Grid container style={{ border: "1px solid black" }}>
+      <Grid container style={{ border: "1px solid black", height: "100vh" }}>
         <Grid item xs={2}>
           <Item>
             <Item style={{ border: "1px solid black" }}>Menu?</Item>
@@ -34,6 +35,7 @@ function DashBoard() {
           </Item>
           <Item>
             Document here
+            <CreateModal></CreateModal>
             <Button onClick={createDocument}>만들기</Button>
           </Item>
         </Grid>

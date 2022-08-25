@@ -12,7 +12,7 @@ function Home() {
   useEffect(() => {
     console.log("useEfffect running");
     if (!localStorage.getItem("token")) {
-      console.log("Token is not in localStorage.. going back to home....");
+      console.log("Token is not in localStorage.. going to back home....");
       return;
     }
     if (localStorage.getItem("token")) {

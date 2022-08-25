@@ -1,5 +1,6 @@
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
 import React from "react";
+import { useFrom } from "react-hook-form";
 
 function Create() {
   const fileUpload = (e) => {
@@ -16,6 +17,9 @@ function Create() {
 
   return (
     <div>
+      <TextField placeholder />
+      <TextField />
+
       <form onSubmit={upLoadFiles}>
         <input type="file" multiple onChange={fileUpload} />
         <Button type="submit">보내기</Button>

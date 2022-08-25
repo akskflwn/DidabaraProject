@@ -95,14 +95,14 @@ function NavigationBar() {
         )}
         {user ? (
           <Grid item mr={2}>
-            <Button
+            <StyledButton
               variant="black"
               onClick={() => {
                 navi("/mypage");
               }}
             >
               <Typography>mypage</Typography>
-            </Button>
+            </StyledButton>
           </Grid>
         ) : (
           <Grid item mr={2}>

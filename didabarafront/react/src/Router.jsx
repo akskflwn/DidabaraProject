@@ -9,9 +9,9 @@ import EmailAuth from "./pages/EmailAuth";
 import { useRecoilValue } from "recoil";
 import { AnimatePresence } from "framer-motion";
 import Loginform from "./components/Loginform";
-import Create from "./pages/Create";
 import { loginState, userState } from "./config/Atom";
 import Mypage from "./pages/Mypage";
+import CreateModal from "./components/CreateModal";
 
 function Router() {
   const user = useRecoilValue(userState);
@@ -21,7 +21,8 @@ function Router() {
       <NavigationBar />
       <AnimatePresence>{isLogin ? <Loginform /> : null}</AnimatePresence>
       <Routes>
-        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} />} />
+        {/* <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} />} /> */}
+        <Route path="/create" element={<CreateModal />} />
         <Route path="/" element={<Home />} />
         {!user && (
           <>
@@ -32,8 +33,9 @@ function Router() {
         )}
         {user && (
           <>
-            <Route path="/dashboard" element={<DashBoard />} />
-            <Route path="/dashboard/create" element={<Create />} />
+            <Route path="/dashboard" element={<DashBoard />}>
+              <Route path="/dashboard/create" element={<CreateModal />} />
+            </Route>
             <Route path="/mypage" element={<Mypage />} />
           </>
         )}
