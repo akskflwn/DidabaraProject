@@ -16,7 +16,7 @@ function MypageLists() {
     <>
       <ListItemButton
         onClick={() => {
-          navi("/mypage");
+          navi("/mypage/main");
         }}
       >
         <ListItemIcon>

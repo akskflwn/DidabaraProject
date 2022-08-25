@@ -12,10 +12,13 @@ import Loginform from "./components/Loginform";
 import Create from "./pages/Create";
 import { loginState, userState } from "./config/Atom";
 import Mypage from "./pages/Mypage";
+import PersonalInfo from "./pages/PersonalInfo";
+import MypageMain from "./pages/MypageMain";
 
 function Router() {
   const user = useRecoilValue(userState);
   const isLogin = useRecoilValue(loginState);
+
   return (
     <BrowserRouter>
       <NavigationBar />
@@ -34,7 +37,10 @@ function Router() {
           <>
             <Route path="/dashboard" element={<DashBoard />} />
             <Route path="/dashboard/create" element={<Create />} />
-            <Route path="/mypage" element={<Mypage />} />
+            <Route path="/mypage" element={<Mypage />}>
+              <Route path="main" element={<MypageMain />} />
+              <Route path="personal-info" element={<PersonalInfo />} />
+            </Route>
           </>
         )}
       </Routes>

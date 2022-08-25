@@ -98,7 +98,7 @@ function NavigationBar() {
             <Button
               variant="black"
               onClick={() => {
-                navi("/mypage");
+                navi("/mypage/main");
               }}
             >
               <Typography>mypage</Typography>
