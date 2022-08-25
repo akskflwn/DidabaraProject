@@ -1,6 +1,8 @@
-import { Card } from "@mui/material";
+import { Button, Card, FormControl, TextField } from "@mui/material";
 import React, { useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
+import axios from "axios";
 
 const number = window.innerWidth;
 const Background = styled.div`
@@ -13,9 +15,9 @@ const Background = styled.div`
 `;
 
 const SteyldCard = styled(Card)`
-  width: 50%;
+  width: 40%;
   height: 420px;
-  position: absolute;
+  position: fixed;
   left: 50%;
   transform: translateX(-50%) translateY(-50%);
   top: 50%;
@@ -23,20 +25,57 @@ const SteyldCard = styled(Card)`
   min-width: 560px;
   transition: all 0.5s;
 `;
-
+const StyledTextField = styled(TextField)`
+  width: 80%;
+`;
 function CreateModal() {
-  const cardRef = useRef();
-  const disapear = (e) => {
-    console.dir(e.target.hidden);
-    e.target.hidden = true;
-    cardRef.current.hidden = true;
-    console.dir(cardRef.current);
+  const imgRef = useRef();
+  const navi = useNavigate();
+  const closeCreate = () => {
+    navi(-1);
   };
 
+  const test = (e) => {
+    e.preventDefault();
+    const data = new FormData();
+    const file = e.target.file[0];
+
+    data.append("files", file);
+    console.log("file :", file);
+
+    const reader = new FileReader();
+    reader.readAsDataURL(file);
+
+    reader.onload = function () {
+      imgRef.current.src = reader.result;
+    };
+    axios
+      .post("http://192.168.0.187:8080/userinfo/upload", data, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+          "content-Type": "multipart/form-data",
+        },
+      })
+      .then((res) => console.log(res));
+  };
   return (
     <>
-      <Background style={{ width: number }} onClick={disapear}></Background>
-      <SteyldCard ref={cardRef}>CreateModal</SteyldCard>
+      <Background style={{ width: number }}></Background>
+      <SteyldCard>
+        <form onSubmit={test} encType="multipart/form-data">
+          <FormControl>
+            <StyledTextField type="file" name="files" />
+            <Button type="submit">사진보냅니다</Button>
+          </FormControl>
+        </form>
+        <img ref={imgRef} src="" />
+        <Button
+          style={{ position: "fixed", bottom: "0px" }}
+          onClick={closeCreate}
+        >
+          이거닫기
+        </Button>
+      </SteyldCard>
     </>
   );
 }

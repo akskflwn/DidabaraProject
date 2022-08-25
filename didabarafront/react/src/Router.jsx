@@ -24,21 +24,15 @@ function Router() {
         {/* <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} />} /> */}
         <Route path="/create" element={<CreateModal />} />
         <Route path="/" element={<Home />} />
-        {!user && (
-          <>
-            <Route path="/kakaologin" element={<KakaoLogin />} />
-            <Route path="/join" element={<Join />} />
-            <Route path="/emailconfig/:username" element={<EmailAuth />} />
-          </>
-        )}
-        {user && (
-          <>
-            <Route path="/dashboard" element={<DashBoard />}>
-              <Route path="/dashboard/create" element={<CreateModal />} />
-            </Route>
-            <Route path="/mypage" element={<Mypage />} />
-          </>
-        )}
+
+        <Route path="/kakaologin" element={<KakaoLogin />} />
+        <Route path="/join" element={<Join />} />
+        <Route path="/emailconfig/:username" element={<EmailAuth />} />
+
+        <Route path="/dashboard" element={<DashBoard />}>
+          <Route path="/dashboard/create" element={<CreateModal />} />
+        </Route>
+        <Route path="/mypage" element={<Mypage />} />
       </Routes>
     </BrowserRouter>
   );
