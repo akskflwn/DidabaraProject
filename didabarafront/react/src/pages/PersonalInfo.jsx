@@ -14,25 +14,25 @@ function PersonalInfo() {
   return (
     <Container>
       <Grid>
-        <Avatar src={list.img} sx={{ width: 150, height: 150 }} />
+        <Avatar src={""} sx={{ width: 150, height: 150 }} />
         <Grid item xs={12}>
           <TextField
             label="이름"
-            defaultValue={list.username}
+            defaultValue={"list.username"}
             InputProps={{ readOnly: true }}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
             label="타이틀"
-            defaultValue={list.title}
+            defaultValue={"list.title"}
             InputProps={{ readOnly: true }}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
             label="텍스트"
-            defaultValue={list.text}
+            defaultValue={"list.text"}
             InputProps={{ readOnly: true }}
           />
         </Grid>

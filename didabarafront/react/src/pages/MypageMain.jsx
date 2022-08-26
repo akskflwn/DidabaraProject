@@ -13,7 +13,7 @@ function MypageMain() {
   return (
     <Container>
       <Grid xs={9}>
-        <Avatar src={list.img} sx={{ width: 150, height: 150 }} />
+        <Avatar src="d" style={{ width: 150, height: 150 }} />
         <Typography>안녕하세요. {list.username}</Typography>
       </Grid>
     </Container>
