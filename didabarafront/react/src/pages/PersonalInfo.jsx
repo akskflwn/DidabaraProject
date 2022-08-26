@@ -1,15 +1,10 @@
 import { Avatar, Container, Grid, TextField, Button } from "@mui/material";
-import axios from "axios";
 import React, { useState } from "react";
-
-const URL = "http://192.168.0.187:8080/userinfo";
+import { useRecoilValue } from "recoil";
+import { userState } from "../config/Atom";
 
 function PersonalInfo() {
-  axios.get(URL, {
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
-  });
+  const user = useRecoilValue(userState);
   const updateInfo = useState();
   return (
     <Container>
@@ -18,7 +13,7 @@ function PersonalInfo() {
         <Grid item xs={12}>
           <TextField
             label="이름"
-            defaultValue={"list.username"}
+            defaultValue={user.nickname}
             InputProps={{ readOnly: true }}
           />
         </Grid>
