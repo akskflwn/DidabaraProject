@@ -12,6 +12,7 @@ const StyledOverLay = styled(motion.div)`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3;
 `;
 
 const StyledForm = styled(motion.div)`
@@ -19,7 +20,7 @@ const StyledForm = styled(motion.div)`
   height: 100vh;
   background-color: white;
   position: fixed;
-  overflow-y: scroll;
+  overflow-y: auto;
   right: 0;
   top: 0;
   transform-origin: right;

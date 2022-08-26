@@ -27,7 +27,6 @@ function NavigationBar() {
 
   /** 이벤트에 따라 유저의 상태를 관리하기 위한 Recoil */
   const user = useRecoilValue(userState);
-  console.log(user);
   return (
     <Grid
       container

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
 import NavigationBar from "./components/NavigationBar";
 import DashBoard from "./pages/DashBoard";
@@ -6,16 +6,42 @@ import Home from "./pages/Home";
 import Join from "./pages/Join";
 import KakaoLogin from "./pages/KakaoLogin";
 import EmailAuth from "./pages/EmailAuth";
-import { useRecoilValue } from "recoil";
+import { useRecoilState, useRecoilValue } from "recoil";
 import { AnimatePresence } from "framer-motion";
 import Loginform from "./components/Loginform";
 import { loginState, userState } from "./config/Atom";
 import Mypage from "./pages/Mypage";
 import CreateModal from "./components/CreateModal";
+import axios from "axios";
 
 function Router() {
-  const user = useRecoilValue(userState);
   const isLogin = useRecoilValue(loginState);
+  const [user, setUser] = useRecoilState(userState);
+
+  useEffect(() => {
+    console.log("useEfffect running");
+    if (!localStorage.getItem("token")) {
+      console.log("Token is not in localStorage.. going to back home....");
+      return;
+    }
+    if (localStorage.getItem("token")) {
+      console.log(
+        "Token is in LocalStorage... initiate user login setting.... :"
+      );
+      axios
+        .get("http://192.168.0.187:8080/userinfo", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          console.log("user infomation received :", res.data);
+          setUser(res.data);
+        })
+        .catch((err) => console.log(err));
+    }
+  }, []);
+
   return (
     <BrowserRouter>
       <NavigationBar />

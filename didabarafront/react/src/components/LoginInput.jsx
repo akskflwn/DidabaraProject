@@ -89,6 +89,7 @@ function LoginInput() {
       .post(LOGIN_REQUEST_ADDRESS, data)
       .then((res) => {
         if (res.status === 200 && res.data.id) {
+          localStorage.setItem("token", res.data.token);
           axios
             .get("http://192.168.0.187:8080/userinfo", {
               headers: {
@@ -96,7 +97,6 @@ function LoginInput() {
               },
             })
             .then((response) => {
-              localStorage.setItem("token", response.data);
               setUser(response.data);
             });
 
