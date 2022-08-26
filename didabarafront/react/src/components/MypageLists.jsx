@@ -1,4 +1,4 @@
-import { ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
+import { List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import {
   AccountCircle,
   Description,
@@ -13,10 +13,10 @@ function MypageLists() {
   const navi = useNavigate();
 
   return (
-    <>
+    <List component="nav">
       <ListItemButton
         onClick={() => {
-          navi("/mypage");
+          navi("/mypage/main");
         }}
       >
         <ListItemIcon>
@@ -60,7 +60,7 @@ function MypageLists() {
         </ListItemIcon>
         <ListItemText primary="참여 목록" />
       </ListItemButton>
-    </>
+    </List>
   );
 }
 

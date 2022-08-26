@@ -1,11 +1,95 @@
-import React from "react";
+import React, { useState } from "react";
 import { useLocation, useNavigate, useParams } from "react-router-dom";
-import { TextField, Grid, Container, Typography, Button } from "@mui/material";
+import {
+  TextField,
+  Grid,
+  Container,
+  Typography,
+  Button,
+  Alert,
+  AlertTitle,
+} from "@mui/material";
 import axios from "axios";
+import styled, { keyframes } from "styled-components";
+import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
 
+/**
+ * 컴포넌트 스타일 정의
+ */
+const StyledButton = styled(Button)`
+  && {
+    width: 100%;
+    color: black;
+    border: black solid 1px;
+  }
+`;
+
+const StyledTextField = styled(TextField)({
+  "& label.Mui-focused": {
+    color: "rgba(47, 54, 64,1.0)",
+  },
+  "& .MuiOutlinedInput-root": {
+    "&.Mui-focused fieldset": {
+      borderColor: "rgba(47, 54, 64,1.0)",
+    },
+  },
+});
+
+/**
+ * 이미지 애니메이션 기능
+ */
+const floating = keyframes`
+      ${"0"} {
+        transform: translateY(0);    
+    }
+    ${"50%"} {
+        transform: translateY(-15px);
+    }
+    ${"100%"} {
+        transform: translateY(0);
+    }
+  `;
+
+const StyledImg = styled.img`
+  animation: ${floating} 2s ease infinite;
+  width: 150px;
+`;
+
+const Background = styled.div`
+  height: 100vh;
+  background-image: linear-gradient(
+    to right top,
+    #ffa6d9,
+    #f1aee8,
+    #e2b7f4,
+    #d2bffb,
+    #c3c6ff,
+    #b1d0ff,
+    #a3d9ff,
+    #9ce1ff,
+    #9eedf5,
+    #b1f5e8,
+    #cefbdb,
+    #eeffd5
+  );
+`;
+
+const StyledDiv = styled.body`
+  /* top: 50%;
+    transform: translateY(50%); */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+/**
+ * 인증번호 확인
+ */
 function EmailAuth() {
   const params = useParams();
   const navi = useNavigate();
+  const [showAlert, setShowAlert] = useState(false);
 
   function codeSubmit(e) {
     e.preventDefault();
@@ -26,42 +110,93 @@ function EmailAuth() {
       })
       .catch((error) => {
         console.log(error);
+        setShowAlert(true);
+      });
+  }
+
+  /**
+   * 인증번호 다시 받기
+   */
+  function resendAuthcode() {
+    axios
+      .get(`http://192.168.0.187:8080/emailconfig/${params.username}`, {
+        username: params.username,
+      })
+      .then((response) => {
+        axios.get(
+          `http://192.168.0.187:8080/emailconfig/${response.params.username}`
+        );
       });
   }
 
   return (
-    <Container component="main" maxWidth="xs" style={{ marginTop: "5%" }}>
-      <Grid container spacing={2}>
-        <Grid item xs={12}>
-          <Typography component="h1" variant="h5">
-            이메일 인증
-          </Typography>
-        </Grid>
-      </Grid>
-      <form onSubmit={codeSubmit}>
-        <Grid container>
-          <Grid item xs={12}>
-            <TextField
+    <Background>
+      <StyledDiv>
+        <Container component="main" maxWidth="xs">
+          <Grid container spacing={2}>
+            <Grid item xs={12}>
+              <StyledImg src="../image1.png" />
+            </Grid>
+            <Grid item xs={12}>
+              <Typography>
+                {params.username} 으로 인증코드를 전송했습니다.
+              </Typography>
+            </Grid>
+            <Grid item xs={12}>
+              <Typography component="h1" variant="h4">
+                이메일 인증을 완료해 주세요.
+              </Typography>
+            </Grid>
+          </Grid>
+
+          <form onSubmit={codeSubmit}>
+            <Grid container spacing={2}>
+              {/* <TextField
               disabled
               value={params.username}
               name="params.username"
               label="Email"
               style={{ width: "100%" }}
-            />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              required
-              id="authCode"
-              name="authCode"
-              label="인증번호"
-              style={{ width: "100%" }}
-            />
-          </Grid>
-          <Button type="submit">인증하기</Button>
-        </Grid>
-      </form>
-    </Container>
+            /> */}
+              <Grid item xs={12} />
+              <Grid item xs={12}>
+                <StyledTextField
+                  required
+                  id="authCode"
+                  name="authCode"
+                  label="인증코드 입력"
+                  style={{ width: "100%" }}
+                />
+              </Grid>
+              <Grid item xs={12}>
+                <StyledButton type="submit">인증하기</StyledButton>
+              </Grid>
+            </Grid>
+          </form>
+
+          {showAlert && (
+            <Grid mt={2}>
+              <Alert variant="outlined" severity="error">
+                <AlertTitle>
+                  인증번호가 올바르지 않습니다. 다시 확인해 주세요.
+                </AlertTitle>
+                인증번호를 받지 못하셨나요?{" "}
+                <span
+                  onClick={resendAuthcode}
+                  style={{
+                    fontWeight: "bold",
+                    borderBottom: "1px solid",
+                    cursor: "pointer",
+                  }}
+                >
+                  인증번호 다시 받기
+                </span>
+              </Alert>
+            </Grid>
+          )}
+        </Container>
+      </StyledDiv>
+    </Background>
   );
 }
 

@@ -97,7 +97,7 @@ function NavigationBar() {
             <StyledButton
               variant="black"
               onClick={() => {
-                navi("/mypage");
+                navi("/mypage/main");
               }}
             >
               <Typography>mypage</Typography>
