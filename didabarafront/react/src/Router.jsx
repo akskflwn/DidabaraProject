@@ -15,7 +15,6 @@ import PersonalInfo from "./pages/PersonalInfo";
 import MypageMain from "./pages/MypageMain";
 import CreateModal from "./components/CreateModal";
 import axios from "axios";
-import { Create } from "@mui/icons-material";
 
 function Router() {
   const isLogin = useRecoilValue(loginState);
@@ -51,23 +50,24 @@ function Router() {
       <AnimatePresence>{isLogin ? <Loginform /> : null}</AnimatePresence>
       <Routes>
         <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} />} />
+        {/* <Route path="/create" element={<CreateModal />} /> */}
         <Route path="/" element={<Home />} />
-        {!user && (
-        <>
-          <Route path="/kakaologin" element={<KakaoLogin />} />
-          <Route path="/join" element={<Join />} />
-          <Route path="/emailconfig/:username" element={<EmailAuth />} />
-        </>
-        )}
-        {user && (
-        <>
-          <Route path="/dashboard" element={<DashBoard />} />
-          <Route path="/mypage" element={<Mypage />}>
-            <Route path="main" element={<MypageMain />} />
-            <Route path="personal-info" element={<PersonalInfo />} />
-          </Route>
-        </>
-        )}
+        {/* {!user && ( */}
+
+        <Route path="/kakaologin" element={<KakaoLogin />} />
+        <Route path="/join" element={<Join />} />
+        <Route path="/emailconfig/:username" element={<EmailAuth />} />
+
+        {/* )} */}
+        {/* {user && ( */}
+
+        <Route path="/dashboard" element={<DashBoard />} />
+        <Route path="/mypage" element={<Mypage />}>
+          <Route path="main" element={<MypageMain />} />
+          <Route path="personal-info" element={<PersonalInfo />} />
+        </Route>
+
+        {/* )} */}
 
         <Route path="/kakaologin" element={<KakaoLogin />} />
         <Route path="/join" element={<Join />} />

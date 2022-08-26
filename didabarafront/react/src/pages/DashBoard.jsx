@@ -16,54 +16,52 @@ function DashBoard() {
     navi("/dashboard/create");
   };
   return (
-    <div>
-      <Grid container style={{ border: "1px solid black", height: "100vh" }}>
-        <Grid item xs={2}>
-          <Item>
-            <Item style={{ border: "1px solid black" }}>
-              <Button
-                style={{ width: "100%", height: "50px" }}
-                onClick={createDocument}
+    <Grid container style={{ border: "1px solid black", height: "100vh" }}>
+      <Grid item xs={2}>
+        <Item>
+          <Item style={{ border: "1px solid black" }}>
+            <Button
+              style={{ width: "100%", height: "50px" }}
+              onClick={createDocument}
+            >
+              <CreateNewFolderOutlinedIcon
+                style={{ fontSize: "2rem", color: "rgba(47, 54, 64,1.0)" }}
+              ></CreateNewFolderOutlinedIcon>
+              <Typography
+                ml={2}
+                style={{ color: "rgba(47, 54, 64,1.0)", fontWeight: "bold" }}
               >
-                <CreateNewFolderOutlinedIcon
-                  style={{ fontSize: "2rem", color: "rgba(47, 54, 64,1.0)" }}
-                ></CreateNewFolderOutlinedIcon>
-                <Typography
-                  ml={2}
-                  style={{ color: "rgba(47, 54, 64,1.0)", fontWeight: "bold" }}
-                >
-                  CREATE
-                </Typography>
-              </Button>
-            </Item>
-            <DnDropContext />
+                CREATE
+              </Typography>
+            </Button>
           </Item>
-        </Grid>
-        <Grid
-          container
-          item
-          xs={7}
-          style={{ border: "1px solid black", position: "relative" }}
-        >
-          <Item
-            style={{
-              border: "1px solid black",
-              position: "relative",
-            }}
-          >
-            Main document section
-          </Item>
-          <Item>
-            Document here
-            <Outlet></Outlet>
-            <Button>만들기</Button>
-          </Item>
-        </Grid>
-        <Grid item xs={3}>
-          <Item>Community tab</Item>
-        </Grid>
+          <DnDropContext />
+        </Item>
       </Grid>
-    </div>
+      <Grid
+        container
+        item
+        xs={7}
+        style={{ border: "1px solid black", position: "relative" }}
+      >
+        <Item
+          style={{
+            border: "1px solid black",
+            position: "relative",
+          }}
+        >
+          Main document section
+        </Item>
+        <Item>
+          Document here
+          <Button>만들기</Button>
+        </Item>
+      </Grid>
+      <Grid item xs={3}>
+        <Item>Community tab</Item>
+      </Grid>
+      <Outlet />
+    </Grid>
   );
 }
 
