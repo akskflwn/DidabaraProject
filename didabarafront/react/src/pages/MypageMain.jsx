@@ -1,5 +1,5 @@
 import React from "react";
-import { Container, Avatar, Typography, Grid, Button } from "@mui/material";
+import { Container, Avatar, Typography, Grid } from "@mui/material";
 
 const list = {
   img: "../profile-img1.gif",
@@ -12,7 +12,7 @@ const list = {
 function MypageMain() {
   return (
     <Container>
-      <Grid xs={9}>
+      <Grid item xs={9}>
         <Avatar src="d" style={{ width: 150, height: 150 }} />
         <Typography>안녕하세요. {list.username}</Typography>
       </Grid>

@@ -33,7 +33,7 @@ function PersonalInfo() {
         </Grid>
       </Grid>
       <Grid>
-        <Button onClick={updateInfo}>정보수정</Button>
+        <Button>정보수정</Button>
         <Button>회원탈퇴</Button>
       </Grid>
     </Container>

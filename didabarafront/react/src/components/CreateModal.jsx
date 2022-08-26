@@ -15,6 +15,7 @@ const Background = styled.div`
 `;
 
 const SteyldCard = styled(Card)`
+  display: grid;
   width: 40%;
   height: 420px;
   position: fixed;
@@ -26,7 +27,8 @@ const SteyldCard = styled(Card)`
   transition: all 0.5s;
 `;
 const StyledTextField = styled(TextField)`
-  width: 80%;
+  align-self: center;
+  width: 100%;
 `;
 function CreateModal() {
   const imgRef = useRef();
@@ -34,7 +36,11 @@ function CreateModal() {
   const closeCreate = () => {
     navi(-1);
   };
-
+  const StyledForm = styled.form`
+    align-self: center;
+    justify-self: center;
+    width: 80%;
+  `;
   const test = (e) => {
     e.preventDefault();
     const data = new FormData(e.target);
@@ -46,7 +52,7 @@ function CreateModal() {
     reader.onload = function () {
       imgRef.current.src = reader.result;
     };
-    
+
     axios
       .post("http://192.168.0.187:8080/upload/", data, {
         headers: {
@@ -55,26 +61,18 @@ function CreateModal() {
         },
       })
       .then((res) => console.log(res));
-
-      // axios
-      // .post("http://192.168.0.187:8080/userinfo/upload/", data, {
-      //   headers: {
-      //     Authorization: "Bearer " + localStorage.getItem("token"),
-      //     "content-Type": "multipart/form-data",
-      //   },
-      // })
-      // .then((res) => console.log(res));
   };
   return (
     <>
       <Background style={{ width: number }}></Background>
       <SteyldCard>
-        <form onSubmit={test} encType="multipart/form-data">
+        <StyledForm onSubmit={test} encType="multipart/form-data">
           <FormControl>
+            <StyledTextField type="text" name="title" />
             <StyledTextField type="file" name="images" />
             <Button type="submit">사진보냅니다</Button>
           </FormControl>
-        </form>
+        </StyledForm>
         <img ref={imgRef} src="" alt="vriant img" />
         <Button
           style={{ position: "fixed", bottom: "0px" }}

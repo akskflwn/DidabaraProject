@@ -1,16 +1,7 @@
-import {
-  Container,
-  CssBaseline,
-  Drawer,
-  Grid,
-  List,
-  Typography,
-} from "@mui/material";
 import { Box } from "@mui/system";
 import React from "react";
-import { Outlet, Route, Routes } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import MypageLists from "../components/MypageLists";
-import PersonalInfo from "./PersonalInfo";
 
 function Mypage() {
   return (

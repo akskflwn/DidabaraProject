@@ -16,12 +16,12 @@ const LOGIN_REQUEST_ADDRESS = "http://192.168.0.187:8080/auth/signin";
 /**컴포넌트 스타일 정의 */
 const StyledInput = styled(FormControl)`
   && {
-    width: 90%;
+    width: 100%;
   }
 `;
 const StyledContainer = styled(Grid)`
   && {
-    height: 80%;
+    height: 100%;
     min-height: 685px;
     display: flex;
     justify-content: center;
@@ -31,7 +31,6 @@ const StyledContainer = styled(Grid)`
 const StyledDiv = styled.div`
   width: 60%;
   margin-left: 50%;
-
   margin-top: 50px;
 `;
 const StyledGrid = styled(Grid)`
@@ -39,6 +38,9 @@ const StyledGrid = styled(Grid)`
     width: 60%;
     margin-bottom: 20px;
     padding-top: 20px;
+    display: flex;
+    justify-content: center;
+    align-self: center;
   }
 `;
 const StyledButton = styled(Button)`
@@ -116,10 +118,10 @@ function LoginInput() {
       <StyledForm onSubmit={handleSubmit(sendLoginRequest)}>
         <StyledGrid item>
           <StyledInput variant="standard">
-            <InputLabel htmlFor="username">ID</InputLabel>
+            <InputLabel htmlFor="username">Email</InputLabel>
             <Input
               {...register("username", {
-                required: "ID (이메일) 을 입력해주세요.",
+                required: "이메일을 입력해주세요.",
                 pattern: {
                   value:
                     /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*\.[a-zA-Z]{2,5}$/i,
@@ -150,35 +152,40 @@ function LoginInput() {
             />
           </StyledInput>
         </StyledGrid>
-        <StyledGrid container item justifyContent="center" gap={3}>
-          <Grid item xs={5}>
-            <StyledButton type="submit">로그인</StyledButton>
+        <StyledGrid container item justifyContent="center">
+          <Grid item xs={6}>
+            <StyledButton type="submit">
+              <Typography>로그인</Typography>
+            </StyledButton>
           </Grid>
-          <Grid item xs={5}>
+          <Grid item xs={6}>
             <StyledButton
               onClick={() => {
                 setLoginState(false);
                 navi("/join");
               }}
             >
-              회원가입
+              <Typography>회원가입</Typography>
             </StyledButton>
           </Grid>
         </StyledGrid>
         <StyledGrid>
           <Grid item xs={12}>
-            <StyledButton style={{ width: "90%" }} onClick={openKakaoLogin}>
-              kakao login
+            <StyledButton onClick={openKakaoLogin}>
+              <Typography>kakao login</Typography>
             </StyledButton>
           </Grid>
         </StyledGrid>
+        <StyledGrid>
+          <Typography variant="body2" color="textSecondary" align="center">
+            Copyright ©{" "}
+            <i className="fa-brands fa-github" style={{ fontSize: "2rem" }}></i>
+            {new Date().getFullYear()}
+            BitCamp 221기 2022
+          </Typography>
+        </StyledGrid>
       </StyledForm>
-      <Typography variant="body2" color="textSecondary" align="center">
-        Copyright ©{" "}
-        <i className="fa-brands fa-github" style={{ fontSize: "2rem" }}></i>{" "}
-        {new Date().getFullYear()}
-        BitCamp 221기 2022
-      </Typography>
+
       <StyledDiv>
         {errors?.username && (
           <ErrorMessage>{errors?.username?.message}</ErrorMessage>
