@@ -16,8 +16,8 @@ import { userState } from "../config/Atom";
 function PersonalInfo() {
   const [userInfo, setUserInfo] = useRecoilState(userState);
   const updateInfo = useState();
-  let date = userInfo.modified_date;
-  let dateResult = date.substring(0, 10);
+  let date = userInfo.modified_date+"";
+  let dateResult = date.slice(0, 10);
 
   //   useEffect(() => {
   //     axios
@@ -33,21 +33,21 @@ function PersonalInfo() {
 
   return (
     <Container>
-      <Grid>
-        <Grid item xs={12}>
+      <Grid container>
+        <Grid item={true}>
           <Avatar
             src={userInfo.profile_image_url + userInfo.file_name}
             sx={{ width: 150, height: 150 }}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item={true}>
           <TextField
             label="이메일"
             defaultValue={userInfo.username}
             InputProps={{ readOnly: true }}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item={true}>
           <TextField
             label="비밀번호"
             defaultValue={"******"}
@@ -55,14 +55,14 @@ function PersonalInfo() {
           />
           <Typography>최종 변경일: {dateResult}</Typography>
         </Grid>
-        <Grid item xs={12}>
+        <Grid item={true}>
           <TextField
             label="닉네임"
             defaultValue={userInfo.nickname}
             InputProps={{ readOnly: true }}
           />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item={true}>
           <TextField
             label="직업"
             defaultValue={userInfo.job}
@@ -71,7 +71,7 @@ function PersonalInfo() {
         </Grid>
       </Grid>
       <Grid>
-        <Button onClick={updateInfo}>정보수정</Button>
+        <Button>정보수정</Button>
         <Button>회원탈퇴</Button>
       </Grid>
     </Container>

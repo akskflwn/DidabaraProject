@@ -14,11 +14,11 @@ import PersonalInfo from "./PersonalInfo";
 
 function Mypage() {
   return (
-    <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
-      <Box gridColumn="span 2">
+    <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2} mt={4}>
+      <Box gridColumn="span 2" style={{backgroundColor:"lightgreen"}}>
         <MypageLists />
       </Box>
-      <Box gridColumn="span 10">
+      <Box gridColumn="span 10" style={{backgroundColor:"beige"}}>
         <Outlet />
       </Box>
     </Box>

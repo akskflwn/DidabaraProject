@@ -12,7 +12,7 @@ function MypageMain() {
           src={userInfo.profile_image_url + userInfo.file_name}
           sx={{ width: 150, height: 150 }}
         />
-        <Typography>안녕하세요. {userInfo.nickname}!</Typography>
+        <Typography variant="h3">안녕하세요. {userInfo.nickname}!</Typography>
       </Grid>
     </Container>
   );
