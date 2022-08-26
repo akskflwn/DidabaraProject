@@ -35,6 +35,57 @@ const StyledTextField = styled(TextField)({
   },
 });
 
+/**
+ * 이미지 애니메이션 기능
+ */
+const floating = keyframes`
+      ${"0"} {
+        transform: translateY(0);    
+    }
+    ${"50%"} {
+        transform: translateY(-15px);
+    }
+    ${"100%"} {
+        transform: translateY(0);
+    }
+  `;
+
+const StyledImg = styled.img`
+  animation: ${floating} 2s ease infinite;
+  width: 150px;
+`;
+
+const Background = styled.div`
+  height: 100vh;
+  background-image: linear-gradient(
+    to right top,
+    #ffa6d9,
+    #f1aee8,
+    #e2b7f4,
+    #d2bffb,
+    #c3c6ff,
+    #b1d0ff,
+    #a3d9ff,
+    #9ce1ff,
+    #9eedf5,
+    #b1f5e8,
+    #cefbdb,
+    #eeffd5
+  );
+`;
+
+const StyledDiv = styled.body`
+  /* top: 50%;
+    transform: translateY(50%); */
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
+
+/**
+ * 인증번호 확인
+ */
 function EmailAuth() {
   const params = useParams();
   const navi = useNavigate();
@@ -54,7 +105,6 @@ function EmailAuth() {
       },
     })
       .then((response) => {
-        console.log(response);
         alert(response.data);
         navi("/");
       })
@@ -65,52 +115,19 @@ function EmailAuth() {
   }
 
   /**
-   * 이미지 애니메이션 기능
+   * 인증번호 다시 받기
    */
-  const floating = keyframes`
-      ${"0"} {
-        transform: translateY(0);    
-    }
-    ${"50%"} {
-        transform: translateY(-15px);
-    }
-    ${"100%"} {
-        transform: translateY(0);
-    }
-  `;
-
-  const StyledImg = styled.img`
-    animation: ${floating} 2s ease infinite;
-    width: 150px;
-  `;
-
-  const Background = styled.div`
-    height: 100vh;
-    background-image: linear-gradient(
-      to right top,
-      #ffa6d9,
-      #f1aee8,
-      #e2b7f4,
-      #d2bffb,
-      #c3c6ff,
-      #b1d0ff,
-      #a3d9ff,
-      #9ce1ff,
-      #9eedf5,
-      #b1f5e8,
-      #cefbdb,
-      #eeffd5
-    );
-  `;
-
-  const StyledDiv = styled.body`
-    /* top: 50%;
-    transform: translateY(50%); */
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-  `;
+  function resendAuthcode() {
+    axios
+      .get(`http://192.168.0.187:8080/emailconfig/${params.username}`, {
+        username: params.username,
+      })
+      .then((response) => {
+        axios.get(
+          `http://192.168.0.187:8080/emailconfig/${response.params.username}`
+        );
+      });
+  }
 
   return (
     <Background>
@@ -163,7 +180,17 @@ function EmailAuth() {
                 <AlertTitle>
                   인증번호가 올바르지 않습니다. 다시 확인해 주세요.
                 </AlertTitle>
-                인증번호를 받지 못하셨나요? 
+                인증번호를 받지 못하셨나요?{" "}
+                <span
+                  onClick={resendAuthcode}
+                  style={{
+                    fontWeight: "bold",
+                    borderBottom: "1px solid",
+                    cursor: "pointer",
+                  }}
+                >
+                  인증번호 다시 받기
+                </span>
               </Alert>
             </Grid>
           )}

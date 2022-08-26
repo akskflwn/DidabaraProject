@@ -4,6 +4,7 @@ import IntroPartTwo from "../components/IntroPartTwo";
 import { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
 import { userState } from "../config/Atom";
+import axios from "axios";
 
 function Home() {
   const setUser = useSetRecoilState(userState);
@@ -11,16 +12,27 @@ function Home() {
   useEffect(() => {
     console.log("useEfffect running");
     if (!localStorage.getItem("token")) {
-      console.log("Token is not in localStorage.. going back to home....");
+      console.log("Token is not in localStorage.. going to back home....");
       return;
     }
     if (localStorage.getItem("token")) {
       console.log(
-        "Token is in local storage... initiate user infomation setting ."
+        "Token is in LocalStorage... initiate user login setting.... :"
       );
-      setUser(localStorage.getItem("user"));
+      axios
+        .get("http://192.168.0.187:8080/userinfo", {
+          headers: {
+            Authorization: "Bearer " + localStorage.getItem("token"),
+          },
+        })
+        .then((res) => {
+          console.log("user infomation received :", res.data);
+          setUser(res.data);
+        })
+        .catch((err) => console.log(err));
     }
   }, []);
+
   return (
     <>
       <IntroPartOne />

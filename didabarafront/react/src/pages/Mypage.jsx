@@ -1,4 +1,12 @@
-import { Container, Grid, List } from "@mui/material";
+import {
+  Container,
+  CssBaseline,
+  Drawer,
+  Grid,
+  List,
+  Typography,
+} from "@mui/material";
+import { Box } from "@mui/system";
 import React from "react";
 import { Outlet, Route, Routes } from "react-router-dom";
 import MypageLists from "../components/MypageLists";
@@ -6,16 +14,14 @@ import PersonalInfo from "./PersonalInfo";
 
 function Mypage() {
   return (
-    <Container>
-      <Grid mt={2} style={{border:"1px solid red"}}>
-        <List component="nav">
-          <MypageLists />
-        </List>
-        <Grid item style={{border:"1px solid black"}}>
-          <Outlet />
-        </Grid>
-      </Grid>
-    </Container>
+    <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2}>
+      <Box gridColumn="span 2">
+        <MypageLists />
+      </Box>
+      <Box gridColumn="span 10">
+        <Outlet />
+      </Box>
+    </Box>
   );
 }
 

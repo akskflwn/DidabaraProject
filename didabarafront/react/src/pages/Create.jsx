@@ -1,5 +1,7 @@
-import { Button } from "@mui/material";
+import { Button, TextField } from "@mui/material";
+import axios from "axios";
 import React from "react";
+import { useFrom } from "react-hook-form";
 
 function Create() {
   const fileUpload = (e) => {
@@ -16,8 +18,10 @@ function Create() {
 
   return (
     <div>
+      <TextField placeholder />
+
       <form onSubmit={upLoadFiles}>
-        <input type="file" multiple onChange={fileUpload} />
+        <input type="file" onChange={fileUpload} />
         <Button type="submit">보내기</Button>
       </form>
     </div>

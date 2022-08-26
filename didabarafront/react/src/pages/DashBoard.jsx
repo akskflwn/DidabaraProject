@@ -1,10 +1,11 @@
 import React from "react";
-import { Button, Grid } from "@mui/material";
+import { Button, Grid, Typography } from "@mui/material";
 import styled from "styled-components";
 import DnDropContext from "../components/DnDropContext";
-import { useNavigate } from "react-router-dom";
+import { Outlet, useNavigate } from "react-router-dom";
+import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
 
-const Item = styled.div`
+const Item = styled(Grid)`
   /* border: 1px solid black; */
 `;
 
@@ -16,14 +17,34 @@ function DashBoard() {
   };
   return (
     <div>
-      <Grid container style={{ border: "1px solid black" }}>
+      <Grid container style={{ border: "1px solid black", height: "100vh" }}>
         <Grid item xs={2}>
           <Item>
-            <Item style={{ border: "1px solid black" }}>Menu?</Item>
+            <Item style={{ border: "1px solid black" }}>
+              <Button
+                style={{ width: "100%", height: "50px" }}
+                onClick={createDocument}
+              >
+                <CreateNewFolderOutlinedIcon
+                  style={{ fontSize: "2rem", color: "rgba(47, 54, 64,1.0)" }}
+                ></CreateNewFolderOutlinedIcon>
+                <Typography
+                  ml={2}
+                  style={{ color: "rgba(47, 54, 64,1.0)", fontWeight: "bold" }}
+                >
+                  CREATE
+                </Typography>
+              </Button>
+            </Item>
             <DnDropContext />
           </Item>
         </Grid>
-        <Grid item xs={7} style={{ border: "1px solid black" }}>
+        <Grid
+          container
+          item
+          xs={7}
+          style={{ border: "1px solid black", position: "relative" }}
+        >
           <Item
             style={{
               border: "1px solid black",
@@ -34,7 +55,8 @@ function DashBoard() {
           </Item>
           <Item>
             Document here
-            <Button onClick={createDocument}>만들기</Button>
+            <Outlet></Outlet>
+            <Button>만들기</Button>
           </Item>
         </Grid>
         <Grid item xs={3}>

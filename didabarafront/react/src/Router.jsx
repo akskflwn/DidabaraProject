@@ -9,11 +9,12 @@ import EmailAuth from "./pages/EmailAuth";
 import { useRecoilValue } from "recoil";
 import { AnimatePresence } from "framer-motion";
 import Loginform from "./components/Loginform";
-import Create from "./pages/Create";
 import { loginState, userState } from "./config/Atom";
 import Mypage from "./pages/Mypage";
 import PersonalInfo from "./pages/PersonalInfo";
 import MypageMain from "./pages/MypageMain";
+import CreateModal from "./components/CreateModal";
+import Create from "./pages/Create"
 
 function Router() {
   const user = useRecoilValue(userState);
@@ -24,16 +25,17 @@ function Router() {
       <NavigationBar />
       <AnimatePresence>{isLogin ? <Loginform /> : null}</AnimatePresence>
       <Routes>
-        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} />} />
+        {/* <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} />} /> */}
+        <Route path="/create" element={<CreateModal />} />
         <Route path="/" element={<Home />} />
-        {!user && (
+        {/* {!user && ( */}
           <>
             <Route path="/kakaologin" element={<KakaoLogin />} />
             <Route path="/join" element={<Join />} />
             <Route path="/emailconfig/:username" element={<EmailAuth />} />
           </>
-        )}
-        {user && (
+        {/* )} */}
+        {/* {user && ( */}
           <>
             <Route path="/dashboard" element={<DashBoard />} />
             <Route path="/dashboard/create" element={<Create />} />
@@ -42,7 +44,16 @@ function Router() {
               <Route path="personal-info" element={<PersonalInfo />} />
             </Route>
           </>
-        )}
+        {/* )} */}
+
+        <Route path="/kakaologin" element={<KakaoLogin />} />
+        <Route path="/join" element={<Join />} />
+        <Route path="/emailconfig/:username" element={<EmailAuth />} />
+
+        <Route path="/dashboard" element={<DashBoard />}>
+          <Route path="/dashboard/create" element={<CreateModal />} />
+        </Route>
+        <Route path="/mypage" element={<Mypage />} />
       </Routes>
     </BrowserRouter>
   );
