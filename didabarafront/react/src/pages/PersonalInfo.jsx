@@ -1,38 +1,71 @@
-import { Avatar, Container, Grid, TextField, Button } from "@mui/material";
+import {
+  Avatar,
+  Container,
+  Grid,
+  TextField,
+  Button,
+  Typography,
+} from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { userState } from "../config/Atom";
 
-const URL = "http://192.168.0.187:8080/userinfo";
+// const URL = "http://192.168.0.187:8080/userinfo";
 
 function PersonalInfo() {
-  axios.get(URL, {
-    headers: {
-      Authorization: "Bearer " + localStorage.getItem("token"),
-    },
-  });
+  const [userInfo, setUserInfo] = useRecoilState(userState);
   const updateInfo = useState();
+  let date = userInfo.modified_date;
+  let dateResult = date.substring(0, 10);
+
+  //   useEffect(() => {
+  //     axios
+  //       .get(URL, {
+  //         headers: {
+  //           Authorization: "Bearer " + localStorage.getItem("token"),
+  //         },
+  //       })
+  //       .then((res) => {
+  //         setUserInfo(res.data);
+  //       });
+  //   }, []);
+
   return (
     <Container>
       <Grid>
-        <Avatar src={list.img} sx={{ width: 150, height: 150 }} />
+        <Grid item xs={12}>
+          <Avatar
+            src={userInfo.profile_image_url + userInfo.file_name}
+            sx={{ width: 150, height: 150 }}
+          />
+        </Grid>
         <Grid item xs={12}>
           <TextField
-            label="이름"
-            defaultValue={list.username}
+            label="이메일"
+            defaultValue={userInfo.username}
             InputProps={{ readOnly: true }}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            label="타이틀"
-            defaultValue={list.title}
+            label="비밀번호"
+            defaultValue={"******"}
+            InputProps={{ readOnly: true }}
+          />
+          <Typography>최종 변경일: {dateResult}</Typography>
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            label="닉네임"
+            defaultValue={userInfo.nickname}
             InputProps={{ readOnly: true }}
           />
         </Grid>
         <Grid item xs={12}>
           <TextField
-            label="텍스트"
-            defaultValue={list.text}
+            label="직업"
+            defaultValue={userInfo.job}
             InputProps={{ readOnly: true }}
           />
         </Grid>
