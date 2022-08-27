@@ -34,10 +34,10 @@ function Router() {
       <AnimatePresence>{isLogin ? <Loginform /> : null}</AnimatePresence>
       {isLoading ? null : (
         <Routes>
-          <Route
+          {/* <Route
             path="*"
             element={<Navigate to={user ? "/dashboard" : "/"} />}
-          />
+          /> */}
           {/* <Route path="/create" element={<CreateModal />} /> */}
           <Route path="/" element={<Home />} />
           {/* {!user && ( */}

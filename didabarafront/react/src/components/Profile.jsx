@@ -65,7 +65,7 @@ function Profile({ img, username, title, text, idx, id }) {
         >
           <Wrapper>
             <ImgBlock>
-              <Img alt="userImage" src={user.profile_image_url + user.file_name} />
+              <Img alt="userImage" src={""} />
               <H4>{username}</H4>
             </ImgBlock>
             <InfoLine>
