@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Builder
 @Data
@@ -19,9 +19,11 @@ public class UserInfoDTO {
   private int role;
   private boolean ban;
   private String profileImageUrl;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
-  public UserInfoDTO (UserInfoEntity userInfoEntity) {
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
+
+  //xpt
+  public UserInfoDTO(UserInfoEntity userInfoEntity) {
     this.id = userInfoEntity.getId();
     this.job = userInfoEntity.getJob();
     this.role = userInfoEntity.getRole();
@@ -31,7 +33,7 @@ public class UserInfoDTO {
     this.modifiedDate = userInfoEntity.getModifiedDate();
   }
 
-  public static UserInfoEntity toUserInfoEntity(final UserInfoDTO userInfoDTO) {
+  public static UserInfoEntity toEntity(final UserInfoDTO userInfoDTO) {
 
     return UserInfoEntity.builder()
             .id(userInfoDTO.getId())

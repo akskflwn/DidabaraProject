@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Builder
 @Data
@@ -17,10 +17,10 @@ public class SubscriberDTO {
   private Long id;
   private Long category;
   private Long user;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
-  public SubscriberDTO (SubscriberEntity subscriberEntity) {
+  public SubscriberDTO(SubscriberEntity subscriberEntity) {
     this.id = subscriberEntity.getId();
     this.category = subscriberEntity.getCategory();
     this.user = subscriberEntity.getUser();
@@ -29,7 +29,7 @@ public class SubscriberDTO {
 
   }
 
-  public static SubscriberEntity toSubscriberEntity(final SubscriberDTO subscriberDTO) {
+  public static SubscriberEntity toEntity(final SubscriberDTO subscriberDTO) {
 
     return SubscriberEntity.builder()
             .id(subscriberDTO.getId())

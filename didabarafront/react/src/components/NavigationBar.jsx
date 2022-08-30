@@ -4,7 +4,7 @@ import PictureAsPdfSharpIcon from "@mui/icons-material/PictureAsPdfSharp";
 import LoginSharpIcon from "@mui/icons-material/LoginSharp";
 import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
 import { useNavigate } from "react-router-dom";
-import { useRecoilState, useResetRecoilState, useSetRecoilState } from "recoil";
+import { useRecoilValue, useResetRecoilState, useSetRecoilState } from "recoil";
 import { loginState, userState } from "../config/Atom";
 import styled from "styled-components";
 
@@ -16,6 +16,7 @@ const StyledButton = styled(Button)`
 
 function NavigationBar() {
   const setLoginState = useSetRecoilState(loginState);
+
   const navi = useNavigate();
 
   /**로그아웃 버튼 이벤트시
@@ -25,9 +26,7 @@ function NavigationBar() {
   const userLogout = useResetRecoilState(userState);
 
   /** 이벤트에 따라 유저의 상태를 관리하기 위한 Recoil */
-  const [user, setUser] = useRecoilState(userState);
-
-  // console.log(user);
+  const user = useRecoilValue(userState);
   return (
     <Grid
       container
@@ -58,18 +57,20 @@ function NavigationBar() {
             }}
             fontSize="large"
             onClick={() => {
-              navi("/");
+              return user ? navi("/dashboard") : navi("/");
             }}
           />
         </Grid>
       </Grid>
 
       <Grid container item xs={6} md={5} justifyContent="end">
-        {user.id ? (
+        {user ? (
           <Grid item display="flex" alignItems="center" mr={3}>
             <StyledButton
               variant="black"
               onClick={() => {
+                localStorage.removeItem("token");
+                localStorage.removeItem("user");
                 userLogout();
                 navi("/");
               }}
@@ -91,16 +92,16 @@ function NavigationBar() {
             </StyledButton>
           </Grid>
         )}
-        {user.id ? (
+        {user ? (
           <Grid item mr={2}>
-            <Button
+            <StyledButton
               variant="black"
               onClick={() => {
-                navi("/");
+                navi("/mypage/main");
               }}
             >
-              <Typography>maypage</Typography>
-            </Button>
+              <Typography>mypage</Typography>
+            </StyledButton>
           </Grid>
         ) : (
           <Grid item mr={2}>

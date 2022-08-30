@@ -7,7 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.Map;
 
 @Builder
 @Data
@@ -21,10 +21,10 @@ public class CategoryItemDTO {
   private String title;
   private String content;
   private LocalDate expiredDate;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
-  public CategoryItemDTO (CategoryItemEntity categoryItemEntity) {
+  public CategoryItemDTO(CategoryItemEntity categoryItemEntity) {
     this.id = categoryItemEntity.getId();
     this.category = categoryItemEntity.getCategory();
     this.itemPath = categoryItemEntity.getItemPath();
@@ -35,7 +35,15 @@ public class CategoryItemDTO {
     this.modifiedDate = categoryItemEntity.getModifiedDate();
   }
 
-  public static CategoryItemEntity toCategoryItemEntity(final CategoryItemDTO categoryItemDTO) {
+//  public CategoryItemDTO(Map map, int year, int month, int day) {
+//    this.category = Long.valueOf(String.valueOf(map.get("categoryId")));
+//    this.itemPath = String.valueOf(map.get("itemPath"));
+//    this.content = String.valueOf(map.get("content"));
+//    this.title = String.valueOf(map.get("title"));
+//    this.expiredDate = LocalDate.of(year, month, day);
+//  }
+
+  public static CategoryItemEntity toEntity(final CategoryItemDTO categoryItemDTO) {
 
     return CategoryItemEntity.builder()
             .id(categoryItemDTO.getId())

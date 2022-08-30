@@ -12,6 +12,7 @@ const StyledOverLay = styled(motion.div)`
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
+  z-index: 3;
 `;
 
 const StyledForm = styled(motion.div)`
@@ -20,11 +21,15 @@ const StyledForm = styled(motion.div)`
   background-color: white;
   position: fixed;
   overflow-y: scroll;
+  overflow-x: hidden;
   right: 0;
   top: 0;
   transform-origin: right;
   min-width: 380px;
   z-index: 5;
+  @media screen and (max-width: 768px) {
+    min-width: 300px;
+  }
 `;
 
 const Img = styled.img`
@@ -32,7 +37,8 @@ const Img = styled.img`
   left: 0;
   right: 0;
   margin: 0 auto;
-  margin-top: 25px;
+  margin-top: 80px;
+  width: 250px;
 `;
 
 /** 로그인 화면 에니메이션 정의 부분.
@@ -47,7 +53,7 @@ const loginFormAnimation = {
     x: 0,
     transition: {
       duration: 0.5,
-      type: "tween",
+      type: "just",
     },
   },
   exit: {
@@ -76,14 +82,14 @@ function Loginform() {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
       />
+
       <StyledForm
         variants={loginFormAnimation}
         initial="start"
         animate="show"
         exit="exit"
       >
-        {" "}
-        <Img src="./didabara.png" />
+        <Img src="./didabara_logo.png" />
         <LoginInput />
       </StyledForm>
     </>

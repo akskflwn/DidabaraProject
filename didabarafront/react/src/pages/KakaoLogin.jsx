@@ -2,8 +2,11 @@
 
 import axios from "axios";
 import React, { useEffect } from "react";
+import { useSetRecoilState } from "recoil";
+import { userState } from "../config/Atom";
 
 function KakaoLogin() {
+  const setUser = useSetRecoilState(userState);
   /**해당 페이지가 로딩되었다면 url 에 인가코드가 담기게 된다.  */
   useEffect(() => {
     /**인가코드를 추출할 변수 생성. url 주소를 가지고 있다. */
@@ -20,7 +23,19 @@ function KakaoLogin() {
      */
     axios
       .get(`http://192.168.0.187:8080/auth/kakao?code=${code}`)
-      .then((res) => console.log(res));
+      .then((res) => {
+        localStorage.setItem("token", res.data.token);
+        axios
+          .get("http://192.168.0.187:8080/userinfo", {
+            headers: {
+              Authorization: "Bearer " + res.data.token,
+            },
+          })
+          .then((response) => {
+            console.log(response);
+            setUser(response.data);
+          });
+      });
   }, []);
   return <div>KakaoLogin</div>;
 }
