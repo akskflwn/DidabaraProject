@@ -1,6 +1,8 @@
 package com.bitcamp221.didabara.controller;
 
 
+
+import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.model.UserInfoEntity;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
@@ -60,29 +62,22 @@ public class UserController {
               .build();
 
 //      서비스를 이용해 리포지터리에 유저 저장
-      UserEntity registeredUser = userService.creat(userEntity);
+            UserEntity registeredUser = userService.creat(userEntity);
 
+//
+            System.out.println("registerdUser Datetiem:" + registeredUser.getCreatedDate());
+            System.out.println("registerdUser Modifiedtime:" + registeredUser.getModifiedDate());
 
-      // 회원가입한 id값 가져가서 user_info 테이블 생성
-      UserInfoEntity userInfoEntity = UserInfoEntity.builder()
-              .id(registeredUser.getId())
-              .fileOriName("default.jpg")
-              .profileImageUrl("https://didabara.s3.ap-northeast-2.amazonaws.com/myfile/")
-              .filename("def54545-1d55-43b5-9f69-eb15c7ebe43f.jpg")
-              .job("")
-              .build();
+            //응답객체 만들기(패스워드 제외)
+            UserDTO responseUserDTO = UserDTO.builder()
+                    .id(registeredUser.getId())
+                    .username(registeredUser.getUsername())
+                    .nickname(registeredUser.getNickname())
+                    .build();
 
-      userInfoRepository.save(userInfoEntity);
-
-
-      //응답객체 만들기(패스워드 제외)
-      UserDTO responseUserDTO = UserDTO.builder()
-              .id(registeredUser.getId())
-              .username(registeredUser.getUsername())
-              .nickname(registeredUser.getNickname())
-              .build();
-
-      log.info("회원가입 완료");
+            //유저 정보는 현재 하나이므로 리스트로 만들 필요 없음
+            //ResponseDTO를 사용하지 않고 UserDTO 타입으로 반환
+            log.info("회원가입 완료");
 
 
       return ResponseEntity.ok().body(responseUserDTO);
@@ -108,15 +103,12 @@ public class UserController {
       //    토큰 생성.
       final String token = tokenProvider.create(user);
 
-      log.info("usertoken={}", token);
-
-
-      final UserDTO responsUserDTO = UserDTO.builder()
-              .id(user.getId())
-              .username(user.getUsername())
-              .nickname(user.getNickname())
-              .token(token)
-              .build();
+            final UserDTO responsUserDTO = UserDTO.builder()
+                    .id(user.getId())
+                    .username(user.getUsername())
+                    .nickname(user.getNickname())
+                    .token(token)
+                    .build();
 
       return ResponseEntity.ok().body(responsUserDTO);
     } else {
@@ -124,8 +116,8 @@ public class UserController {
               .error("Login Failed")
               .build();
 
-      return ResponseEntity.badRequest().body(responseDTO);
-    }
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
 
   }
 
@@ -150,50 +142,50 @@ public class UserController {
               .build();
       UserEntity updatedUser = userService.update(userEntity);
 
-      UserDTO ResponseUserDTO = UserDTO.builder()
-              .id(updatedUser.getId())
-              .nickname(updatedUser.getNickname())
-              .build();
-      log.info("업데이트 완료");
+            UserDTO ResponseUserDTO = UserDTO.builder()
+                    .id(updatedUser.getId())
+                    .nickname(updatedUser.getNickname())
+                    .build();
+            log.info("업데이트 완료");
 
-      return ResponseEntity.ok().body(ResponseUserDTO);
-    } catch (Exception e) {
-      ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
-      log.error("업데이트 실패");
-      return ResponseEntity.badRequest().body(responseDTO);
+            return ResponseEntity.ok().body(ResponseUserDTO);
+        }
+
+        catch (Exception e) {
+            ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+            log.error("업데이트 실패");
+            return ResponseEntity.badRequest().body(responseDTO);
+        }
+
+    }
+    //삭제
+    @DeleteMapping("/user")
+    public void deletUser(@RequestBody UserDTO userDTO){
+        userService.deleteUser(userDTO.getId());
+        log.info("삭제완료");
     }
 
-  }
+    //프론트에서 인가코드 받아오는 url
+    /* 카카오 로그인 */
+    @GetMapping("/kakao")
+    public Map kakaoCallback(@Param("code") String code) {
+        log.info("code={}", code);
 
-  //삭제
-  @DeleteMapping("/user")
-  public void deletUser(@RequestBody UserDTO userDTO) {
-    userService.deleteUser(userDTO.getId());
-    log.info("삭제완료");
-  }
+        String[] access_Token = userService.getKaKaoAccessToken(code);
+        String access_found_in_token = access_Token[0];
+        // 배열로 받은 토큰들의 accsess_token만 createKaKaoUser 메서드로 전달
+        UserEntity kakaoUser = userService.createKakaoUser(access_found_in_token);
 
+        Map map = new HashMap();
+        map.put("kakaoUser", kakaoUser);
+        map.put("access_Token", access_Token[0]);
+        map.put("refresh_Token", access_Token[1]);
+        map.put("id_Token", access_Token[2]);
 
-  //프론트에서 인가코드 받아오는 url
-  /* 카카오 로그인 */
-  @GetMapping("/kakao")
-  public UserDTO kakaoCallback(@Param("code") String code) throws IOException {
-    log.info("code={}", code);
+        return map;
+    }
 
-    String[] access_Token = userService.getKaKaoAccessToken(code);
-    String access_found_in_token = access_Token[0];
-    // 배열로 받은 토큰들의 accsess_token만 createKaKaoUser 메서드로 전달
-    UserDTO kakaoUser = userService.createKakaoUser(access_found_in_token);
-
-//        Map map = new HashMap();
-//        map.put("kakaoUser", kakaoUser);
-//        map.put("access_Token", access_Token[0]);
-//        map.put("refresh_Token", access_Token[1]);
-//        map.put("id_Token", access_Token[2]);
-
-    return kakaoUser;
-  }
-
-  // https://kauth.kakao.com/oauth/authorize?client_id=4af7c95054f7e1d31cff647965678936&redirect_uri=http://localhost:8080/auth/kakao&response_type=code
+    // https://kauth.kakao.com/oauth/authorize?client_id=4af7c95054f7e1d31cff647965678936&redirect_uri=http://localhost:8080/auth/kakao&response_type=code
 
 
 }

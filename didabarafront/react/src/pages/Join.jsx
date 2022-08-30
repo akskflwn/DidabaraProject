@@ -23,6 +23,7 @@ import { loginState } from "../config/Atom";
 import styled from "styled-components";
 import axios from "axios";
 import { KakaoLoginAPI } from "../config/KakaoApi";
+import { REQUEST_ADDRESS } from "../config/APIs";
 
 /**
  * 컴포넌트 스타일 정의
@@ -111,14 +112,12 @@ const Join = () => {
   function join(userDTO) {
     axios({
       method: "post",
-      url: "http://192.168.0.187:8080/auth/signup",
+      url: REQUEST_ADDRESS + "auth/signup",
       data: userDTO,
     })
       .then((response) => {
         if (response.status === 200 && response.data.username != null) {
-          axios.get(
-            `http://192.168.0.187:8080/emailconfig/${response.data.username}`
-          );
+          axios.get(`${REQUEST_ADDRESS}emailconfig/${response.data.username}`);
           navi(`/emailconfig/${response.data.username}`);
         }
       })
@@ -141,7 +140,7 @@ const Join = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" style={{ marginTop: "5%"}}>
+    <Container component="main" maxWidth="xs" style={{ marginTop: "5%" }}>
       <Grid container>
         <Grid item xs={12}>
           <img src="./didabara_logo.png" style={{ width: "180px" }} />
