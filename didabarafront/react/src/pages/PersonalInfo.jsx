@@ -1,22 +1,12 @@
-import {
-  Avatar,
-  Container,
-  Grid,
-  TextField,
-  Button,
-  Typography,
-} from "@mui/material";
-import axios from "axios";
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
+import { Avatar, Container, Grid, TextField, Button, Typography } from "@mui/material";
+import React, { useState } from "react";
+import { useRecoilValue } from "recoil";
 import { userState } from "../config/Atom";
 
-// const URL = "http://192.168.0.187:8080/userinfo";
-
 function PersonalInfo() {
-  const [userInfo, setUserInfo] = useRecoilState(userState);
+  const user = useRecoilValue(userState);
   const updateInfo = useState();
-  let date = userInfo.modified_date+"";
+  let date = user.modified_date+"";
   let dateResult = date.slice(0, 10);
 
   //   useEffect(() => {
@@ -36,14 +26,14 @@ function PersonalInfo() {
       <Grid container>
         <Grid item={true}>
           <Avatar
-            src={userInfo.profile_image_url + userInfo.file_name}
+            src={user.profile_image_url + user.file_name}
             sx={{ width: 150, height: 150 }}
           />
         </Grid>
         <Grid item={true}>
           <TextField
             label="이메일"
-            defaultValue={userInfo.username}
+            defaultValue={user.username}
             InputProps={{ readOnly: true }}
           />
         </Grid>
@@ -58,14 +48,14 @@ function PersonalInfo() {
         <Grid item={true}>
           <TextField
             label="닉네임"
-            defaultValue={userInfo.nickname}
+            defaultValue={user.nickname}
             InputProps={{ readOnly: true }}
           />
         </Grid>
         <Grid item={true}>
           <TextField
             label="직업"
-            defaultValue={userInfo.job}
+            defaultValue={user.job}
             InputProps={{ readOnly: true }}
           />
         </Grid>

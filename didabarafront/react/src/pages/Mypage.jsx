@@ -16,7 +16,11 @@ function Mypage() {
   return (
     <Box display="grid" gridTemplateColumns="repeat(12, 1fr)" gap={2} mt={4}>
       <Box gridColumn="span 2" style={{backgroundColor:"lightgreen"}}>
-        <MypageLists />
+        <Drawer
+        variant="permanent"
+        style={{position:"relative"}}>
+            <MypageLists />
+        </Drawer>
       </Box>
       <Box gridColumn="span 10" style={{backgroundColor:"beige"}}>
         <Outlet />
