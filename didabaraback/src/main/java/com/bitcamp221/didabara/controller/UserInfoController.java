@@ -117,7 +117,7 @@ public class UserInfoController {
 
         destinationFile.getParentFile().mkdirs();
         files.transferTo(destinationFile);
-        
+
         Long userid = Long.valueOf(id);
 
         UserInfoEntity findUser = userInfoRepository.findById(userid).orElseThrow(() ->

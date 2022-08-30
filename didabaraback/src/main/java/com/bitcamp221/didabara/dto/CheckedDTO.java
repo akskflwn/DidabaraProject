@@ -6,7 +6,7 @@ import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Builder
 @Data
@@ -17,17 +17,23 @@ public class CheckedDTO {
   private Long id;
   private Long user;
   private Long categoryItem;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
-  public CheckedDTO (CheckedEntity checkedEntity) {
+  public CheckedDTO(CheckedEntity checkedEntity) {
     this.id = checkedEntity.getId();
     this.user = checkedEntity.getUser();
     this.categoryItem = checkedEntity.getCategoryItem();
     this.createdDate = checkedEntity.getCreatedDate();
     this.modifiedDate = checkedEntity.getModifiedDate();
   }
-  public static CheckedEntity toCheckedEntity(final CheckedDTO checkedDTO) {
+
+  public CheckedDTO(final Long userId, final Long categoryItemId) {
+    this.user = userId;
+    this.categoryItem = categoryItemId;
+  }
+
+  public static CheckedEntity toEntity(final CheckedDTO checkedDTO) {
 
     return CheckedEntity.builder()
             .id(checkedDTO.getId())
