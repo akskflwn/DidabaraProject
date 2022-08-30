@@ -4,12 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import org.springframework.data.annotation.CreatedDate;
 
 import javax.persistence.*;
 import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.List;
 
 @Builder
 @Getter
@@ -38,4 +35,13 @@ public class CategoryItemEntity extends BaseTimeEntity {
 
   @Column(name = "expired_date", nullable = false)
   private LocalDate expiredDate;
+
+  public void changeEntity (final CategoryItemEntity categoryItemEntity) {
+    this.id = categoryItemEntity.getId();
+    this.category = categoryItemEntity.getCategory();
+    this.itemPath = categoryItemEntity.getItemPath();
+    this.title = categoryItemEntity.getTitle();
+    this.content = categoryItemEntity.getContent();
+    this.expiredDate = categoryItemEntity.getExpiredDate();
+  }
 }

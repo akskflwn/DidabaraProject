@@ -13,7 +13,7 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "report")
-public class ReportEntity extends BaseTimeEntity{
+public class ReportEntity extends BaseTimeEntity {
 
   @Id
   @Column(name = "id", nullable = false)
@@ -21,12 +21,12 @@ public class ReportEntity extends BaseTimeEntity{
   private Long id;
 
   //  신고자
-  @Column(name = "user_id", nullable = false)
-  private Long user;
+  @Column(name = "writer", nullable = false)
+  private Long writer;
 
   //  신고 받는 대상
-  @Column(name = "host_id", nullable = false)
-  private Long host;
+  @Column(name = "category_id", nullable = false)
+  private Long category;
 
   //  신고 시에 상세 내용 받는 컬럼
   @Column(name = "content", nullable = false)
@@ -35,7 +35,4 @@ public class ReportEntity extends BaseTimeEntity{
   //  신고 유형(음란물, 유해물 등등)
   @Column(name = "report_category", nullable = false, length = 30)
   private String reportCategory;
-
-  @Column(name = "subscriber_entity_id")
-  private Long subscriber;
 }

@@ -7,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Builder
 @Data
@@ -35,7 +34,7 @@ public class CategoryDTO {
     this.modifiedDate = categoryEntity.getModifiedDate();
   }
 
-  public static CategoryEntity toCategoryEntity(final CategoryDTO categoryDTO) {
+  public static CategoryEntity toEntity(final CategoryDTO categoryDTO) {
 
     return CategoryEntity.builder()
             .id(categoryDTO.getId())

@@ -1,15 +1,12 @@
 package com.bitcamp221.didabara.dto;
 
-import com.bitcamp221.didabara.model.CategoryEntity;
 import com.bitcamp221.didabara.model.SubscriberEntity;
-import com.bitcamp221.didabara.model.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.NoArgsConstructor;
 import lombok.Data;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Builder
 @Data
@@ -23,7 +20,7 @@ public class SubscriberDTO {
   private LocalDate createdDate;
   private LocalDate modifiedDate;
 
-  public SubscriberDTO (SubscriberEntity subscriberEntity) {
+  public SubscriberDTO(SubscriberEntity subscriberEntity) {
     this.id = subscriberEntity.getId();
     this.category = subscriberEntity.getCategory();
     this.user = subscriberEntity.getUser();
@@ -32,7 +29,7 @@ public class SubscriberDTO {
 
   }
 
-  public static SubscriberEntity toSubscriberEntity(final SubscriberDTO subscriberDTO) {
+  public static SubscriberEntity toEntity(final SubscriberDTO subscriberDTO) {
 
     return SubscriberEntity.builder()
             .id(subscriberDTO.getId())

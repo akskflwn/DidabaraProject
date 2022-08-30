@@ -1,6 +1,5 @@
 package com.bitcamp221.didabara.dto;
 
-import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.model.UserInfoEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -8,7 +7,6 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Builder
 @Data
@@ -23,8 +21,9 @@ public class UserInfoDTO {
   private String profileImageUrl;
   private LocalDate createdDate;
   private LocalDate modifiedDate;
-//xpt
-  public UserInfoDTO (UserInfoEntity userInfoEntity) {
+
+  //xpt
+  public UserInfoDTO(UserInfoEntity userInfoEntity) {
     this.id = userInfoEntity.getId();
     this.job = userInfoEntity.getJob();
     this.role = userInfoEntity.getRole();
@@ -34,7 +33,7 @@ public class UserInfoDTO {
     this.modifiedDate = userInfoEntity.getModifiedDate();
   }
 
-  public static UserInfoEntity toUserInfoEntity(final UserInfoDTO userInfoDTO) {
+  public static UserInfoEntity toEntity(final UserInfoDTO userInfoDTO) {
 
     return UserInfoEntity.builder()
             .id(userInfoDTO.getId())

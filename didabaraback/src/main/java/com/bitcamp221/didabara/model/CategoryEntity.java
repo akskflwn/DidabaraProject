@@ -1,11 +1,8 @@
 package com.bitcamp221.didabara.model;
 
 import lombok.*;
-import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
-import java.util.ArrayList;
-import java.util.List;
 
 @Builder
 @Getter
@@ -36,7 +33,7 @@ public class CategoryEntity extends BaseTimeEntity {
 //  @ColumnDefault("카테고리 기본 이미지")
   private String profileImageUrl;
 
-  public void changeEntity (CategoryEntity categoryEntity){
+  public void changeEntity (final CategoryEntity categoryEntity){
     this.id = categoryEntity.getId();
     this.host = categoryEntity.getHost();
     this.content = categoryEntity.getContent();

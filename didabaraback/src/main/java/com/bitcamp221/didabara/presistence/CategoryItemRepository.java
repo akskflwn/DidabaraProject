@@ -12,5 +12,8 @@ import java.util.List;
 public interface CategoryItemRepository extends JpaRepository<CategoryItemEntity, Long> {
 
   @Query("SELECT c FROM CategoryItemEntity c WHERE c.category = :category")
-  List<CategoryItemEntity> findCategoryItemList(@Param("category") Long category);
+  List<CategoryItemEntity> findCategoryItemList(@Param("category") final Long category);
+
+  @Query("SELECT c.category FROM CategoryItemEntity c WHERE c.id = :categoryItemId")
+  Long findCategoryId(@Param(value = "categoryItemId") final Long categoryItemId);
 }

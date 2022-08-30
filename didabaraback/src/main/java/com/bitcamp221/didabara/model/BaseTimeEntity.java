@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 
 @Getter
 //JPA Entity들이 해당 클래스를 상속할때에 해당 클래스 내의 필드들도 컬럼으로 인식하도록 하는 어노테이션이다.
