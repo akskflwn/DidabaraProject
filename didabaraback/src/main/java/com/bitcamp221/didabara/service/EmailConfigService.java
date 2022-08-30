@@ -2,6 +2,7 @@ package com.bitcamp221.didabara.service;
 
 import com.bitcamp221.didabara.mapper.EmailConfigMapper;
 import com.bitcamp221.didabara.mapper.UserMapper;
+import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
@@ -55,7 +56,6 @@ public class EmailConfigService {
         Map haveAuthCodeUser = null;
         try {
             haveAuthCodeUser = userMapper.selectUsernameAndAuthCode(emailAuthCodeMap);
-            log.info("haveAuthCodeUser.get(\"authCode\")={}", haveAuthCodeUser.get("authCode"));
             String o1 = (String) emailAuthCodeMap.get("authCode");
             String o = (String) haveAuthCodeUser.get("auth_code");
             log.info("o1={}", o1);
@@ -88,18 +88,16 @@ public class EmailConfigService {
 
         // 이메일로 찾은 유저 객체
         UserEntity userIdByEmail = userMapper.selectUserIdByEmail(email);
-        log.info("userIdByEmail.getUsername={}",userIdByEmail.getUsername());
-        log.info("userIdByEmail.getId()={}",userIdByEmail.getId());
 
-        // emailconfig 테이블에 찾은 아이디 값,이메일,인증코드 저장
-
-        int checkRow = 0;
-        if (userIdByEmail != null) {
-            checkRow= emailConfigMapper.updateUserIntoEmailconfig(userIdByEmail, code);
+        // 이메일로 찾은 유저 객체의 아이디 emailconfig 테이블에 저장
+        Long id = userIdByEmail.getId();
+        EmailConfigEntity checkEmailEntity = emailConfigMapper.selectEmailConfig(id);
+        if (checkEmailEntity == null) {
+            emailConfigMapper.saveUserIntoEmailconfig(id, code);
+        } else {
+            emailConfigMapper.updateUserIntoEmailconfig(id, code);
         }
 
-        checkRow = emailConfigMapper.saveUserIntoEmailconfig(userIdByEmail, code);
-        log.info("checkRow={}", checkRow);
 
         MimeMessage m = mailSender.createMimeMessage();
         MimeMessageHelper h = new MimeMessageHelper(m, "UTF-8");

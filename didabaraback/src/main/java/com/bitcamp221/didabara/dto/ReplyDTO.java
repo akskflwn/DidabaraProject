@@ -1,8 +1,6 @@
 package com.bitcamp221.didabara.dto;
 
-import com.bitcamp221.didabara.model.CategoryItemEntity;
 import com.bitcamp221.didabara.model.ReplyEntity;
-import com.bitcamp221.didabara.model.SubscriberEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

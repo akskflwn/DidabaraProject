@@ -1,6 +1,5 @@
 package com.bitcamp221.didabara.dto;
 
-import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.model.UserInfoEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -22,7 +21,6 @@ public class UserInfoDTO {
   private String profileImageUrl;
   private LocalDateTime createdDate;
   private LocalDateTime modifiedDate;
-//xpt
   public UserInfoDTO (UserInfoEntity userInfoEntity) {
     this.id = userInfoEntity.getId();
     this.job = userInfoEntity.getJob();
