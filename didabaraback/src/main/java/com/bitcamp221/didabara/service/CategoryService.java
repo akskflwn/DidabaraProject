@@ -19,7 +19,7 @@ public class CategoryService {
   @Autowired
   private CategoryRepository categoryRepository;
 
-  //  ---------------------------------------------------
+  //  -----------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : 받아온 데이터에 대해서 사전 검사
 //  마지막 수정자 : 문병훈

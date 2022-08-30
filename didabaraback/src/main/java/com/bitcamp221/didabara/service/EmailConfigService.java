@@ -2,6 +2,7 @@ package com.bitcamp221.didabara.service;
 
 import com.bitcamp221.didabara.mapper.EmailConfigMapper;
 import com.bitcamp221.didabara.mapper.UserMapper;
+import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
@@ -13,13 +14,11 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
-import javax.transaction.Transactional;
 import java.util.Map;
 import java.util.UUID;
 
 @Slf4j
 @Service
-@Transactional
 public class EmailConfigService {
 
   @Autowired
@@ -39,7 +38,6 @@ public class EmailConfigService {
   /**
    * 작성자 : 김남주
    * 빨간줄 보이는게 맞습니다.
-   *
    * @param mailSender
    */
   @Autowired
@@ -51,7 +49,6 @@ public class EmailConfigService {
    * 작성자 : 김남주
    * 메소드 기능 : 인증코드 받아서 체크하는 기능 (아직 구현 안됌)
    * 마지막 작성자 : 김남주
-   *
    * @param emailAuthCodeMap // email, auth_code 필요
    * @return
    */
@@ -59,11 +56,10 @@ public class EmailConfigService {
     Map haveAuthCodeUser = null;
     try {
       haveAuthCodeUser = userMapper.selectUsernameAndAuthCode(emailAuthCodeMap);
-      log.info("haveAuthCodeUser.get(\"authCode\")={}", haveAuthCodeUser.get("authCode"));
       String o1 = (String) emailAuthCodeMap.get("authCode");
       String o = (String) haveAuthCodeUser.get("auth_code");
       log.info("o1={}", o1);
-      log.info("o={}", o);
+      log.info("o={}",o);
       if (!o1.equals(o)) {
         throw new Exception("일치하지 않는 계정, 코드");
       }
@@ -81,8 +77,7 @@ public class EmailConfigService {
    * 메서드 기능 : 회원가입 후 auth_code 전송 메서드
    * 마지막 작성자 : 김남주
    * 추가 : user 테이블의 pk 값이 emailconfig 테이블의 id 값이 같아야하는데
-   * emailconfig 테이블의 id값 - 1 해야 user 테이블의 id값이 랑 맞음
-   *
+   *        emailconfig 테이블의 id값 - 1 해야 user 테이블의 id값이 랑 맞음
    * @param email
    * @throws Exception
    */
@@ -93,18 +88,16 @@ public class EmailConfigService {
 
     // 이메일로 찾은 유저 객체
     UserEntity userIdByEmail = userMapper.selectUserIdByEmail(email);
-    log.info("userIdByEmail.getUsername={}", userIdByEmail.getUsername());
-    log.info("userIdByEmail.getId()={}", userIdByEmail.getId());
 
-    // emailconfig 테이블에 찾은 아이디 값,이메일,인증코드 저장
-
-    int checkRow = 0;
-    if (userIdByEmail != null) {
-      checkRow = emailConfigMapper.updateUserIntoEmailconfig(userIdByEmail, code);
+    // 이메일로 찾은 유저 객체의 아이디 emailconfig 테이블에 저장
+    Long id = userIdByEmail.getId();
+    EmailConfigEntity checkEmailEntity = emailConfigMapper.selectEmailConfig(id);
+    if (checkEmailEntity == null) {
+      emailConfigMapper.saveUserIntoEmailconfig(id, code);
+    } else {
+      emailConfigMapper.updateUserIntoEmailconfig(id, code);
     }
 
-    checkRow = emailConfigMapper.saveUserIntoEmailconfig(userIdByEmail, code);
-    log.info("checkRow={}", checkRow);
 
     MimeMessage m = mailSender.createMimeMessage();
     MimeMessageHelper h = new MimeMessageHelper(m, "UTF-8");

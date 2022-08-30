@@ -3,16 +3,19 @@ import Router from "./Router";
 import { RecoilRoot } from "recoil";
 import { ThemeProvider } from "styled-components";
 import { Theme } from "./Theme";
+import { QueryClientProvider, QueryClient } from "react-query";
+
+const queryClient = new QueryClient();
 
 function App() {
   return (
-    <div className="App">
+    <QueryClientProvider client={queryClient}>
       <RecoilRoot>
         <ThemeProvider theme={Theme}>
           <Router />
         </ThemeProvider>
       </RecoilRoot>
-    </div>
+    </QueryClientProvider>
   );
 }
 

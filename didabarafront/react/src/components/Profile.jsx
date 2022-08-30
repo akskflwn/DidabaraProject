@@ -2,6 +2,8 @@ import React from "react";
 import styled from "styled-components";
 import { Paper, Avatar } from "@mui/material";
 import { Draggable } from "react-beautiful-dnd";
+import { useRecoilValue } from "recoil";
+import { userState } from "../config/Atom";
 
 const StyledPaper = styled(Paper)`
   && {
@@ -52,6 +54,7 @@ const H5 = styled.h5`
 `;
 
 function Profile({ img, username, title, text, idx, id }) {
+  const user = useRecoilValue(userState);
   return (
     <Draggable key={id} draggableId={title} index={idx}>
       {(magic) => (
@@ -62,7 +65,7 @@ function Profile({ img, username, title, text, idx, id }) {
         >
           <Wrapper>
             <ImgBlock>
-              <Img alt="userImage" src={img} />
+              <Img alt="userImage" src={""} />
               <H4>{username}</H4>
             </ImgBlock>
             <InfoLine>
