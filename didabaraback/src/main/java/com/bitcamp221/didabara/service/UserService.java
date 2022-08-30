@@ -1,8 +1,11 @@
 package com.bitcamp221.didabara.service;
 
+import com.bitcamp221.didabara.dto.UserDTO;
 import com.bitcamp221.didabara.mapper.EmailConfigMapper;
 import com.bitcamp221.didabara.mapper.UserMapper;
 import com.bitcamp221.didabara.model.UserEntity;
+import com.bitcamp221.didabara.model.UserInfoEntity;
+import com.bitcamp221.didabara.presistence.UserInfoRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
 import com.bitcamp221.didabara.security.TokenProvider;
 import com.google.gson.JsonElement;
@@ -12,13 +15,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.imageio.ImageIO;
 import javax.transaction.Transactional;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.InputStreamReader;
-import java.io.OutputStreamWriter;
+import java.awt.image.BufferedImage;
+import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -30,6 +33,8 @@ public class UserService {
     private UserMapper userMapper;
     @Autowired
     private EmailConfigMapper emailConfigMapper;
+    @Autowired
+    private UserInfoRepository userInfoRepository;
 
     @Autowired
     private TokenProvider tokenProvider;
@@ -63,9 +68,22 @@ public class UserService {
 
 //    matches
         if (originalUser != null && passwordEncoder.matches(password, originalUser.getPassword())) {
-            return originalUser;
-        }
 
+            //로그인할떄 유저의 아이디랑 비빌번호가 일치할때
+            //ban check을한다
+
+            UserInfoEntity bancheck =userInfoRepository.findById(originalUser.getId()).orElseThrow(() ->
+                    new IllegalArgumentException("해당 아이디가 없습니다."));
+
+            if(!bancheck.isBan())
+            {
+                return originalUser;
+            }
+            else
+            {
+                log.warn("User {} hasbaned", username);
+            }
+        }
         return null;
     }
 
@@ -120,80 +138,159 @@ public class UserService {
     }
 
 
-    public UserEntity createKakaoUser(String token)  {
+    public UserDTO createKakaoUser(String token) throws IOException {
 
         System.out.println("token = " + token);
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
 
         //access_token을 이용하여 사용자 정보 조회
-        try {
-            URL url = new URL(reqURL);
-            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+        URL url = new URL(reqURL);
+        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-            conn.setRequestMethod("POST");
-            conn.setDoOutput(true);
-            conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
+        conn.setRequestMethod("POST");
+        conn.setDoOutput(true);
+        conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
 
-            //결과 코드가 200이라면 성공
-            int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+        //결과 코드가 200이라면 성공
+        int responseCode = conn.getResponseCode();
+        System.out.println("responseCode : " + responseCode);
 
-            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-            String line = "";
-            String result = "";
+        //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+        String line = "";
+        String result = "";
 
-            while ((line = br.readLine()) != null) {
-                result += line;
+        while ((line = br.readLine()) != null) {
+            result += line;
+        }
+
+
+        System.out.println("response body : " + result);
+
+        //Gson 라이브러리로 JSON파싱
+//        JsonParser parser = new JsonParser();
+//        JsonElement element = parser.parse(result);
+        JsonElement element = JsonParser.parseString(result);
+
+
+        Long id = element.getAsJsonObject().get("id").getAsLong();
+        boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
+        String nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
+        String profile_image = element.getAsJsonObject().get("properties").getAsJsonObject().get("profile_image").getAsString();
+        String email = "";
+        if (hasEmail) {
+            email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
+        }
+        System.out.println("id : " + id);
+        System.out.println("email : " + email);
+        System.out.println("nickname = " + nickname);
+        System.out.println("profile_image = " + profile_image);
+
+//            UserEntity user = UserEntity.builder()
+//                    .id(id)
+//                    .username(email)
+//                    .nickname(nickname)
+//                    .password(id + "")
+//                    .build();
+//            System.out.println("/////////////////////////////////////////////////////////////////////////");
+//            log.info(""+user.getId());
+//            System.out.println("/////////////////////////////////////////////////////////////////////////");
+//            if (!userRepository.existsByUsername(email)) {
+//
+//                UserEntity save = userRepository.save(user);
+//
+//                UserInfoEntity userInfoEntity = UserInfoEntity.builder()
+//                        .id(save.getId())
+//                        .profileImageUrl(profile_image)
+//                        .build();
+//                userInfoRepository.save(userInfoEntity);
+//
+//                br.close();
+//
+//            }else{
+//                log.info("이미 가입된 사용자입니다");
+//            }
+//
+//
+//            UserEntity findUser= userRepository.findByUsername(email);
+//            String find_user_token = tokenProvider.create(findUser);
+//            System.out.println("find_user_token = " + find_user_token);
+//
+//            return user;
+
+
+        if (userRepository.findByUsername(email) == null) {
+
+            Long s = userMapper.lastOneIndex();
+
+            if (s == null) {
+                s = 1L;
+            } else {
+                s = s+1L;
             }
-
-
-            System.out.println("response body : " + result);
-
-            //Gson 라이브러리로 JSON파싱
-            JsonParser parser = new JsonParser();
-            JsonElement element = parser.parse(result);
-
-            Long id = element.getAsJsonObject().get("id").getAsLong();
-            boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
-            String nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
-            String email = "";
-            if(hasEmail){
-                email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
-            }
-            System.out.println("id : " + id);
-            System.out.println("email : " + email);
-            System.out.println("nickname = " + nickname);
 
             UserEntity user = UserEntity.builder()
-                    .id(id)
+                    .id(s)
                     .username(email)
                     .nickname(nickname)
-                    .password(id+"")
+                    .password(id + "")
                     .build();
+            String find_user_token = tokenProvider.create(user);
+            System.out.println("find_user_token = " + find_user_token);
 
-            // user로 찾은 bearer 토큰 값
+            userRepository.save(user);
+
+            try {
+                String itemPath = profile_image;
+                BufferedImage image = null;
+                image = ImageIO.read(new URL(itemPath));
+                String fileName = itemPath.substring(itemPath.lastIndexOf("/") + 1);
+                String code = UUID.randomUUID().toString().substring(0, 6);
+                File file = new File("C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\"+code +".jpg");
+                String fileUrl = "C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\";
+                ImageIO.write(image, "jpg", file);
+                System.out.println("fileName = " + fileName);
+                System.out.println("file = " + file);
+                UserInfoEntity userInfo = UserInfoEntity.builder()
+                        .fileOriName(fileName)
+                        .profileImageUrl(fileUrl)
+                        .filename(code + ".jpg")
+                        .id(user.getId())
+                        .build();
+
+                userInfoRepository.save(userInfo);
+            } catch (IOException e) {
+                String message = e.getMessage();
+                log.error("jpgError={}",message);
+            }
+            UserDTO userDTO = new UserDTO(user);
+            userDTO.setToken(find_user_token);
+
+            return userDTO;
+        } else {
+            UserEntity byUsername = userRepository.findByUsername(email);
+            UserEntity user = UserEntity.builder()
+                    .id(byUsername.getId())
+                    .username(email)
+                    .nickname(nickname)
+                    .password(id + "")
+                    .build();
             String find_user_token = tokenProvider.create(user);
             System.out.println("find_user_token = " + find_user_token);
             br.close();
+            UserDTO userDTO = new UserDTO(user);
+            userDTO.setToken(find_user_token);
 
-            // save 하기 전에 db에 저장되어 있는지 확인후
-            // 저장되어있으면 save하지 않음
-
-            // 이메일로 찾은 유저테이블의 유저객체
-            UserEntity userIdByEmail = userMapper.selectUserIdByEmail(email);
-
-            if (userIdByEmail == null && !userIdByEmail.getUsername().equals(email)) {
-                userRepository.save(user);
-            }
-            return user;
-
-        } catch (Exception e) {
-            e.printStackTrace();
-            return null;
+            return userDTO;
         }
+
     }
+
+
+
+
+
 
     /* 카카오 로그인(test) */
     public String[] getKaKaoAccessToken(String code) {

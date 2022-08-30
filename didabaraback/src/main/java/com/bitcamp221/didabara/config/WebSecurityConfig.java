@@ -40,6 +40,7 @@ public class WebSecurityConfig {
 
     @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return(web)->web.ignoring().antMatchers("/", "/auth/**", "home", "/emailconfig/**", "/category/**");
+        return(web)->web.ignoring().antMatchers("/", "/auth/**", "home",
+                "/emailconfig/**", "/category/**", "/userinfo/**", "/upload/**","/pdfreport/**");
     }
 }
