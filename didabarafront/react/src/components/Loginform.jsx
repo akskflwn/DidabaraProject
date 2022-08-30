@@ -20,7 +20,8 @@ const StyledForm = styled(motion.div)`
   height: 100vh;
   background-color: white;
   position: fixed;
-  overflow-y: auto;
+  overflow-y: scroll;
+  overflow-x: hidden;
   right: 0;
   top: 0;
   transform-origin: right;
@@ -52,7 +53,7 @@ const loginFormAnimation = {
     x: 0,
     transition: {
       duration: 0.5,
-      type: "tween",
+      type: "just",
     },
   },
   exit: {
@@ -81,13 +82,13 @@ function Loginform() {
         exit={{ opacity: 0 }}
         transition={{ duration: 0.5 }}
       />
+
       <StyledForm
         variants={loginFormAnimation}
         initial="start"
         animate="show"
         exit="exit"
       >
-        {" "}
         <Img src="./didabara_logo.png" />
         <LoginInput />
       </StyledForm>

@@ -7,7 +7,7 @@ function MypageMain() {
   const [userInfo, setUserInfo] = useRecoilState(userState);
   return (
     <Container>
-      <Grid xs={9}>
+      <Grid item xs={9}>
         <Avatar
           src={userInfo.profile_image_url + userInfo.file_name}
           sx={{ width: 150, height: 150 }}
