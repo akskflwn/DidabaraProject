@@ -141,7 +141,7 @@ const Join = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" style={{ marginTop: "5%" }}>
+    <Container component="main" maxWidth="xs" style={{ marginTop: "5%"}}>
       <Grid container>
         <Grid item xs={12}>
           <img src="./didabara_logo.png" style={{ width: "180px" }} />
