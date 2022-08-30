@@ -59,6 +59,7 @@ public class FileUploadController {
 
         File f = new File("C:\\Users\\nj\\Downloads\\docxtest");
         String s3 = s3Upload.getS3("didabara/myfile", "b11a0412-4027-469e-a02f-98f646e36c6e.docx");
+        System.out.println("s3 = " + s3);
         FileUtils.copyURLToFile(new URL(s3),f);
 
         // 1. docx 가져오기
