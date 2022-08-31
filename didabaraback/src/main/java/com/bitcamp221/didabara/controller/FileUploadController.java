@@ -23,9 +23,10 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Optional;
 import java.util.UUID;
 
 
@@ -40,12 +41,16 @@ public class FileUploadController {
 
     private final UserInfoRepository userInfoRepository;
 
-    @PostMapping
+    @PostMapping("text")
+    private ResponseEntity<?> uploadText(@RequestParam("images") MultipartFile files,
+                                         @AuthenticationPrincipal String id) throws IOException {
+        return ResponseEntity.ok().body(s3Upload.upload(files, "myfile",id));
+    }
+
+@PostMapping
     public ResponseEntity<String> uploadFile(@RequestParam("images") MultipartFile files,
                                              @AuthenticationPrincipal String id
-    ) throws Exception {
-
-        System.out.println("files.toString() = " + files.toString());
+    ) throws IOException {
 
         // db에 저장할 파일 이름 생성
         String code = UUID.randomUUID().toString().substring(0, 6);
@@ -57,25 +62,16 @@ public class FileUploadController {
 
         File destinationFile;
         File pdfFile;
-        HWPFile hwpFile;
         String destinationFileName;
 
         String fileUrl = "C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\";
+//        String fileUrl = "https://didabara.s3.ap-northeast-2.amazonaws.com/myfile/";
 
 
         destinationFileName = code + "." + sourceFileNameExtension;
         destinationFile = new File(fileUrl + destinationFileName);
         pdfFile = new File(fileUrl + code + ".pdf");
-        hwpFile = HWPReader.fromFile(fileUrl + "ddd" + ".hwp");
-        String hwpTest = TextExtractor.extract(hwpFile, TextExtractMethod.InsertControlTextBetweenParagraphText);
 
-        String hwpfileName = "C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\testHwp.hwp";
-
-        File file = new File(hwpfileName);
-
-        FileOutputStream fos = new FileOutputStream(file);
-
-        fos.write(Integer.parseInt(hwpTest));
 
         destinationFile.getParentFile().mkdirs();
 
@@ -91,7 +87,6 @@ public class FileUploadController {
                 .execute();
 
         converter.shutDown();
-        destinationFile.delete();
         //s3Upload.deleteFile(destinationFileName,id);
         //
         // return ResponseEntity.ok().body("ok");
@@ -99,16 +94,9 @@ public class FileUploadController {
     }
 
     @DeleteMapping("/delete")
-    public ResponseEntity<Integer> deleteFile(String images,@AuthenticationPrincipal String id) throws IOException {
+    public ResponseEntity<Integer> deleteFile(String images, @AuthenticationPrincipal String id) throws IOException {
 
-        return ResponseEntity.ok().body(s3Upload.deleteFile(images,id));
-    }
-
-    @GetMapping("/test")
-    public ResponseEntity<?> getMyFile2(@AuthenticationPrincipal String id,HttpServletRequest request, HttpServletResponse response) throws Exception {
-        s3Upload.download("myfile/d6a2d19c-b792-4c32-9fa7-cab8b9376d41.jpg",
-                "d6a2d19c-b792-4c32-9fa7-cab8b9376d41.jpg", request, response);
-        return ResponseEntity.ok().body(null);
+        return ResponseEntity.ok().body(s3Upload.deleteFile(images, id));
     }
 
     @GetMapping
@@ -142,6 +130,7 @@ public class FileUploadController {
         // 3. 로컬에 저장한 docx pdf로 변환
 
         // 4. pdf로 변환한 값 s3에 저장
+
         String pdfFileName = "C:\\Users\\nj\\Downloads\\test.pdf";
 
         try (InputStream docxInputStream = new FileInputStream(s3Object.toString());
@@ -164,6 +153,5 @@ public class FileUploadController {
         return ResponseEntity.badRequest().body(null);
 
     }
-
 
 }

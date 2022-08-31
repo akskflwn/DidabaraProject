@@ -1,11 +1,13 @@
 package com.bitcamp221.didabara.controller;
 
+
 import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.model.UserInfoEntity;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
 import com.bitcamp221.didabara.presistence.UserInfoRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
+import com.bitcamp221.didabara.service.EmailConfigService;
 import com.bitcamp221.didabara.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
@@ -63,6 +65,7 @@ public class UserController {
 //      서비스를 이용해 리포지터리에 유저 저장
             UserEntity registeredUser = userService.creat(userEntity);
 
+
             // 회원가입한 id값 가져가서 user_info 테이블 생성
             UserInfoEntity userInfoEntity = UserInfoEntity.builder()
                     .id(registeredUser.getId())
@@ -74,9 +77,6 @@ public class UserController {
 
             userInfoRepository.save(userInfoEntity);
 
-//
-            System.out.println("registerdUser Datetiem:" + registeredUser.getCreatedDate());
-            System.out.println("registerdUser Modifiedtime:" + registeredUser.getModifiedDate());
 
             //응답객체 만들기(패스워드 제외)
             UserDTO responseUserDTO = UserDTO.builder()
@@ -84,7 +84,6 @@ public class UserController {
                     .username(registeredUser.getUsername())
                     .nickname(registeredUser.getNickname())
                     .build();
-
 
             log.info("회원가입 완료");
 
@@ -120,7 +119,7 @@ public class UserController {
         Optional<EmailConfigEntity> byId = emailConfigRepository.findById(user.getId());
 
         if (byId.isPresent()) {
-            if (byId.get().isCheckUser() == false) {
+            if (byId.get().getCheck() == false) {
                 return ResponseEntity.badRequest().body("인증 필요한 유저");
             }
         }
@@ -131,6 +130,7 @@ public class UserController {
             final String token = tokenProvider.create(user);
 
             log.info("usertoken={}", token);
+
 
             final UserDTO responsUserDTO = UserDTO.builder()
                     .id(user.getId())
@@ -147,7 +147,11 @@ public class UserController {
 
             return ResponseEntity.badRequest().body(responseDTO);
         }
+
     }
+
+
+
 
     //조회
     // url로 접근할떄 토큰을 확인한다던가 보안성 로직이 필요할듯함?
@@ -192,6 +196,7 @@ public class UserController {
         log.info("삭제완료");
     }
 
+
     //프론트에서 인가코드 받아오는 url
     /* 카카오 로그인 */
     @GetMapping("/kakao")
@@ -202,12 +207,6 @@ public class UserController {
         String access_found_in_token = access_Token[0];
         // 배열로 받은 토큰들의 accsess_token만 createKaKaoUser 메서드로 전달
         UserDTO kakaoUser = userService.createKakaoUser(access_found_in_token);
-
-        Map map = new HashMap();
-        map.put("kakaoUser", kakaoUser);
-        map.put("access_Token", access_Token[0]);
-        map.put("refresh_Token", access_Token[1]);
-        map.put("id_Token", access_Token[2]);
 
         return kakaoUser;
     }

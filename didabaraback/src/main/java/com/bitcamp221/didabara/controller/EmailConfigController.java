@@ -24,6 +24,8 @@ public class EmailConfigController {
 
     @Autowired
     private EmailConfigRepository emailConfigRepository;
+    @Autowired
+    private UserRepository userRepository;
 
     @Autowired
     private UserRepository userRepository;
@@ -51,15 +53,15 @@ public class EmailConfigController {
         UserEntity username = userRepository.findByUsername((String) emailAuthCodeMap.get("username"));
 
         if (checkEmail) {
-            Optional<EmailConfigEntity> byId =
-                    emailConfigRepository.findById(username.getId());
-            byId.get().setCheckUser(true);
-            emailConfigRepository.save(byId.get());
-            return ResponseEntity.ok().body("코드 인증 확인");
-        } else {
-            return ResponseEntity.badRequest().body("코드 인증 불일치");
+        UserEntity findUser=userRepository.findByUsername((String) emailAuthCodeMap.get("username"));
+        EmailConfigEntity emailConfig=emailConfigRepository.findById(findUser.getId()).orElseThrow(() ->
+                new IllegalArgumentException("해당 아이디가 없습니다."));
+        emailConfig.setCheck(true);
+        emailConfigRepository.save(emailConfig);
+
+        return ResponseEntity.ok().body("코드 인증 확인");
         }
-        // user_info에 컬럼 추가 코드 인증확인 이면 boolean 값 true로 바꿈
+        return ResponseEntity.badRequest().body("코드 인증 불일치");
     }
 
     /**

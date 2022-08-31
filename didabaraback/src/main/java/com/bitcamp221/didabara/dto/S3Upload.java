@@ -88,10 +88,6 @@ public class S3Upload {
         byId.get().setFilename(dbFilename);
         userInfoRepository.save(byId.get());
 
-       /* UserInfoEntity byIdInUserInfo = userInfoMapper.findByIdInUserInfo(id);
-        byIdInUserInfo.setProfileImageUrl(dBPathName);
-        byIdInUserInfo.setFilename(dbFilename);
-        userInfoMapper.updateImage(byIdInUserInfo);*/
         removeNewFile(uploadFile);
         return uploadImageURI;
     }
