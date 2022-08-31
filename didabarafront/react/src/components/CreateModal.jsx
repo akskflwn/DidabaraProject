@@ -106,7 +106,7 @@ function CreateModal() {
     const data = new FormData(e.target);
 
     axios
-      .post("http://192.168.0.187:8080/upload", data, {
+      .post("http://localhost:8080/upload", data, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
           "content-Type": "multipart/form-data",

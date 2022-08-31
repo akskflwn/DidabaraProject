@@ -8,7 +8,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import javax.persistence.Column;
 import javax.persistence.EntityListeners;
 import javax.persistence.MappedSuperclass;
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Getter
 //JPA Entity들이 해당 클래스를 상속할때에 해당 클래스 내의 필드들도 컬럼으로 인식하도록 하는 어노테이션이다.
@@ -19,9 +19,9 @@ public abstract class BaseTimeEntity {
 
   @CreatedDate
   @Column(name = "created_date", nullable = false)
-  private LocalDateTime createdDate;
+  private LocalDate createdDate;
 
   @LastModifiedDate
   @Column(name = "modified_date", nullable = false)
-  private LocalDateTime modifiedDate;
+  private LocalDate modifiedDate;
 }

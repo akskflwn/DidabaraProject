@@ -1,10 +1,11 @@
 package com.bitcamp221.didabara.controller;
 
 import com.bitcamp221.didabara.dto.CategoryDTO;
-import com.bitcamp221.didabara.dto.ResponseDTO;
 import com.bitcamp221.didabara.model.CategoryEntity;
 import com.bitcamp221.didabara.security.TokenProvider;
 import com.bitcamp221.didabara.service.CategoryService;
+import com.bitcamp221.didabara.util.ChangeType;
+import com.bitcamp221.didabara.util.LogMessage;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -13,7 +14,6 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 @Slf4j
 @RestController
@@ -28,114 +28,105 @@ public class CategoryController {
 
   //  ---------------------------------------------------
 //  작성자 : 문병훈
-//  메소드 정보 : host의 카테고리 리스트 맵핑
+//  메소드 정보 : host의 category 리스트 맵핑
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  @GetMapping("/mylist")
-  public ResponseEntity<?> myList(@AuthenticationPrincipal String userId) {
+  @GetMapping("/myList")
+  public ResponseEntity<?> findMyList(@AuthenticationPrincipal final String userId) {
+    final String message = "category myList";
+
     try {
+      log.info(LogMessage.infoJoin(message));
 
-      if (userId == null) {
-        log.error("category mylist get userId is null");
+      if (userId != null) {
 
-        throw new RuntimeException("category mylist get userId is null");
+//    String 타입인 host를 롱 타입으로 변환
+//    Long.valueOf(userId);
+
+        final List<CategoryEntity> categoryEntities = categoryService.findMyList(Long.valueOf(userId));
+
+        log.info(LogMessage.infoComplete(message));
+
+        return ChangeType.toCategoryDTO(categoryEntities);
+      } else {
+        log.error(LogMessage.errorNull(message));
+
+        throw new RuntimeException(LogMessage.errorJoin(message));
       }
-
-      log.info("mylist join success : {}", userId);
-
-      //      String 타입인 host를 롱 타입으로 변환
-      Long id = Long.valueOf(userId);
-
-      final List<CategoryEntity> categoryEntities = categoryService.myList(id);
-
-      final List<CategoryDTO> categoryDTOS = categoryEntities.stream().map(CategoryDTO::new).collect(Collectors.toList());
-
-      final ResponseDTO<CategoryDTO> responseDTO = ResponseDTO.<CategoryDTO>builder().resList(categoryDTOS).build();
-
-      log.info("mylist find success");
-
-      return ResponseEntity.ok().body(responseDTO);
     } catch (Exception e) {
-      log.error("category mylist get failed");
+      log.error(LogMessage.errorJoin(message));
 
-      final ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
-
-      return ResponseEntity.badRequest().body(responseDTO);
+      return ChangeType.toException(e);
     }
   }
 
   //  ---------------------------------------------------
 //  작성자 : 문병훈
-//  메소드 정보 : host의 카테고리 리스트 맵핑
+//  메소드 정보 : category 리스트 출력
 //  마지막 수정자 : 문병훈
+//  필요 데이터 : category(id)
 //  -----------------------------------------------------
-  @GetMapping("/{categoryId}")
-  public ResponseEntity<?> findCategory(@PathVariable final Long categoryId) {
+  @GetMapping("/page/{categoryId}")
+  public ResponseEntity<?> findCategory(@PathVariable(value = "categoryId") final Long categoryId) {
+    final String message = "category findCategory";
+
     try {
+      log.info(LogMessage.infoJoin(message));
 
-      if (categoryId == null) {
-        log.error("category find id is null");
+      if (categoryId != null) {
+        final CategoryDTO categoryDTO = new CategoryDTO(categoryService.findCategory(categoryId));
 
-        throw new RuntimeException("category find id is null");
+        log.info(LogMessage.infoComplete(message));
+
+        return ResponseEntity.ok().body(categoryDTO);
+      } else {
+        log.error(LogMessage.errorNull(message));
+
+        throw new RuntimeException(LogMessage.errorJoin(message));
       }
-
-      log.info("categoryId join success : {}", categoryId);
-
-      final CategoryEntity categoryEntity = categoryService.findByCategory(categoryId);
-
-      final CategoryDTO categoryDTO = new CategoryDTO(categoryEntity);
-
-      log.info("category find success");
-
-      return ResponseEntity.ok().body(categoryDTO);
     } catch (Exception e) {
-      log.error("category find failed");
+      log.error(LogMessage.errorJoin(message));
 
-      final ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
-
-      return ResponseEntity.badRequest().body(responseDTO);
+      return ChangeType.toException(e);
     }
   }
 
   //  ---------------------------------------------------
 //  작성자 : 문병훈
-//  메소드 정보 : 카테고리 생성 맵핑 (생성 후 카테고리 내부)
+//  메소드 정보 : 카테고리 생성 (생성 후 카테고리 내부)
 //  마지막 수정자 : 문병훈
+//  필요 데이터 : category(title, content, profileImageUrl)
 //  -----------------------------------------------------
-  @PostMapping
-  public ResponseEntity<?> create(@AuthenticationPrincipal final String userId, @RequestBody final CategoryDTO categoryDTO) {
+  @PostMapping("/create")
+  public ResponseEntity<?> create(@AuthenticationPrincipal final String userId,
+                                  @RequestBody final CategoryDTO categoryDTO) {
+    final String message = "category create";
+
     try {
-      log.info("create join success : {}", categoryDTO.getId());
+      log.info(LogMessage.infoJoin(message));
 
-      if (categoryDTO == null) {
-        log.error("Category DTO is null");
+      if (userId != null || categoryDTO != null) {
+        final String code = UUID.randomUUID().toString().substring(0, 8);
 
-        throw new RuntimeException("Category DTO is null");
+        categoryDTO.setInviteCode(code);
+        categoryDTO.setHost(Long.valueOf(userId));
+
+        final CategoryEntity entity = categoryService.create(CategoryDTO.toEntity(categoryDTO));
+
+        final CategoryDTO DTO = new CategoryDTO(entity);
+
+        log.info(LogMessage.infoComplete(message));
+
+        return ResponseEntity.ok().body(DTO);
+      } else {
+        log.error(LogMessage.errorNull(message));
+
+        throw new RuntimeException(LogMessage.errorJoin(message));
       }
-
-      Long host = Long.valueOf(userId);
-
-//      랜덤 난수 초대 코드 생성.
-      String code = UUID.randomUUID().toString().substring(0, 8);
-
-      categoryDTO.setInviteCode(code);
-      categoryDTO.setHost(host);
-
-      final CategoryEntity categoryEntity = CategoryDTO.toCategoryEntity(categoryDTO);
-
-      final CategoryEntity entity = categoryService.create(categoryEntity);
-
-      final CategoryDTO DTO = new CategoryDTO(entity);
-
-      log.info("category create success");
-
-      return ResponseEntity.ok().body(DTO);
     } catch (Exception e) {
-      log.error("category create failed");
+      log.error(LogMessage.errorJoin(message));
 
-      final ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
-
-      return ResponseEntity.badRequest().body(responseDTO);
+      return ChangeType.toException(e);
     }
   }
 
@@ -143,48 +134,40 @@ public class CategoryController {
 //  작성자 : 문병훈
 //  메소드 정보 : 내 카테고리 수정 (수정 후 카테고리 내부)
 //  마지막 수정자 : 문병훈
+//  필요 데이터 : category(id[필수], title, content, profileImageUrl)
 //  -----------------------------------------------------
-  @PutMapping
-  public ResponseEntity<?> update(@AuthenticationPrincipal final String userId, @RequestBody final CategoryDTO categoryDTO) {
+  @PutMapping("/update")
+  public ResponseEntity<?> update(@AuthenticationPrincipal final String userId,
+                                  @RequestBody final CategoryDTO categoryDTO) {
+    final String message = "category update";
+
     try {
+      log.info(LogMessage.infoJoin(message));
 
-      if (userId == null || categoryDTO == null) {
-        log.error("category update id userId or categoryDTO is null");
+      if (userId != null && Long.valueOf(userId) == categoryService.findHost(categoryDTO.getId())) {
+        categoryDTO.setHost(Long.valueOf(userId));
 
-        throw new RuntimeException("category update id userId or categoryDTO is null");
-      }
+        final CategoryEntity entity = categoryService
+                .update(CategoryDTO.toEntity(categoryDTO));
 
-      if (categoryService.existByCategory(categoryDTO.getId())) {
-        log.error("category is not exist");
-
-        throw new RuntimeException("category is not exist");
-      }
-
-      //      String 타입인 host를 롱 타입으로 변환
-      Long host = Long.valueOf(userId);
-
-      if (host == categoryDTO.getHost()) {
-
-        log.info("category update join success : {}", categoryDTO.getId());
-
-        final CategoryEntity categoryEntity = CategoryDTO.toCategoryEntity(categoryDTO);
-
-        final CategoryEntity entity = categoryService.update(categoryEntity);
-
-        log.info("category update success");
+        log.info(LogMessage.infoComplete(message));
 
         return ResponseEntity.ok().body(entity);
       } else {
-        log.error("userId does not match");
+        if (userId == null) {
+          log.error(LogMessage.errorNull(message));
 
-        throw new RuntimeException("userId does not match");
+          throw new RuntimeException(LogMessage.errorNull(message));
+        } else {
+          log.error(LogMessage.errorMismatch(message));
+
+          throw new RuntimeException(LogMessage.errorMismatch(message));
+        }
       }
     } catch (Exception e) {
-      log.error("category update failed");
+      log.error(LogMessage.errorJoin(message));
 
-      final ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
-
-      return ResponseEntity.badRequest().body(responseDTO);
+      return ChangeType.toException(e);
     }
   }
 
@@ -192,55 +175,37 @@ public class CategoryController {
 //  작성자 : 문병훈
 //  메소드 정보 : 특정 Category 삭제 (삭제 후 내 리스트 출력)
 //  마지막 수정자 : 문병훈
+//  필요 데이터 : category(id)
 //  -----------------------------------------------------
-  @DeleteMapping
-  public ResponseEntity<?> delete(@AuthenticationPrincipal final String host, @RequestBody final CategoryDTO categoryDTO) {
+  @DeleteMapping("/delete/page/{categoryId}")
+  public ResponseEntity<?> delete(@AuthenticationPrincipal final String userId,
+                                  @PathVariable(value = "categoryId") final Long categoryId) {
+    final String message = "category delete";
+
     try {
-      log.info("category delete join success : {}", categoryDTO);
+      log.info(LogMessage.infoJoin(message));
 
-      if (categoryDTO == null || host == null) {
-        log.error("category delete DTO or id is null");
+      if (userId != null && Long.valueOf(userId) == categoryService.findHost(categoryId)) {
+        final List<CategoryEntity> categoryEntities = categoryService.deleteById(Long.valueOf(userId), categoryId);
 
-        throw new RuntimeException("category delete DTO or id is null");
-      }
+        log.info(LogMessage.infoComplete(message));
 
-      if (categoryService.existByCategory(categoryDTO.getId())) {
-        log.error("category is not exist");
-
-        throw new RuntimeException("category is not exist");
-      }
-
-//      String 타입인 host를 롱 타입으로 변환
-      Long id = Long.valueOf(host);
-
-      if (id == categoryDTO.getHost()) {
-
-        final CategoryEntity categoryEntity = CategoryDTO.toCategoryEntity(categoryDTO);
-
-        final List<CategoryEntity> categoryEntities = categoryService.delete(id, categoryEntity);
-
-        final List<CategoryDTO> categoryDTOS = categoryEntities.stream().map(CategoryDTO::new).collect(Collectors.toList());
-
-        final ResponseDTO<CategoryDTO> responseDTO = ResponseDTO.<CategoryDTO>builder().resList(categoryDTOS).build();
-
-        log.info("category delete success");
-
-        return ResponseEntity.ok().body(responseDTO);
+        return ChangeType.toCategoryDTO(categoryEntities);
       } else {
-        log.error("userId does not match");
+        if (userId == null) {
+          log.error(LogMessage.errorNull(message));
 
-        throw new RuntimeException("userId does not match");
+          throw new RuntimeException(LogMessage.errorNull(message));
+        } else {
+          log.error(LogMessage.errorMismatch(message));
+
+          throw new RuntimeException(LogMessage.errorMismatch(message));
+        }
       }
     } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
 
-      log.error("category delete failed");
-
-      final String error = e.getMessage();
-
-      final ResponseDTO<CategoryDTO> responseDTO = ResponseDTO.<CategoryDTO>builder().error(error).build();
-
-      return ResponseEntity.badRequest().body(responseDTO);
+      return ChangeType.toException(e);
     }
   }
 }
-

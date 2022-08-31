@@ -98,7 +98,7 @@ function EmailAuth() {
 
     axios({
       method: "post",
-      url: "http://192.168.0.187:8080/emailconfig/check",
+      url: "http://localhost:8080/emailconfig/check",
       data: {
         username: params.username,
         authCode: authCode,
@@ -119,12 +119,12 @@ function EmailAuth() {
    */
   function resendAuthcode() {
     axios
-      .get(`http://192.168.0.187:8080/emailconfig/${params.username}`, {
+      .get(`http://localhost:8080/emailconfig/${params.username}`, {
         username: params.username,
       })
       .then((response) => {
         axios.get(
-          `http://192.168.0.187:8080/emailconfig/${response.params.username}`
+          `http://localhost:8080/emailconfig/${response.params.username}`
         );
       });
   }
@@ -134,7 +134,7 @@ function EmailAuth() {
       <StyledDiv>
         <Container component="main" maxWidth="xs">
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{textAlign:"center"}}>
               <StyledImg src="../image1.png" />
             </Grid>
             <Grid item xs={12}>

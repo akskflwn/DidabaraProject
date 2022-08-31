@@ -16,30 +16,31 @@ import org.springframework.web.filter.CorsFilter;
 @EnableWebSecurity
 public class WebSecurityConfig {
 
-    @Autowired
-    private JwtAuthenticationFilter jwtAuthenticationFilter;
+  @Autowired
+  private JwtAuthenticationFilter jwtAuthenticationFilter;
 
-    @Bean
-    public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests((authz) -> authz
-                        .anyRequest().authenticated()
-                )
-                .httpBasic().disable()
-                .csrf().disable()
-                .cors()
-                .and()
-                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+  @Bean
+  public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    http
+            .authorizeHttpRequests((authz) -> authz
+                    .anyRequest().authenticated()
+            )
+            .httpBasic().disable()
+            .csrf().disable()
+            .cors()
+            .and()
+            .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
-        //Jwt filter 등록
-        //매 요청마다 jwtAuthenticationFilter 실행
-        http.addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);
+    //Jwt filter 등록
+    //매 요청마다 jwtAuthenticationFilter 실행
+    http.addFilterAfter(jwtAuthenticationFilter, CorsFilter.class);
 
-        return http.build();
-    }
+    return http.build();
+  }
 
-    @Bean
+  @Bean
     public WebSecurityCustomizer webSecurityCustomizer(){
-        return(web)->web.ignoring().antMatchers("/", "/auth/**", "home", "/emailconfig/**", "/category/**");
+        return(web)->web.ignoring().antMatchers("/", "/auth/**", "home",
+                "/emailconfig/**", "/userinfo/**", "/upload/**","/pdfreport/**");
     }
 }

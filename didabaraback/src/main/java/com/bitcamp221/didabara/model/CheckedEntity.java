@@ -22,9 +22,9 @@ public class CheckedEntity extends BaseTimeEntity {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(name = "category_item_id", nullable = false)
-  private Long categoryItem;
-
   @Column(name = "user_id", nullable = false)
   private Long user;
+
+  @Column(name = "category_item_id", nullable = false)
+  private Long categoryItem;
 }

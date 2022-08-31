@@ -12,8 +12,8 @@ import javax.persistence.*;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "reply")
-public class ReplyEntity extends BaseTimeEntity {
+@Table(name = "category_item_reply")
+public class CategoryItemReplyEntity extends BaseTimeEntity {
 
   @Id
   @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -28,4 +28,11 @@ public class ReplyEntity extends BaseTimeEntity {
 
   @Column(name = "content", nullable = false)
   private String content;
+
+  public void changeEntity(final CategoryItemReplyEntity itemReplyEntity) {
+    this.id = itemReplyEntity.getId();
+    this.categoryItem = itemReplyEntity.getCategoryItem();
+    this.writer = itemReplyEntity.getWriter();
+    this.content = itemReplyEntity.getContent();
+  }
 }

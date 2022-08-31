@@ -22,11 +22,11 @@ function KakaoLogin() {
      * ok respone 확인하였고, 이후 작업 해야함(유저로그인시키기, 토큰 브라우저에 저장하기)
      */
     axios
-      .get(`http://192.168.0.187:8080/auth/kakao?code=${code}`)
+      .get(`http://localhost:8080/auth/kakao?code=${code}`)
       .then((res) => {
         localStorage.setItem("token", res.data.token);
         axios
-          .get("http://192.168.0.187:8080/userinfo", {
+          .get("http://localhost:8080/userinfo", {
             headers: {
               Authorization: "Bearer " + res.data.token,
             },

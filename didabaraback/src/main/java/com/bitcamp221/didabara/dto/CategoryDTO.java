@@ -1,13 +1,12 @@
 package com.bitcamp221.didabara.dto;
 
 import com.bitcamp221.didabara.model.CategoryEntity;
-import com.bitcamp221.didabara.model.UserEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.time.LocalDateTime;
+import java.time.LocalDate;
 
 @Builder
 @Data
@@ -21,8 +20,8 @@ public class CategoryDTO {
   private String content;
   private String inviteCode;
   private String profileImageUrl;
-  private LocalDateTime createdDate;
-  private LocalDateTime modifiedDate;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
   public CategoryDTO(final CategoryEntity categoryEntity) {
     this.id = categoryEntity.getId();
@@ -35,7 +34,7 @@ public class CategoryDTO {
     this.modifiedDate = categoryEntity.getModifiedDate();
   }
 
-  public static CategoryEntity toCategoryEntity(final CategoryDTO categoryDTO) {
+  public static CategoryEntity toEntity(final CategoryDTO categoryDTO) {
 
     return CategoryEntity.builder()
             .id(categoryDTO.getId())

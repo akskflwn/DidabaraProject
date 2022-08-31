@@ -5,6 +5,7 @@ import com.bitcamp221.didabara.service.EmailConfigService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
@@ -24,35 +25,33 @@ public class EmailConfigController {
      * 작성자 : 김남주
      * 메서드 기능 : 인증코드 일치 확인
      * 마지막 작성자 : 김남주
+     *
      * @param emailAuthCodeMap OR Map // Map 으로 받을지 다른걸로 받을지 확인해봐야함.
-     *                             EmailConfigEntity에 email값과 authCode 두개가 같이 없음
-     * {
-     *     "email":"testidi21233@gmail.com",
-     *     "authCode":"865027"
-     * }
+     *                         EmailConfigEntity에 email값과 authCode 두개가 같이 없음
+     *                         {
+     *                         "email":"testidi21233@gmail.com",
+     *                         "authCode":"865027"
+     *                         }
      * @return String "코드 인증 확인" OR  "코드 불일치"
      */
     @PostMapping("/check")
-    public ResponseEntity<?> checkEmail(@RequestBody Map emailAuthCodeMap) {
+    public ResponseEntity<?> checkEmail(@AuthenticationPrincipal String id, @RequestBody Map emailAuthCodeMap) {
         if (emailAuthCodeMap == null) {
             log.warn("emailAuthCodeMap 널 값");
             return null;
         }
-        String o = (String) emailAuthCodeMap.get("email");
-        String o1 = (String) emailAuthCodeMap.get("authCode");
-        log.info("o.email={}", o.toString());
-        log.info("o1.authCode={}", o1.toString());
         boolean checkEmail = emailConfigService.checkEmail(emailAuthCodeMap);
 
-    if (!checkEmail){
-        return ResponseEntity.badRequest().body("코드 불일치");
-    }
+        if (!checkEmail) {
+            return ResponseEntity.badRequest().body("코드 인증 불일치");
+        }
         return ResponseEntity.ok().body("코드 인증 확인");
     }
 
     /**
      * 작성자 : 김남주
      * 메서드 기능 : 회원 가입한 사람의 이메일을 받아서 인증 코드 전송
+     *
      * @param email http://localhost:8080/email/testidi21233@gmail.com
      * @return String 전송 완료 or 전송 실패
      */
