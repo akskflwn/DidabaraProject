@@ -3,7 +3,7 @@ import axios from "axios";
 const REQUEST_ADDRESS1 = "http://192.168.0.187:8080/";
 const REQUEST_ADDRESS2 = "http://192.168.0.48:8080/";
 
-export const REQUEST_ADDRESS = REQUEST_ADDRESS2;
+export const REQUEST_ADDRESS = REQUEST_ADDRESS1;
 
 export const getUserData = () => {
   console.log("query working....");
