@@ -9,10 +9,13 @@ const StyledPaper = styled(Paper)`
   && {
     width: 300;
     border-radius: 0;
+    box-shadow: 1px 1px 3px gray;
     cursor: grab;
+    border-radius: 2px;
     :hover {
       background-color: rgba(238, 238, 238, 1);
     }
+    margin-bottom: 1px;
   }
 `;
 const Wrapper = styled.div`

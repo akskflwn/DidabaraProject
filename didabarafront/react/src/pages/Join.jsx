@@ -23,6 +23,7 @@ import { loginState } from "../config/Atom";
 import styled from "styled-components";
 import axios from "axios";
 import { KakaoLoginAPI } from "../config/KakaoApi";
+import { REQUEST_ADDRESS } from "../config/APIs";
 
 /**
  * 컴포넌트 스타일 정의
@@ -111,14 +112,12 @@ const Join = () => {
   function join(userDTO) {
     axios({
       method: "post",
-      url: "http://192.168.0.187:8080/auth/signup",
+      url: REQUEST_ADDRESS + "auth/signup",
       data: userDTO,
     })
       .then((response) => {
         if (response.status === 200 && response.data.username != null) {
-          axios.get(
-            `http://192.168.0.187:8080/emailconfig/${response.data.username}`
-          );
+          axios.get(`${REQUEST_ADDRESS}emailconfig/${response.data.username}`);
           navi(`/emailconfig/${response.data.username}`);
         }
       })
@@ -141,13 +140,13 @@ const Join = () => {
   };
 
   return (
-    <Container component="main" maxWidth="xs" style={{ marginTop: "5%"}}>
-      <Grid container>
+    <Container component="main" maxWidth="xs" style={{ marginTop: "5%" }}>
+      <Grid container spacing={1} style={{ textAlign: "center" }}>
         <Grid item xs={12}>
           <img src="./didabara_logo.png" style={{ width: "180px" }} />
         </Grid>
         <Grid item xs={12}>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" mb={2}>
             회원가입
           </Typography>
         </Grid>
@@ -227,7 +226,7 @@ const Join = () => {
               카카오로 시작하기
             </StyledKakaoButton>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{ textAlign: "center" }}>
             <span>
               이미 가입하셨나요?
               <span

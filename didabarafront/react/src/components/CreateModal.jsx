@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import Pallet from "./Pallet";
+import { REQUEST_ADDRESS } from "../config/APIs";
 
 const number = window.innerWidth;
 const Background = styled.div`
@@ -86,11 +87,10 @@ const StyledFile = styled.input`
   display: none;
 `;
 function CreateModal() {
-  const [color, setColor] = useState();
   const imgRef = useRef();
   const navi = useNavigate();
 
-  const showFileName = (e) => {
+  const showFileImage = (e) => {
     const filename = e.target.files[0].name;
     e.target.nextElementSibling.innerHTML = `${filename}`;
 
@@ -106,13 +106,14 @@ function CreateModal() {
     const data = new FormData(e.target);
 
     axios
-      .post("http://192.168.0.187:8080/upload", data, {
+      .post(REQUEST_ADDRESS + "category/create", data, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
           "content-Type": "multipart/form-data",
         },
       })
-      .then((res) => console.log(res));
+      .then((res) => console.log(res))
+      .catch((err) => console.log(err));
   };
 
   return (
@@ -136,7 +137,7 @@ function CreateModal() {
               </Typography>
               <StyledTextField
                 type="text"
-                name="title"
+                name="content"
                 label="소개"
                 fullWidth
               />
@@ -145,9 +146,9 @@ function CreateModal() {
               <StyledLabel htmlFor="file">배경이미지 선택하기</StyledLabel>
               <StyledFile
                 type="file"
-                name="images"
+                name="profileImageUrl"
                 id="file"
-                onChange={showFileName}
+                onChange={showFileImage}
               />
               <StyledDiv
                 style={{
@@ -186,14 +187,14 @@ function CreateModal() {
               >
                 <Typography>등록하기</Typography>
               </Button>
-              <Button variant="outlined" style={{ width: "100%" }}>
-                <Typography
-                  onClick={() => {
-                    navi(-1);
-                  }}
-                >
-                  취소 / 나가기
-                </Typography>
+              <Button
+                variant="outlined"
+                style={{ width: "100%" }}
+                onClick={() => {
+                  navi(-1);
+                }}
+              >
+                <Typography>취소 / 나가기</Typography>
               </Button>
             </div>
           </StyledDiv>

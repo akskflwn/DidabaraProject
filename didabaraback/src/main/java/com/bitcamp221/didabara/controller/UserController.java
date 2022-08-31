@@ -1,6 +1,5 @@
 package com.bitcamp221.didabara.controller;
 
-
 import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.model.UserInfoEntity;
@@ -64,7 +63,6 @@ public class UserController {
 //      서비스를 이용해 리포지터리에 유저 저장
             UserEntity registeredUser = userService.creat(userEntity);
 
-
             // 회원가입한 id값 가져가서 user_info 테이블 생성
             UserInfoEntity userInfoEntity = UserInfoEntity.builder()
                     .id(registeredUser.getId())
@@ -76,6 +74,9 @@ public class UserController {
 
             userInfoRepository.save(userInfoEntity);
 
+//
+            System.out.println("registerdUser Datetiem:" + registeredUser.getCreatedDate());
+            System.out.println("registerdUser Modifiedtime:" + registeredUser.getModifiedDate());
 
             //응답객체 만들기(패스워드 제외)
             UserDTO responseUserDTO = UserDTO.builder()
@@ -131,7 +132,6 @@ public class UserController {
 
             log.info("usertoken={}", token);
 
-
             final UserDTO responsUserDTO = UserDTO.builder()
                     .id(user.getId())
                     .username(user.getUsername())
@@ -147,7 +147,6 @@ public class UserController {
 
             return ResponseEntity.badRequest().body(responseDTO);
         }
-
     }
 
     //조회
@@ -193,7 +192,6 @@ public class UserController {
         log.info("삭제완료");
     }
 
-
     //프론트에서 인가코드 받아오는 url
     /* 카카오 로그인 */
     @GetMapping("/kakao")
@@ -205,11 +203,11 @@ public class UserController {
         // 배열로 받은 토큰들의 accsess_token만 createKaKaoUser 메서드로 전달
         UserDTO kakaoUser = userService.createKakaoUser(access_found_in_token);
 
-//        Map map = new HashMap();
-//        map.put("kakaoUser", kakaoUser);
-//        map.put("access_Token", access_Token[0]);
-//        map.put("refresh_Token", access_Token[1]);
-//        map.put("id_Token", access_Token[2]);
+        Map map = new HashMap();
+        map.put("kakaoUser", kakaoUser);
+        map.put("access_Token", access_Token[0]);
+        map.put("refresh_Token", access_Token[1]);
+        map.put("id_Token", access_Token[2]);
 
         return kakaoUser;
     }
