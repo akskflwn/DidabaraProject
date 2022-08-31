@@ -23,7 +23,7 @@ public class CategoryItemReplyEntity extends BaseTimeEntity {
   @Column(name = "category_item_id", nullable = false)
   private Long categoryItem;
 
-  @Column(name = "writer_id", nullable = false)
+  @Column(name = "writer", nullable = false)
   private Long writer;
 
   @Column(name = "content", nullable = false)
