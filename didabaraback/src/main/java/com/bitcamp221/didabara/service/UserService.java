@@ -63,8 +63,13 @@ public class UserService {
   }
 
   //  아이디 & 비밀번호 일치 확인
-  public UserEntity getByCredentials(final String username, final String password, final PasswordEncoder passwordEncoder) {
+  public UserEntity getByCredentials(final String username, final String password, final PasswordEncoder passwordEncoder) throws Exception {
+
     final UserEntity originalUser = userRepository.findByUsername(username);
+
+    if (originalUser == null) {
+      throw new Exception("originalUser= 없는 아이디 입니다");
+    }
 
 //    matches
     if (originalUser != null && passwordEncoder.matches(password, originalUser.getPassword())) {
@@ -83,6 +88,8 @@ public class UserService {
       {
         log.warn("User {} hasbaned", username);
       }
+    } else {
+      throw new Exception("패스워드가 틀립니다.");
     }
     return null;
   }
