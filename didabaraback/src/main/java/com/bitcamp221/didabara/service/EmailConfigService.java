@@ -22,10 +22,7 @@ import java.util.UUID;
 public class EmailConfigService {
 
   @Autowired
-  private EmailConfigRepository emailRepository;
-
-  @Autowired
-  private UserRepository userRepository;
+  private EmailConfigRepository emailConfigRepository;
 
   @Autowired
   private UserMapper userMapper;
@@ -33,7 +30,13 @@ public class EmailConfigService {
   @Autowired
   private EmailConfigMapper emailConfigMapper;
 
+  @Autowired
+  private UserRepository userRepository;
+
   private final JavaMailSender mailSender;
+
+
+
 
   /**
    * 작성자 : 김남주

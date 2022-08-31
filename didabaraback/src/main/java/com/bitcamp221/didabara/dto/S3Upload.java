@@ -57,7 +57,7 @@ public class S3Upload {
     public String upload(File uploadFile, String dirName, String id) {
         String fileName = dirName + "/" + uploadFile.getName();
         String uploadImageURI = putS3(uploadFile, fileName);
-        String dBPathName = uploadImageURI.substring(0, 56);
+        String dBPathName = uploadImageURI.substring(0, 63);
         String dbFilename = uploadImageURI.substring(uploadImageURI.lastIndexOf("/") + 1);
 
         Optional<UserInfoEntity> byId = userInfoRepository.findById(Long.valueOf(id));
@@ -65,10 +65,6 @@ public class S3Upload {
         byId.get().setFilename(dbFilename);
         userInfoRepository.save(byId.get());
 
-       /* UserInfoEntity byIdInUserInfo = userInfoMapper.findByIdInUserInfo(id);
-        byIdInUserInfo.setProfileImageUrl(dBPathName);
-        byIdInUserInfo.setFilename(dbFilename);
-        userInfoMapper.updateImage(byIdInUserInfo);*/
         removeNewFile(uploadFile);
         return uploadImageURI;
     }

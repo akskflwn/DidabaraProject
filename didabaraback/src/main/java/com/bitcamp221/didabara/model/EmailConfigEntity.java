@@ -1,6 +1,7 @@
 package com.bitcamp221.didabara.model;
 
 import lombok.*;
+import org.hibernate.annotations.ColumnDefault;
 
 import javax.persistence.*;
 
@@ -19,4 +20,12 @@ public class EmailConfigEntity extends BaseTimeEntity {
 
     @Column(name = "auth_code", nullable = false, length = 30)
     private String authCode;
+
+    @Column(name = "check_user")
+    @ColumnDefault("false")
+    private  Boolean check;
+
+    public void setCheck(Boolean check){
+        this.check=check;
+    }
 }
