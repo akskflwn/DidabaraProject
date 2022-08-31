@@ -141,12 +141,12 @@ const Join = () => {
 
   return (
     <Container component="main" maxWidth="xs" style={{ marginTop: "5%" }}>
-      <Grid container>
+      <Grid container spacing={1} style={{ textAlign: "center" }}>
         <Grid item xs={12}>
           <img src="./didabara_logo.png" style={{ width: "180px" }} />
         </Grid>
         <Grid item xs={12}>
-          <Typography component="h1" variant="h5">
+          <Typography component="h1" variant="h5" mb={2}>
             회원가입
           </Typography>
         </Grid>
@@ -226,7 +226,7 @@ const Join = () => {
               카카오로 시작하기
             </StyledKakaoButton>
           </Grid>
-          <Grid item xs={12}>
+          <Grid item xs={12} style={{ textAlign: "center" }}>
             <span>
               이미 가입하셨나요?
               <span

@@ -11,8 +11,6 @@ import { useForm } from "react-hook-form";
 import ErrorMessage from "./ErrorMessage";
 import { REQUEST_ADDRESS } from "../config/APIs";
 
-/**백엔드 로그인 어노테이션 주소 */
-
 /**컴포넌트 스타일 정의 */
 const StyledInput = styled(FormControl)`
   && {

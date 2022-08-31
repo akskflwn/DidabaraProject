@@ -133,7 +133,7 @@ function EmailAuth() {
       <StyledDiv>
         <Container component="main" maxWidth="xs">
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ textAlign: "center" }}>
               <StyledImg src="../image1.png" />
             </Grid>
             <Grid item xs={12}>
