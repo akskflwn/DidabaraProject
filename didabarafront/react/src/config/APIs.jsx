@@ -1,6 +1,9 @@
 import axios from "axios";
 
-const URL = "http://192.168.0.187:8080/";
+const REQUEST_ADDRESS1 = "http://192.168.0.187:8080/";
+const REQUEST_ADDRESS2 = "http://192.168.0.48:8080/";
+
+export const REQUEST_ADDRESS = REQUEST_ADDRESS2;
 
 export const getUserData = () => {
   console.log("query working....");
@@ -13,7 +16,7 @@ export const getUserData = () => {
     console.log("token is inside of Local Storage.");
 
     return axios
-      .get(URL + "userinfo", {
+      .get(REQUEST_ADDRESS + "userinfo", {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },

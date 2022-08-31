@@ -3,6 +3,7 @@
 import axios from "axios";
 import React, { useEffect } from "react";
 import { useSetRecoilState } from "recoil";
+import { REQUEST_ADDRESS } from "../config/APIs";
 import { userState } from "../config/Atom";
 
 function KakaoLogin() {
@@ -21,21 +22,19 @@ function KakaoLogin() {
     /**위에서 얻은 인가코드를 백엔드의 카카로 로그인주소로 보냄.
      * ok respone 확인하였고, 이후 작업 해야함(유저로그인시키기, 토큰 브라우저에 저장하기)
      */
-    axios
-      .get(`http://192.168.0.187:8080/auth/kakao?code=${code}`)
-      .then((res) => {
-        localStorage.setItem("token", res.data.token);
-        axios
-          .get("http://192.168.0.187:8080/userinfo", {
-            headers: {
-              Authorization: "Bearer " + res.data.token,
-            },
-          })
-          .then((response) => {
-            console.log(response);
-            setUser(response.data);
-          });
-      });
+    axios.get(`${REQUEST_ADDRESS}auth/kakao?code=${code}`).then((res) => {
+      localStorage.setItem("token", res.data.token);
+      axios
+        .get(`${REQUEST_ADDRESS}userinfo`, {
+          headers: {
+            Authorization: "Bearer " + res.data.token,
+          },
+        })
+        .then((response) => {
+          console.log(response);
+          setUser(response.data);
+        });
+    });
   }, []);
   return <div>KakaoLogin</div>;
 }

@@ -1,5 +1,6 @@
 package com.bitcamp221.didabara.controller;
 
+import com.bitcamp221.didabara.mapper.EmailConfigMapper;
 import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
@@ -12,6 +13,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @RestController
@@ -25,6 +27,8 @@ public class EmailConfigController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private UserRepository userRepository;
 
     /**
      * 작성자 : 김남주
@@ -46,6 +50,7 @@ public class EmailConfigController {
             return null;
         }
         boolean checkEmail = emailConfigService.checkEmail(emailAuthCodeMap);
+        UserEntity username = userRepository.findByUsername((String) emailAuthCodeMap.get("username"));
 
         if (checkEmail) {
         UserEntity findUser=userRepository.findByUsername((String) emailAuthCodeMap.get("username"));

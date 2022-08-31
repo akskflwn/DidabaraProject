@@ -20,7 +20,6 @@ function Pallet({ imgRef }) {
   return (
     <StyledSelect
       onChange={(e) => {
-        console.log(e.target.value);
         imgRef.current.style.backgroundColor = e.target.value;
       }}
     >

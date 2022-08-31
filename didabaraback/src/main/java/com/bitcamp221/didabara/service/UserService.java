@@ -68,36 +68,33 @@ public class UserService {
 
         final UserEntity originalUser = userRepository.findByUsername(username);
 
-        if (originalUser == null) {
-            throw new Exception("originalUser= 없는 아이디 입니다");
-        }
-
-//    matches
-        if (originalUser != null && passwordEncoder.matches(password, originalUser.getPassword())) {
-
-            //로그인할떄 유저의 아이디랑 비빌번호가 일치할때
-            //ban check을한다
-
-            UserInfoEntity bancheck =userInfoRepository.findById(originalUser.getId()).orElseThrow(() ->
-                    new IllegalArgumentException("해당 아이디가 없습니다."));
-
-            if(!bancheck.isBan())
-            {
-                return originalUser;
-            }
-            else
-            {
-                log.warn("User {} hasbaned", username);
-                throw new Exception("user has been baned.");
-            }
-        } else {
-            throw new Exception("패스워드가 틀립니다.");
-        }
+    if (originalUser == null) {
+      throw new Exception("originalUser= 없는 아이디 입니다");
     }
 
+//    matches
+    if (originalUser != null && passwordEncoder.matches(password, originalUser.getPassword())) {
 
+      //로그인할떄 유저의 아이디랑 비빌번호가 일치할때
+      //ban check을한다
 
+      UserInfoEntity bancheck =userInfoRepository.findById(originalUser.getId()).orElseThrow(() ->
+              new IllegalArgumentException("해당 아이디가 없습니다."));
 
+      if(!bancheck.isBan())
+      {
+        return originalUser;
+      }
+      else
+      {
+        log.warn("User {} hasbaned", username);
+        throw new Exception("user has been baned.");
+      }
+    } else {
+      throw new Exception("패스워드가 틀립니다.");
+    }
+  }
+  
         //조회
         //username으로 조회하기
         public UserEntity findUser ( final String username){

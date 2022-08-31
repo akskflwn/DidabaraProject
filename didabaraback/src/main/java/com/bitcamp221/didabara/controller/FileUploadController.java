@@ -2,20 +2,26 @@ package com.bitcamp221.didabara.controller;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3URI;
+import com.amazonaws.services.s3.model.S3Object;
 import com.bitcamp221.didabara.dto.S3Upload;
-import com.bitcamp221.didabara.model.UserInfoEntity;
 import com.bitcamp221.didabara.presistence.UserInfoRepository;
 import com.documents4j.api.DocumentType;
 import com.documents4j.api.IConverter;
 import com.documents4j.job.LocalConverter;
+import kr.dogfoot.hwplib.object.HWPFile;
+import kr.dogfoot.hwplib.reader.HWPReader;
+import kr.dogfoot.hwplib.tool.textextractor.TextExtractMethod;
+import kr.dogfoot.hwplib.tool.textextractor.TextExtractor;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.apache.commons.io.FileUtils;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URL;
 import java.nio.file.Files;
@@ -23,12 +29,15 @@ import java.nio.file.StandardCopyOption;
 import java.util.Optional;
 import java.util.UUID;
 
+
+@Slf4j
 @RequiredArgsConstructor
 @RestController
 @RequestMapping("/upload")
 public class FileUploadController {
 
     private final S3Upload s3Upload;
+    private final AmazonS3Client s3Client;
 
     private final UserInfoRepository userInfoRepository;
 
@@ -38,7 +47,7 @@ public class FileUploadController {
         return ResponseEntity.ok().body(s3Upload.upload(files, "myfile",id));
     }
 
-    @PostMapping
+@PostMapping
     public ResponseEntity<String> uploadFile(@RequestParam("images") MultipartFile files,
                                              @AuthenticationPrincipal String id
     ) throws IOException {
@@ -92,17 +101,39 @@ public class FileUploadController {
 
     @GetMapping
     public ResponseEntity<?> getMyFile(@AuthenticationPrincipal String id) throws Exception {
+//        System.out.println("id = " + id);
+//
+//        Optional<UserInfoEntity> byId = userInfoRepository.findById(Long.valueOf(id));
+//
+//        String filename = byId.get().getFilename();
+//        String profileImageUrl = byId.get().getProfileImageUrl();
+//        String wordFileName = profileImageUrl + filename;
+//        System.out.println("wordFileName = " + wordFileName);
+//
+//        String pdfCode = "toPDF" + UUID.randomUUID().toString().substring(0, 6);
+//
+//        String toPdfFileName = profileImageUrl + pdfCode + ".pdf";
+//        System.out.println("toPdfFileName = " + toPdfFileName);
 
+
+        URI fileToBeDownloaded = new URI("s3://didabara/myfile/b11a0412-4027-469e-a02f-98f646e36c6e.docx");
+
+        AmazonS3URI s3URI = new AmazonS3URI(fileToBeDownloaded);
+        System.out.println("s3URI.getKey() = " + s3URI.getKey());
+        S3Object s3Object = s3Client.getObject("didabara", s3URI.getKey());
+        System.out.println("s3Object = " + s3Object);
+        System.out.println("s3Object = " + s3Object.toString());
         // 1. docx 가져오기
-        String docxFileName = "https://s3://didabara-bucket/myfile/test.docx";
+        String docxFileName = "C:\\Users\\nj\\Downloads\\abcdefg.docx";
         // 2. 로컬에 저장
 
         // 3. 로컬에 저장한 docx pdf로 변환
 
         // 4. pdf로 변환한 값 s3에 저장
-        String pdfFileName = "https://s3://didabara-bucket/myfile/test.pdf";
 
-        try (InputStream docxInputStream = new FileInputStream(docxFileName);
+        String pdfFileName = "C:\\Users\\nj\\Downloads\\test.pdf";
+
+        try (InputStream docxInputStream = new FileInputStream(s3Object.toString());
              OutputStream pdfOutputStream = new FileOutputStream(pdfFileName)) {
 
             IConverter converter = LocalConverter.builder().build();

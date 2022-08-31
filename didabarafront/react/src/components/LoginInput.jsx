@@ -9,9 +9,7 @@ import { loginState, userState } from "../config/Atom";
 import { useNavigate } from "react-router-dom";
 import { useForm } from "react-hook-form";
 import ErrorMessage from "./ErrorMessage";
-
-/**백엔드 로그인 어노테이션 주소 */
-const LOGIN_REQUEST_ADDRESS = "http://192.168.0.187:8080/auth/signin";
+import { REQUEST_ADDRESS } from "../config/APIs";
 
 /**컴포넌트 스타일 정의 */
 const StyledInput = styled(FormControl)`
@@ -88,12 +86,12 @@ function LoginInput() {
    */
   const sendLoginRequest = (data) => {
     axios
-      .post(LOGIN_REQUEST_ADDRESS, data)
+      .post(REQUEST_ADDRESS + "auth/signin", data)
       .then((res) => {
         if (res.status === 200 && res.data.id) {
           localStorage.setItem("token", res.data.token);
           axios
-            .get("http://192.168.0.187:8080/userinfo", {
+            .get(`${REQUEST_ADDRESS}userinfo`, {
               headers: {
                 Authorization: "Bearer " + res.data.token,
               },

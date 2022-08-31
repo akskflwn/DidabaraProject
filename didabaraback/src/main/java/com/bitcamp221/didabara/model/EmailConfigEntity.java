@@ -7,6 +7,7 @@ import javax.persistence.*;
 
 @Builder
 @Getter
+@Setter
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
@@ -18,7 +19,7 @@ public class EmailConfigEntity extends BaseTimeEntity {
     @Column(name = "id")
     private Long id;
 
-    @Column(name = "auth_code", nullable = false, length = 30)
+    @Column(name = "auth_code", length = 30)
     private String authCode;
 
     @Column(name = "check_user")
