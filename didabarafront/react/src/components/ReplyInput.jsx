@@ -2,6 +2,21 @@ import { Button, Grid, TextField, Typography } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
+import { Send } from "@mui/icons-material";
+
+// const StyledButton = styled(Button)`
+//   && {
+//     width: 100%;
+//     height: 100%;
+//     color: #2f3640;
+//     border: #f1f3f5 solid 1px;
+//     background-color: #dadada;
+//     &:hover {
+//       background-color: #f1f3f5;
+//       border: #f1f3f5 solid 1px;
+//     }
+//   }
+// `;
 
 const StyledButton = styled(Button)`
   && {
@@ -16,6 +31,7 @@ const StyledButton = styled(Button)`
     }
   }
 `;
+
 const StyledGrid = styled(Grid)`
   background-color: #2f3640;
 `;
@@ -46,7 +62,7 @@ function ReplyInput() {
         </Grid>
         <Grid item xs={2}>
           <StyledButton type="submit" variant="outlined">
-            <Typography>댓글달기</Typography>
+            <Send />
           </StyledButton>
         </Grid>
       </StyledGrid>
