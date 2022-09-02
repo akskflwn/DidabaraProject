@@ -1,15 +1,4 @@
-import {
-  Avatar,
-  Container,
-  Grid,
-  TextField,
-  Button,
-  Typography,
-  Paper,
-  Badge,
-  Card,
-  Divider,
-} from "@mui/material";
+import { Container, Grid, TextField, Button, Paper } from "@mui/material";
 import React, { useState } from "react";
 import { useRecoilValue } from "recoil";
 import { userState } from "../config/Atom";
@@ -75,24 +64,22 @@ function PersonalInfo() {
       <Paper
         sx={{
           p: 2,
-          margin: 'auto',
+          margin: "auto",
           maxWidth: 1000,
           flexGrow: 1,
         }}
       >
         <Grid container spacing={2}>
-            <Grid item>
-                <AvatarPicker />
+          <Grid item>
+            <AvatarPicker />
+          </Grid>
+          <Grid item xs={12} sm container>
+            <Grid item xs container direction="column" spacing={2}>
+              <Grid item xs>
+                <TextField>이름</TextField>
+              </Grid>
             </Grid>
-            <Grid item xs={12} sm container>
-                <Grid item xs container direction="column" spacing={2}>
-                    <Grid item xs>
-                        <TextField>
-                            이름
-                        </TextField>
-                    </Grid>
-                </Grid>
-            </Grid>
+          </Grid>
         </Grid>
       </Paper>
     </Container>

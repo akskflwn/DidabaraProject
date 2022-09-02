@@ -1,11 +1,9 @@
 import React from "react";
 import {
-  Container,
   Avatar,
   Typography,
   Grid,
   Button,
-  CardMedia,
 } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { userState } from "../config/Atom";

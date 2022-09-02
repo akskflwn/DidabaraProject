@@ -6,6 +6,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
 import Viewer from "../components/Viewer";
 import ReplyInput from "../components/ReplyInput";
+import ReplyContents from "../components/ReplyContents";
 
 const Item = styled(Grid)`
   /* border: 1px solid black; */
@@ -14,9 +15,8 @@ const StyledButton = styled(Button)`
   && {
     width: 100%;
     height: 50px;
-    border-radius: 2px;
-    box-shadow: 1px 1px 3px gray;
-    background-color: #DCDCDC;
+    border-radius: 0px;
+    background-color: #dcdcdc;
   }
 `;
 
@@ -48,7 +48,12 @@ function DashBoard() {
       </Grid>
       <Grid container item xs={7} style={{ position: "relative" }}>
         <Item item xs={2}>
-          <StyledButton />
+          <StyledButton
+            style={{
+              background:
+                "linear-gradient( 90deg, #F1F3F5, #DCDCDC 50% ,#F1F3F5 )",
+            }}
+          />
         </Item>
         <Item item style={{ width: "100%" }} xs={10}>
           <Viewer />
@@ -60,9 +65,12 @@ function DashBoard() {
             height: "100%",
             display: "flex",
             flexDirection: "column",
-            justifyContent: "flex-end",
+            justifyContent: "space-between",
           }}
         >
+          <>
+            <ReplyContents />
+          </>
           <ReplyInput />
         </Item>
       </Grid>
