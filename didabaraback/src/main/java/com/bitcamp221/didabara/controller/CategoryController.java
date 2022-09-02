@@ -18,7 +18,7 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
-@RequestMapping("category")
+@RequestMapping("/category")
 public class CategoryController {
 
   @Autowired

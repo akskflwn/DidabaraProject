@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -58,6 +59,14 @@ public class EmailConfigService {
    * @return
    */
   public boolean checkEmail(Map emailAuthCodeMap) {
+    Iterator<String> iter = emailAuthCodeMap.keySet().iterator();
+
+    while(iter.hasNext()) {
+      String key = iter.next();
+      String value = (String) emailAuthCodeMap.get(key);
+
+      System.out.println(key + " : " + value);
+    }
     Map haveAuthCodeUser = null;
     try {
       haveAuthCodeUser = userMapper.selectUsernameAndAuthCode(emailAuthCodeMap);
