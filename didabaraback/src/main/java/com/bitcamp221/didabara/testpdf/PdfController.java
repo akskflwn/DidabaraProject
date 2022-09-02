@@ -14,22 +14,22 @@ import java.io.ByteArrayInputStream;
 
 @RestController
 public class PdfController {
-    @Autowired
-    private PdfService pdfService;
+  @Autowired
+  private PdfService pdfService;
 
-    @RequestMapping(value = "/pdfreport", method = RequestMethod.GET,
-            produces = MediaType.APPLICATION_PDF_VALUE)
-    public ResponseEntity<?> test() {
+  @RequestMapping(value = "/pdfreport", method = RequestMethod.GET,
+          produces = MediaType.APPLICATION_PDF_VALUE)
+  public ResponseEntity<?> test() {
 //        List<UserInfoEntity> all = pdfService.findAll();
-        UserInfoEntity one = pdfService.findOne();
+    UserInfoEntity one = pdfService.findOne();
 
-        ByteArrayInputStream bis = GeneratePdfReport.userInfosReport(one);
+    ByteArrayInputStream bis = GeneratePdfReport.userInfosReport(one);
 
-        HttpHeaders headers = new HttpHeaders();
-        headers.add("Content-Disposition", "inline; filename=userInfosReport.pdf");
+    HttpHeaders headers = new HttpHeaders();
+    headers.add("Content-Disposition", "inline; filename=userInfosReport.pdf");
 
 
-        return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(new InputStreamResource(bis));
-    }
+    return ResponseEntity.ok().headers(headers).contentType(MediaType.APPLICATION_PDF).body(new InputStreamResource(bis));
+  }
 
 }

@@ -29,8 +29,8 @@ public class ReportController {
 //  -----------------------------------------------------
   @PostMapping("/create/{categoryId}")
   public void create(@AuthenticationPrincipal final String userId,
-                     @PathVariable(value = "categoryId") final Long categoryId,
-                     @RequestBody final ReportDTO reportDTO) {
+                     @PathVariable(value = "categoryId", required = false) final Long categoryId,
+                     @RequestBody(required = false) final ReportDTO reportDTO) {
     final String message = "report create";
 
     try {
@@ -63,7 +63,7 @@ public class ReportController {
 //  -----------------------------------------------------
   @GetMapping("/page/{reportId}")
   public ResponseEntity<?> findReport(@AuthenticationPrincipal final String userId,
-                                      @PathVariable(value = "reportId") final Long reportId) {
+                                      @PathVariable(value = "reportId", required = false) final Long reportId) {
     final String message = "report findReport";
 
     try {

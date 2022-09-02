@@ -31,9 +31,9 @@ public class CheckedController {
 //  마지막 수정자 : 문병훈
 //  필요 데이터 : categoryItem(id)
 //  -----------------------------------------------------
-  @PostMapping("/create{categoryItemId}")
+  @PostMapping("/create")
   public void create(@AuthenticationPrincipal final String userId,
-                     @RequestParam(value = "categoryItemId") final Long categoryItemId) {
+                     @RequestParam(value = "categoryItemId", required = false) final Long categoryItemId) {
     final String message = "checked create";
 
     try {
@@ -63,9 +63,9 @@ public class CheckedController {
 //  마지막 수정자 : 문병훈
 //  필요 데이터 : categoryItem(id)
 //  -----------------------------------------------------
-  @DeleteMapping("/delete{categoryItemId}")
+  @DeleteMapping("/delete")
   public void delete(@AuthenticationPrincipal final String userId,
-                     @RequestParam(value = "categoryItemId") final Long categoryItemId) {
+                     @RequestParam(value = "categoryItemId", required = false) final Long categoryItemId) {
     final String message = "checked delete";
 
     try {
@@ -95,7 +95,7 @@ public class CheckedController {
 //  -----------------------------------------------------
   @GetMapping("/checkUserList")
   public ResponseEntity<?> checkUserList(@AuthenticationPrincipal final String userId,
-                                         @RequestParam(value = "categoryItemId") final Long categoryItemId) {
+                                         @RequestParam(value = "categoryItemId", required = false) final Long categoryItemId) {
     final String message = "checked checkUserList";
 
     try {
@@ -128,13 +128,13 @@ public class CheckedController {
 //  -----------------------------------------------------
   @GetMapping("/unCheckUserList")
   public ResponseEntity<?> unCheckUserList(@AuthenticationPrincipal final String userId,
-                                           @RequestParam(value = "categoryItemId") final Long categoryItemId) {
+                                           @RequestParam(value = "categoryItemId", required = false) final Long categoryItemId) {
     final String message = "checked unCheckUserList";
 
     try {
       log.info(LogMessage.infoJoin(message));
 
-      if (userId != null && categoryItemId != null){
+      if (userId != null && categoryItemId != null) {
 
         List<SubscriberEntity> checkedEntities = checkedService.findUnCheckUserList(categoryItemId);
 
@@ -159,7 +159,7 @@ public class CheckedController {
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
   @GetMapping("/myCheckList")
-  public ResponseEntity<?> MyCheckList (@AuthenticationPrincipal final String userId) {
+  public ResponseEntity<?> MyCheckList(@AuthenticationPrincipal final String userId) {
     final String message = "checked MyCheckList";
 
     try {
@@ -176,7 +176,7 @@ public class CheckedController {
 
         throw new RuntimeException(LogMessage.errorNull(message));
       }
-    } catch (Exception e){
+    } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
       return ChangeType.toException(e);
@@ -189,13 +189,13 @@ public class CheckedController {
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
   @GetMapping("/myUnCheckList")
-  public ResponseEntity<?> myUnCheckList (@AuthenticationPrincipal final String userId) {
+  public ResponseEntity<?> myUnCheckList(@AuthenticationPrincipal final String userId) {
     final String message = "checked unMyCheckList";
 
     try {
       log.info(LogMessage.infoJoin(message));
 
-      if (userId != null){
+      if (userId != null) {
         List<CheckedEntity> checkedEntities = checkedService.findMyUnCheckList(Long.valueOf(userId));
 
         log.info(LogMessage.infoComplete(message));

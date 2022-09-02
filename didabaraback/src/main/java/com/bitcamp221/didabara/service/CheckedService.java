@@ -183,7 +183,7 @@ public class CheckedService {
     }
   }
 
-  public boolean existsByUserId (final Long userId){
+  public boolean existsByUserId(final Long userId) {
     final String message = "checkedService findByUserId";
 
     try {

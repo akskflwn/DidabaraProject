@@ -12,7 +12,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @Data
 public class UserUserInfoDTO {
-    private String nickname;
-    private String job;
-    private String password;
+  private String nickname;
+  private String job;
+  private String password;
 }

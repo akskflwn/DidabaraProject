@@ -20,5 +20,5 @@ public interface SubscriberRepository extends JpaRepository<SubscriberEntity, Lo
   List<SubscriberEntity> findList(@Param("categoryId") final Long categoryId);
 
   @Query("SELECT s.id FROM SubscriberEntity s WHERE s.category = :categoryId AND s.user = :userId")
-  boolean existsByCategoryIdAndUserId (@Param("categoryId") final Long categoryId, @Param("userId") final Long userId);
+  boolean existsByCategoryIdAndUserId(@Param("categoryId") final Long categoryId, @Param("userId") final Long userId);
 }

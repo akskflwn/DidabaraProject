@@ -17,6 +17,7 @@ const StyledButton = styled(Button)`
 const StyledGrid = styled.div`
   display: grid;
   grid-template-columns: 40% 60%;
+
   align-items: center;
   @media screen and (max-width: 800px) {
     grid-template-columns: repeat(1, auto);
@@ -47,12 +48,6 @@ const StyledPaper = styled(Paper)`
   }
 `;
 
-// const StyledContainer = styled(Container)`
-//   && {
-//     width: 100vh;
-//   }
-// `;
-
 function PersonalInfo() {
   const user = useRecoilValue(userState);
   const updateInfo = useState();
@@ -76,7 +71,11 @@ function PersonalInfo() {
           <Grid item xs={12} sm container>
             <Grid item xs container direction="column" spacing={2}>
               <Grid item xs>
-                <TextField>이름</TextField>
+                <TextField
+                  fullWidth
+                  label="Email"
+                  defaultValue={user.username}
+                ></TextField>
               </Grid>
             </Grid>
           </Grid>
@@ -85,5 +84,4 @@ function PersonalInfo() {
     </Container>
   );
 }
-
 export default PersonalInfo;
