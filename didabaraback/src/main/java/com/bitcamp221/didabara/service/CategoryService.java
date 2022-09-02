@@ -16,164 +16,162 @@ import java.util.Optional;
 @Transactional
 public class CategoryService {
 
-  @Autowired
-  private CategoryRepository categoryRepository;
+    @Autowired
+    private CategoryRepository categoryRepository;
 
-  @Autowired
-  private CategoryMapper categoryMapper;
-
-  //  -----------------------------------------------------
-//  작성자 : 문병훈
-//  메소드 정보 : DB로부터 받아온 Entity에 대해서 사전 검사
-//  마지막 수정자 : 문병훈
-//  -----------------------------------------------------
-  private void validate(final CategoryEntity categoryEntity, final String message) {
-    if (categoryEntity == null) {
-      log.error(LogMessage.errorNull(message));
-
-      throw new RuntimeException(LogMessage.errorNull(message));
-    }
-  }
-
-  //  ---------------------------------------------------
+    //  -----------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : 받아온 데이터에 대해서 사전 검사
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  private void validateId(final Long id, final String message) {
-    if (id == null) {
-      log.error(LogMessage.errorNull(message));
+    private void validate(final CategoryEntity categoryEntity, final String message) {
+        if (categoryEntity == null) {
+            log.error(LogMessage.errorNull(message));
 
-      throw new RuntimeException(LogMessage.errorNull(message));
+            throw new RuntimeException(LogMessage.errorNull(message));
+        }
     }
-  }
 
-  //  ---------------------------------------------------
+    //  ---------------------------------------------------
+//  작성자 : 문병훈
+//  메소드 정보 : 받아온 데이터에 대해서 사전 검사
+//  마지막 수정자 : 문병훈
+//  -----------------------------------------------------
+    private void validateId(final Long id, final String message) {
+        if (id == null) {
+            log.error(LogMessage.errorNull(message));
+
+            throw new RuntimeException(LogMessage.errorNull(message));
+        }
+    }
+
+    //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : Category 생성
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public CategoryEntity create(final CategoryEntity categoryEntity) {
-    final String message = "categoryService create";
+    public CategoryEntity create(final CategoryEntity categoryEntity) {
+        final String message = "categoryService create";
 
-    try {
-      log.info(LogMessage.infoJoin(message));
+        try {
+            log.info(LogMessage.infoJoin(message));
 
-      validate(categoryEntity, message);
+            validate(categoryEntity, message);
 
-      categoryRepository.save(categoryEntity);
+            categoryRepository.save(categoryEntity);
 
-      log.info(LogMessage.infoComplete(message));
+            log.info(LogMessage.infoComplete(message));
 
-      return categoryRepository.findCategory(categoryEntity.getId());
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
+            return categoryRepository.findCategory(categoryEntity.getId());
+        } catch (Exception e) {
+            log.error(LogMessage.errorJoin(message));
 
-      throw new RuntimeException(LogMessage.errorJoin(message));
+            throw new RuntimeException(LogMessage.errorJoin(message));
+        }
     }
-  }
 
-  //  ---------------------------------------------------
+    //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : Category 정보 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public CategoryEntity findCategory(final Long categoryId) {
-    final String message = "categoryService findByCategory";
+    public CategoryEntity findCategory(final Long categoryId) {
+        final String message = "categoryService findByCategory";
 
-    try {
-      log.info(LogMessage.infoJoin(message));
+        try {
+            log.info(LogMessage.infoJoin(message));
 
-      validateId(categoryId, message);
+            validateId(categoryId, message);
 
-      return categoryRepository.findCategory(categoryId);
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
+            return categoryRepository.findCategory(categoryId);
+        } catch (Exception e) {
+            log.error(LogMessage.errorJoin(message));
 
-      throw new RuntimeException(LogMessage.errorJoin(message));
+            throw new RuntimeException(LogMessage.errorJoin(message));
+        }
     }
-  }
 
-  //  ---------------------------------------------------
+    //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : user본인이 생성한 Category 전체 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<CategoryEntity> findMyList(final Long userId) {
-    final String message = "categoryService myList";
+    public List<CategoryEntity> findMyList(final Long userId) {
+        final String message = "categoryService myList";
 
-    try {
-      log.info(LogMessage.infoJoin(message));
+        try {
+            log.info(LogMessage.infoJoin(message));
 
-      validateId(userId, message);
+            validateId(userId, message);
 
-      log.info(LogMessage.infoComplete(message));
+            log.info(LogMessage.infoComplete(message));
 
-      return categoryRepository.findMyList(userId);
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
+            return categoryRepository.findMyList(userId);
+        } catch (Exception e) {
+            log.error(LogMessage.errorJoin(message));
 
-      throw new RuntimeException(LogMessage.errorJoin(message));
+            throw new RuntimeException(LogMessage.errorJoin(message));
+        }
     }
-  }
 
-  //  ---------------------------------------------------
+
+    //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : Category 수정
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public CategoryEntity update(final CategoryEntity categoryEntity) {
-    final String message = "categoryService update";
+    public CategoryEntity update(final CategoryEntity categoryEntity) {
+        final String message = "categoryService update";
 
-    try {
-      log.info(LogMessage.infoJoin(message));
+        try {
+            log.info(LogMessage.infoJoin(message));
 
-      validate(categoryEntity, message);
+            validate(categoryEntity, message);
 
-      final Optional<CategoryEntity> original = categoryRepository.findById(categoryEntity.getId());
+            final Optional<CategoryEntity> original = categoryRepository.findById(categoryEntity.getId());
 
-      original.ifPresent(entity -> {
+            original.ifPresent(entity -> {
 
-        entity.changeEntity(categoryEntity);
+                entity.changeEntity(categoryEntity);
 
-        categoryRepository.save(entity);
-      });
+                categoryRepository.save(entity);
+            });
 
-      log.info(LogMessage.infoComplete(message));
+            log.info(LogMessage.infoComplete(message));
 
-      return categoryRepository.findCategory(categoryEntity.getId());
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
+            return categoryRepository.findCategory(categoryEntity.getId());
+        } catch (Exception e) {
+            log.error(LogMessage.errorJoin(message));
 
-      throw new RuntimeException(LogMessage.errorJoin(message));
+            throw new RuntimeException(LogMessage.errorJoin(message));
+        }
     }
-  }
 
-  //  ---------------------------------------------------
+    //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : Category 삭제
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<CategoryEntity> deleteById(final Long host, final Long categoryId) {
-    final String message = "categoryService deleteById";
+    public List<CategoryEntity> deleteById(final Long host, final Long categoryId) {
+        final String message = "categoryService deleteById";
 
-    try {
-      log.info(LogMessage.infoJoin(message));
+        try {
+            log.info(LogMessage.infoJoin(message));
 
-      validateId(host, message);
-      validateId(categoryId, message);
+            validateId(host, message);
+            validateId(categoryId, message);
 
-      categoryRepository.deleteById(categoryId);
+            categoryRepository.deleteById(categoryId);
 
-      log.info(LogMessage.infoComplete(message));
+            log.info(LogMessage.infoComplete(message));
 
-      return categoryRepository.findMyList(host);
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
+            return categoryRepository.findMyList(host);
+        } catch (Exception e) {
+            log.error(LogMessage.errorJoin(message));
 
-      throw new RuntimeException(LogMessage.errorJoin(message));
+            throw new RuntimeException(LogMessage.errorJoin(message));
+        }
     }
-  }
 //
 //  //  ---------------------------------------------------
 ////  작성자 : 문병훈
@@ -198,38 +196,49 @@ public class CategoryService {
 //    }
 //  }
 
-  //  ---------------------------------------------------
+    //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : 특정 category에 대해 호스트 아이디 찾아냄
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public Long findHost(final Long categoryId) {
-    final String message = "categoryService findHost";
+    public Long findHost(final Long categoryId) {
+        final String message = "categoryService findHost";
 
-    try {
-      log.info(LogMessage.infoJoin(message));
+        try {
+            log.info(LogMessage.infoJoin(message));
 
-      validateId(categoryId, message);
+            validateId(categoryId, message);
 
-      log.info(LogMessage.infoComplete(message));
+            log.info(LogMessage.infoComplete(message));
 
-      return categoryRepository.findHost(categoryId);
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
+            return categoryRepository.findHost(categoryId);
+        } catch (Exception e) {
+            log.error(LogMessage.errorJoin(message));
 
-      throw new RuntimeException(LogMessage.errorJoin(message));
+            throw new RuntimeException(LogMessage.errorJoin(message));
+        }
     }
-  }
 
-  public boolean existByCategory (final Long categoryId) {
-    try {
-      log.info("exist join success");
+    //  ---------------------------------------------------
+//  작성자 : 문병훈
+//  메소드 정보 : category item id로 host 찾기
+//  마지막 수정자 : 문병훈
+//  -----------------------------------------------------
+    public Long findCategoryItemHost(final Long itemId) {
+        final String message = "categoryService findCategoryHost";
 
-      return categoryRepository.findById(categoryId).isEmpty();
-    } catch (Exception e){
-      log.info("exist join failed");
+        try {
+            log.info(LogMessage.infoJoin(message));
 
-      throw new RuntimeException(LogMessage.errorJoin(message));
+            validateId(itemId, message);
+
+            log.info(LogMessage.infoComplete(message));
+
+            return categoryRepository.findCategoryHost(itemId);
+        } catch (Exception e) {
+            log.error(LogMessage.errorJoin(message));
+
+            throw new RuntimeException(LogMessage.errorJoin(message));
+        }
     }
-  }
 }

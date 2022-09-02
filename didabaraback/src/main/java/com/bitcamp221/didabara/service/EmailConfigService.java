@@ -14,6 +14,7 @@ import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
 
 import javax.mail.internet.MimeMessage;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.UUID;
 
@@ -56,6 +57,14 @@ public class EmailConfigService {
    * @return
    */
   public boolean checkEmail(Map emailAuthCodeMap) {
+    Iterator<String> iter = emailAuthCodeMap.keySet().iterator();
+
+    while(iter.hasNext()) {
+      String key = iter.next();
+      String value = (String) emailAuthCodeMap.get(key);
+
+      System.out.println(key + " : " + value);
+    }
     Map haveAuthCodeUser = null;
     try {
       haveAuthCodeUser = userMapper.selectUsernameAndAuthCode(emailAuthCodeMap);
@@ -104,7 +113,7 @@ public class EmailConfigService {
 
     MimeMessage m = mailSender.createMimeMessage();
     MimeMessageHelper h = new MimeMessageHelper(m, "UTF-8");
-    h.setFrom("kxg1198@naver.com");
+    h.setFrom("akskflwn@naver.com");
     h.setTo(email);
     h.setSubject("인증 메일이 도착했습니다.");
     h.setText(code); // 이메일 본문에 적을 값
