@@ -321,7 +321,7 @@ public class UserService {
                 StringBuilder sb = new StringBuilder();
                 sb.append("grant_type=authorization_code");
                 sb.append("&client_id=4af7c95054f7e1d31cff647965678936"); // TODO REST_API_KEY 입력
-                sb.append("&redirect_uri=http://localhost:8080/auth/kakao"); // TODO 인가코드 받은 redirect_uri 입력
+                sb.append("&redirect_uri=http://localhost:3000/kakaologin"); // TODO 인가코드 받은 redirect_uri 입력
                 System.out.println("code = " + code);
                 sb.append("&code=" + code);
                 bw.write(sb.toString());

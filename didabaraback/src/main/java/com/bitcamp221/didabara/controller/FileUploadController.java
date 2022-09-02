@@ -8,6 +8,10 @@ import com.bitcamp221.didabara.presistence.UserInfoRepository;
 import com.documents4j.api.DocumentType;
 import com.documents4j.api.IConverter;
 import com.documents4j.job.LocalConverter;
+import kr.dogfoot.hwplib.object.HWPFile;
+import kr.dogfoot.hwplib.reader.HWPReader;
+import kr.dogfoot.hwplib.tool.textextractor.TextExtractMethod;
+import kr.dogfoot.hwplib.tool.textextractor.TextExtractor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -16,13 +20,14 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.*;
-import java.net.URI;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
+import java.util.Optional;
 import java.util.UUID;
-import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
 
 
 @Slf4j
@@ -39,10 +44,10 @@ public class FileUploadController {
     @PostMapping("text")
     private ResponseEntity<?> uploadText(@RequestParam("images") MultipartFile files,
                                          @AuthenticationPrincipal String id) throws IOException {
-        return ResponseEntity.ok().body(s3Upload.upload(files, "myfile", id));
+        return ResponseEntity.ok().body(s3Upload.upload(files, "myfile",id));
     }
 
-    @PostMapping
+@PostMapping
     public ResponseEntity<String> uploadFile(@RequestParam("images") MultipartFile files,
                                              @AuthenticationPrincipal String id
     ) throws IOException {
@@ -65,7 +70,6 @@ public class FileUploadController {
 
         destinationFileName = code + "." + sourceFileNameExtension;
         destinationFile = new File(fileUrl + destinationFileName);
-        System.out.println("destinationFile.getName() = " + destinationFile.getName());
         pdfFile = new File(fileUrl + code + ".pdf");
 
 
@@ -75,32 +79,19 @@ public class FileUploadController {
         files.transferTo(destinationFile);
 
         Files.copy(destinationFile.toPath(), pdfFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
+        //
+        IConverter converter = LocalConverter.builder().build();
 
-        IConverter converter = LocalConverter.builder()
-                .workerPool(20, 25, 2, TimeUnit.SECONDS)
-                .processTimeout(5, TimeUnit.SECONDS)
-                .build();
-
-        Future<Boolean> conversion = converter
-                .convert(destinationFile).as(DocumentType.MS_POWERPOINT)
+        converter.convert(destinationFile).as(DocumentType.MS_WORD)
                 .to(pdfFile).as(DocumentType.PDF)
-                .schedule();
+                .execute();
 
         converter.shutDown();
-
-//        IConverter converter = LocalConverter.builder().build();
-//
-//        converter.convert(destinationFile).as(DocumentType.PPTX)
-//                .to(pdfFile).as(DocumentType.PDF)
-//                .execute();
-//
-//        converter.shutDown();
         //s3Upload.deleteFile(destinationFileName,id);
         //
         // return ResponseEntity.ok().body("ok");
         return ResponseEntity.ok().body(s3Upload.upload(pdfFile, "myfile", id));
     }
-
 
     @DeleteMapping("/delete")
     public ResponseEntity<Integer> deleteFile(String images, @AuthenticationPrincipal String id) throws IOException {
@@ -147,9 +138,9 @@ public class FileUploadController {
 
             IConverter converter = LocalConverter.builder().build();
 
-//            converter.convert(destinationFile).as(DocumentType.PPTX)
-//                    .to(pdfFile).as(DocumentType.PDF)
-//                    .execute();
+            converter.convert(docxInputStream).as(DocumentType.MS_WORD)
+                    .to(pdfOutputStream).as(DocumentType.PDF)
+                    .execute();
 
             converter.shutDown();
 
