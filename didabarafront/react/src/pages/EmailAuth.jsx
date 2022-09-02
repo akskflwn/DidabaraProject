@@ -12,6 +12,7 @@ import {
 import axios from "axios";
 import styled, { keyframes } from "styled-components";
 import InfoOutlinedIcon from "@mui/icons-material/InfoOutlined";
+import { REQUEST_ADDRESS } from "../config/APIs";
 
 /**
  * 컴포넌트 스타일 정의
@@ -98,7 +99,7 @@ function EmailAuth() {
 
     axios({
       method: "post",
-      url: "http://192.168.0.187:8080/emailconfig/check",
+      url: REQUEST_ADDRESS + "emailconfig/check",
       data: {
         username: params.username,
         authCode: authCode,
@@ -119,13 +120,11 @@ function EmailAuth() {
    */
   function resendAuthcode() {
     axios
-      .get(`http://192.168.0.187:8080/emailconfig/${params.username}`, {
+      .get(`${REQUEST_ADDRESS}emailconfig/${params.username}`, {
         username: params.username,
       })
       .then((response) => {
-        axios.get(
-          `http://192.168.0.187:8080/emailconfig/${response.params.username}`
-        );
+        axios.get(`${REQUEST_ADDRESS}emailconfig/${response.params.username}`);
       });
   }
 
@@ -134,7 +133,7 @@ function EmailAuth() {
       <StyledDiv>
         <Container component="main" maxWidth="xs">
           <Grid container spacing={2}>
-            <Grid item xs={12}>
+            <Grid item xs={12} style={{ textAlign: "center" }}>
               <StyledImg src="../image1.png" />
             </Grid>
             <Grid item xs={12}>
@@ -201,3 +200,4 @@ function EmailAuth() {
 }
 
 export default EmailAuth;
+

@@ -1,5 +1,6 @@
 package com.bitcamp221.didabara.controller;
 
+import com.bitcamp221.didabara.dto.S3Upload;
 import com.bitcamp221.didabara.dto.UserUserInfoDTO;
 import com.bitcamp221.didabara.mapper.UserInfoMapper;
 import com.bitcamp221.didabara.model.UserInfoEntity;
@@ -42,6 +43,9 @@ public class UserInfoController {
   @Autowired
   private ResourceLoader resourceLoader;
 
+  @Autowired
+  private S3Upload s3Upload;
+
   @GetMapping("/{fileName}")
   public ResponseEntity<Resource> resourceFileDownload(@PathVariable String fileName) {
     try {
@@ -66,10 +70,9 @@ public class UserInfoController {
   /**
    * 작성자 : 김남주
    * 메서드 기능 : admin 권한일시 유저의 밴 관리
-   * 유저의 ban 값이 true면 fasle로 false면 true
+   *              유저의 ban 값이 true면 fasle로 false면 true
    * 마지막 작성자 : 김남주
-   *
-   * @param id     token user id
+   * @param id token user id
    * @param userId 밴을 관리할 유저의 아이디
    * @return UserInfoEntity
    */
@@ -108,8 +111,8 @@ public class UserInfoController {
 
     File destinationFile;
     String destinationFileName;
-    String fileUrl = "C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\";
-//        String fileUrl = "https://didabara.s3.ap-northeast-2.amazonaws.com/myfile/";
+//        String fileUrl = "C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\";
+    String fileUrl = "https://didabara.s3.ap-northeast-2.amazonaws.com/myfile/";
 
     do {
       destinationFileName = code + "." + sourceFileNameExtension;
@@ -145,15 +148,14 @@ public class UserInfoController {
     byIdMyPage.put("password", null);
 
 
+
     return ResponseEntity.ok().body(byIdMyPage);
   }
-
   /**
    * 작성자 : 김남주
    * 메서드 기능 : 마이페이지 수정 (값이 안들어올시에는 유저의 원래 입력값으로 업데이트)
    * 마지막 작성자 : 김남주
-   *
-   * @param id  JWT id
+   * @param id JWT id
    * @param uid 컬럼명들
    * @return
    */
@@ -173,7 +175,6 @@ public class UserInfoController {
   /**
    * 작성자 : 김남주
    * 메서드 기능 : 회원 탈퇴
-   *
    * @param id
    * @return
    */
@@ -188,5 +189,11 @@ public class UserInfoController {
       return ResponseEntity.badRequest().body(error);
     }
 
+  }
+
+  @PostMapping
+  private ResponseEntity<?> uploadText(@RequestParam("images") MultipartFile files,
+                                       @AuthenticationPrincipal String id) throws IOException {
+    return ResponseEntity.ok().body(s3Upload.upload(files, "myfile",id));
   }
 }

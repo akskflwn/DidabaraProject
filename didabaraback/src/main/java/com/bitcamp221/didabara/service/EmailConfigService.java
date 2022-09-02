@@ -22,10 +22,7 @@ import java.util.UUID;
 public class EmailConfigService {
 
   @Autowired
-  private EmailConfigRepository emailRepository;
-
-  @Autowired
-  private UserRepository userRepository;
+  private EmailConfigRepository emailConfigRepository;
 
   @Autowired
   private UserMapper userMapper;
@@ -33,7 +30,13 @@ public class EmailConfigService {
   @Autowired
   private EmailConfigMapper emailConfigMapper;
 
+  @Autowired
+  private UserRepository userRepository;
+
   private final JavaMailSender mailSender;
+
+
+
 
   /**
    * 작성자 : 김남주
@@ -104,7 +107,7 @@ public class EmailConfigService {
 
     MimeMessage m = mailSender.createMimeMessage();
     MimeMessageHelper h = new MimeMessageHelper(m, "UTF-8");
-    h.setFrom("kxg1198@naver.com");
+    h.setFrom("akskflwn@naver.com");
     h.setTo(email);
     h.setSubject("인증 메일이 도착했습니다.");
     h.setText(code); // 이메일 본문에 적을 값

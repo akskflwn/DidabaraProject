@@ -1,65 +1,79 @@
-import { List, ListItemButton, ListItemIcon, ListItemText } from "@mui/material";
 import {
-  AccountCircle,
-  Description,
-  ManageAccounts,
-  RecentActors,
-  Task,
-} from "@mui/icons-material";
+  Divider,
+  Icon,
+  iconButtonClasses,
+  List,
+  ListItem,
+  ListItemButton,
+  ListItemIcon,
+  ListItemText,
+} from "@mui/material";
 import React from "react";
-import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { useMatch, useNavigate, useParams } from "react-router-dom";
+
+const list = [
+  {
+    primaryText: "홈",
+    icon: "home",
+    url: "/mypage/main",
+  },
+  {
+    primaryText: "개인 정보",
+    icon: "person",
+    url: "/mypage/personal-info",
+  },
+  {
+    primaryText: "내가 만든",
+    icon: "description",
+    url: "/mypage/personal-info1",
+  },
+  {
+    primaryText: "내가 본",
+    icon: "task",
+    url: "/mypage/personal-info2",
+  },
+  {
+    primaryText: "참여 목록",
+    icon: "folder",
+    url: "/mypage/personal-info3",
+  },
+  {
+    primaryText: "즐겨찾기",
+    icon: "star",
+    url: "/mypage/personal-info4",
+  },
+];
 
 function MypageLists() {
   const navi = useNavigate();
+  const [selectedIndex, setSelectedIndex] = useState(0);
+  const handleListItemClick = (event, index) => {
+    setSelectedIndex(index);
+  };
 
   return (
-    <List component="nav">
-      <ListItemButton
-        onClick={() => {
-          navi("/mypage/main");
-        }}
-      >
-        <ListItemIcon>
-          <AccountCircle />
-        </ListItemIcon>
-        <ListItemText primary="홈" />
-      </ListItemButton>
-      <ListItemButton
-      onClick={() => {
-          navi("/mypage/personal-info");
-        }}>
-        <ListItemIcon>
-          <ManageAccounts />
-        </ListItemIcon>
-        <ListItemText primary="개인 정보" />
-      </ListItemButton>
-      <ListItemButton
-      onClick={() => {
-          navi("/mypage/unnamed1");
-        }}>
-        <ListItemIcon>
-          <Description />
-        </ListItemIcon>
-        <ListItemText primary="내가 만든" />
-      </ListItemButton>
-      <ListItemButton
-      onClick={() => {
-        navi("/mypage/unnamed2");
-      }}>
-        <ListItemIcon>
-          <Task />
-        </ListItemIcon>
-        <ListItemText primary="내가 본" />
-      </ListItemButton>
-      <ListItemButton
-      onClick={() => {
-        navi("/mypage/unnamed3");
-      }}>
-        <ListItemIcon>
-          <RecentActors />
-        </ListItemIcon>
-        <ListItemText primary="참여 목록" />
-      </ListItemButton>
+    <List>
+      {list.map((item, i) => (
+        <ListItem
+          key={i}
+          selected={selectedIndex === i}
+          button
+          onClick={(event) => {
+            handleListItemClick(event, i);
+            navi(item.url);
+          }}
+        >
+          <ListItemIcon>
+            <Icon>{item.icon}</Icon>
+          </ListItemIcon>
+          <ListItemText
+            primary={item.primaryText}
+            primaryTypographyProps={{ noWrap: true }}
+          />
+        </ListItem>
+      ))}
+      <Divider />
     </List>
   );
 }

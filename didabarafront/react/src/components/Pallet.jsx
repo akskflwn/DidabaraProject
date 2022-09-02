@@ -20,57 +20,56 @@ function Pallet({ imgRef }) {
   return (
     <StyledSelect
       onChange={(e) => {
-        console.log(e.target.value);
         imgRef.current.style.backgroundColor = e.target.value;
       }}
     >
       <StyledCheck
         name="color"
-        value="red"
+        value="#ef5777"
         type="radio"
-        style={{ backgroundColor: "red" }}
+        style={{ backgroundColor: "#ef5777" }}
       ></StyledCheck>
       <StyledCheck
         name="color"
-        value="tomato"
+        value="#575fcf"
         type="radio"
-        style={{ backgroundColor: "tomato" }}
+        style={{ backgroundColor: "#575fcf" }}
       ></StyledCheck>
       <StyledCheck
         name="color"
-        value="green"
+        value="#4bcffa"
         type="radio"
-        style={{ backgroundColor: "green" }}
+        style={{ backgroundColor: "#4bcffa" }}
       ></StyledCheck>
       <StyledCheck
         name="color"
-        value="blue"
+        value="#34e7e4"
         type="radio"
-        style={{ backgroundColor: "blue" }}
+        style={{ backgroundColor: "#34e7e4" }}
       ></StyledCheck>
       <StyledCheck
         name="color"
-        value="grey"
+        value="#0be881"
         type="radio"
-        style={{ backgroundColor: "grey" }}
+        style={{ backgroundColor: "#0be881" }}
       ></StyledCheck>
       <StyledCheck
         name="color"
-        value="yellow"
+        value="#ffdd59"
         type="radio"
-        style={{ backgroundColor: "yellow" }}
+        style={{ backgroundColor: "#ffdd59" }}
       ></StyledCheck>
       <StyledCheck
         name="color"
-        value="skyblue"
+        value="#ff5e57"
         type="radio"
-        style={{ backgroundColor: "skyblue" }}
+        style={{ backgroundColor: "#ff5e57" }}
       ></StyledCheck>
       <StyledCheck
         name="color"
-        value="orange"
+        value="#d2dae2"
         type="radio"
-        style={{ backgroundColor: "orange" }}
+        style={{ backgroundColor: "#d2dae2" }}
       ></StyledCheck>
     </StyledSelect>
   );

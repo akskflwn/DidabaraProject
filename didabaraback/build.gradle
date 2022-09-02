@@ -52,6 +52,7 @@ dependencies {
 
   // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
   implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.3'
+
 // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket
   implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.7.2'
   implementation 'org.springframework.boot:spring-boot-starter-websocket'
@@ -62,8 +63,10 @@ dependencies {
   implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
 
 
-
-
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-websocket'
+  // https://mvnrepository.com/artifact/kr.dogfoot/hwplib
+  implementation group: 'kr.dogfoot', name: 'hwplib', version: '1.1.1'
 }
 
 tasks.named('test') {
