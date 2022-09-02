@@ -21,7 +21,7 @@ public class UserEntity extends BaseTimeEntity {
   private Long id;
 
   @Column(name = "username", nullable = false, unique = true)
-  private String  username;
+  private String username;
 
   @Column(name = "password", nullable = false, length = 256)
   private String password;
@@ -31,12 +31,12 @@ public class UserEntity extends BaseTimeEntity {
 
   @Column(name = "token", length = 500)
 
-  public void changePassword(String password){
+  public void changePassword(String password) {
     this.password = password;
   }
 
-  public  void changeNickname(String nickname){
-    this.nickname=nickname;
+  public void changeNickname(String nickname) {
+    this.nickname = nickname;
   }
 
 }

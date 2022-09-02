@@ -7,6 +7,8 @@
 /dataSources/
 /dataSources.local.xml
 /.idea/
+/didabaraback/src/main/resources/application.properties
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,react,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,react,node

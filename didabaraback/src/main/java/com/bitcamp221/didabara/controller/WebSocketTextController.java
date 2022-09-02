@@ -18,23 +18,23 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/message")
 public class WebSocketTextController {
 
-    @Autowired
-    SimpMessagingTemplate template;
+  @Autowired
+  SimpMessagingTemplate template;
 
-    @PostMapping("/send")
-    public ResponseEntity<Void> sendMessage(@RequestBody MessageDTO messageDTO) {
-        template.convertAndSend("/topic/message", messageDTO);
-        return new ResponseEntity<>(HttpStatus.OK);
-    }
+  @PostMapping("/send")
+  public ResponseEntity<Void> sendMessage(@RequestBody MessageDTO messageDTO) {
+    template.convertAndSend("/topic/message", messageDTO);
+    return new ResponseEntity<>(HttpStatus.OK);
+  }
 
-    @MessageMapping("/sendMessage")
-    public void receiveMessage(@Payload MessageDTO messageDTO) {
-        // receive message from client
-    }
+  @MessageMapping("/sendMessage")
+  public void receiveMessage(@Payload MessageDTO messageDTO) {
+    // receive message from client
+  }
 
 
-    @SendTo("/topic/message")
-    public MessageDTO broadcastMessage(@Payload MessageDTO messageDTO) {
-        return messageDTO;
-    }
+  @SendTo("/topic/message")
+  public MessageDTO broadcastMessage(@Payload MessageDTO messageDTO) {
+    return messageDTO;
+  }
 }

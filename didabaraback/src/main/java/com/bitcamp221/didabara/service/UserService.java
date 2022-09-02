@@ -72,15 +72,12 @@ public class UserService {
       //로그인할떄 유저의 아이디랑 비빌번호가 일치할때
       //ban check을한다
 
-      UserInfoEntity bancheck =userInfoRepository.findById(originalUser.getId()).orElseThrow(() ->
+      UserInfoEntity bancheck = userInfoRepository.findById(originalUser.getId()).orElseThrow(() ->
               new IllegalArgumentException("해당 아이디가 없습니다."));
 
-      if(!bancheck.isBan())
-      {
+      if (!bancheck.isBan()) {
         return originalUser;
-      }
-      else
-      {
+      } else {
         log.warn("User {} hasbaned", username);
       }
     }
@@ -89,12 +86,13 @@ public class UserService {
 
   //조회
   //username으로 조회하기
-  public UserEntity findUser(final String username){
+  public UserEntity findUser(final String username) {
     return userRepository.findByUsername(username);
   }
+
   //조회
   //userid로 조회하기
-  public UserEntity findById(Long id){
+  public UserEntity findById(Long id) {
     //orElseThrow( )는 Optional 클래스에 포함된 메서드로,
     // Entity 조회와 예외 처리를 단 한 줄로 처리할 수 있음
     UserEntity user = userRepository.findById(id).orElseThrow(() ->
@@ -104,7 +102,7 @@ public class UserService {
 
   //수정
   @Transactional
-  public UserEntity update(UserEntity userEntity){
+  public UserEntity update(UserEntity userEntity) {
     UserEntity user = userRepository.findById(userEntity.getId()).orElseThrow(() ->
             new IllegalArgumentException("해당 아이디가 없습니다."));
 
@@ -118,8 +116,8 @@ public class UserService {
 
   //삭제
 
-  public void deleteUser(Long id){
-    UserEntity findUser=userRepository.findById(id).orElseThrow(()->
+  public void deleteUser(Long id) {
+    UserEntity findUser = userRepository.findById(id).orElseThrow(() ->
             new IllegalArgumentException("해당 아이디가 없습니다"));
     userRepository.delete(findUser);
   }
@@ -227,7 +225,7 @@ public class UserService {
       if (s == null) {
         s = 1L;
       } else {
-        s = s+1L;
+        s = s + 1L;
       }
 
       UserEntity user = UserEntity.builder()
@@ -247,7 +245,7 @@ public class UserService {
         image = ImageIO.read(new URL(itemPath));
         String fileName = itemPath.substring(itemPath.lastIndexOf("/") + 1);
         String code = UUID.randomUUID().toString().substring(0, 6);
-        File file = new File("C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\"+code +".jpg");
+        File file = new File("C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\" + code + ".jpg");
         String fileUrl = "C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\";
         ImageIO.write(image, "jpg", file);
         System.out.println("fileName = " + fileName);
@@ -262,7 +260,7 @@ public class UserService {
         userInfoRepository.save(userInfo);
       } catch (IOException e) {
         String message = e.getMessage();
-        log.error("jpgError={}",message);
+        log.error("jpgError={}", message);
       }
       UserDTO userDTO = new UserDTO(user);
       userDTO.setToken(find_user_token);
@@ -286,10 +284,6 @@ public class UserService {
     }
 
   }
-
-
-
-
 
 
   /* 카카오 로그인(test) */
