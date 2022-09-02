@@ -27,9 +27,6 @@ public class EmailConfigController {
     @Autowired
     private UserRepository userRepository;
 
-    @Autowired
-    private UserRepository userRepository;
-
     /**
      * 작성자 : 김남주
      * 메서드 기능 : 인증코드 일치 확인

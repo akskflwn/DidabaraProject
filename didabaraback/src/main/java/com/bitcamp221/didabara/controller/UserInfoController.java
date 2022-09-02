@@ -1,5 +1,6 @@
 package com.bitcamp221.didabara.controller;
 
+import com.bitcamp221.didabara.dto.S3Upload;
 import com.bitcamp221.didabara.dto.UserUserInfoDTO;
 import com.bitcamp221.didabara.mapper.UserInfoMapper;
 import com.bitcamp221.didabara.model.UserInfoEntity;
@@ -41,6 +42,9 @@ public class UserInfoController {
 
     @Autowired
     private ResourceLoader resourceLoader;
+
+    @Autowired
+    private S3Upload s3Upload;
 
     @GetMapping("/{fileName}")
     public ResponseEntity<Resource> resourceFileDownload(@PathVariable String fileName) {
@@ -107,8 +111,8 @@ public class UserInfoController {
 
         File destinationFile;
         String destinationFileName;
-        String fileUrl = "C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\";
-//        String fileUrl = "https://didabara.s3.ap-northeast-2.amazonaws.com/myfile/";
+//        String fileUrl = "C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\";
+        String fileUrl = "https://didabara.s3.ap-northeast-2.amazonaws.com/myfile/";
 
         do {
             destinationFileName = code + "." + sourceFileNameExtension;
@@ -185,5 +189,11 @@ public class UserInfoController {
             return ResponseEntity.badRequest().body(error);
         }
 
+    }
+
+    @PostMapping
+    private ResponseEntity<?> uploadText(@RequestParam("images") MultipartFile files,
+                                                      @AuthenticationPrincipal String id) throws IOException {
+        return ResponseEntity.ok().body(s3Upload.upload(files, "myfile",id));
     }
 }
