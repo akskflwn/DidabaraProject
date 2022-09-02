@@ -195,7 +195,7 @@ public class CategoryItemReplyService {
     }
   }
 
-  public Long findCategoryId(final Long itemReplyId){
+  public Long findCategoryId(final Long itemReplyId) {
     final String message = "itemReplyService findCategoryId";
 
     try {

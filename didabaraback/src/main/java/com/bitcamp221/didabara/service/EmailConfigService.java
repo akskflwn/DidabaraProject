@@ -42,6 +42,7 @@ public class EmailConfigService {
   /**
    * 작성자 : 김남주
    * 빨간줄 보이는게 맞습니다.
+   *
    * @param mailSender
    */
   @Autowired
@@ -53,6 +54,7 @@ public class EmailConfigService {
    * 작성자 : 김남주
    * 메소드 기능 : 인증코드 받아서 체크하는 기능 (아직 구현 안됌)
    * 마지막 작성자 : 김남주
+   *
    * @param emailAuthCodeMap // email, auth_code 필요
    * @return
    */
@@ -71,7 +73,7 @@ public class EmailConfigService {
       String o1 = (String) emailAuthCodeMap.get("authCode");
       String o = (String) haveAuthCodeUser.get("auth_code");
       log.info("o1={}", o1);
-      log.info("o={}",o);
+      log.info("o={}", o);
       if (!o1.equals(o)) {
         throw new Exception("일치하지 않는 계정, 코드");
       }
@@ -89,7 +91,8 @@ public class EmailConfigService {
    * 메서드 기능 : 회원가입 후 auth_code 전송 메서드
    * 마지막 작성자 : 김남주
    * 추가 : user 테이블의 pk 값이 emailconfig 테이블의 id 값이 같아야하는데
-   *        emailconfig 테이블의 id값 - 1 해야 user 테이블의 id값이 랑 맞음
+   * emailconfig 테이블의 id값 - 1 해야 user 테이블의 id값이 랑 맞음
+   *
    * @param email
    * @throws Exception
    */

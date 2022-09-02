@@ -29,7 +29,7 @@ public class CategoryItemReplyController {
 //  -----------------------------------------------------
   @GetMapping("/list/{categoryItemId}")
   public ResponseEntity<?> findList(@AuthenticationPrincipal final String userId,
-                                    @PathVariable(value = "categoryItemId") final Long categoryItemId) {
+                                    @PathVariable(value = "categoryItemId", required = false) final Long categoryItemId) {
     final String message = "itemReply itemReplyList";
 
     try {
@@ -91,15 +91,15 @@ public class CategoryItemReplyController {
 //  -----------------------------------------------------
   @PostMapping("/create/page/{categoryItemId}")
   public ResponseEntity<?> create(@AuthenticationPrincipal final String userId,
-                                  @PathVariable(value = "categoryItemId") final Long categoryItemId,
-                                  @RequestBody final String content) {
+                                  @PathVariable(value = "categoryItemId", required = false) final Long categoryItemId,
+                                  @RequestBody(required = false) final String content) {
     final String message = "itemReply create";
 
     try {
       log.info(LogMessage.infoJoin(message));
 
       if (userId != null && content != null && categoryItemId != null) {
-        final CategoryItemReplyDTO itemReplyDTO = new CategoryItemReplyDTO(Long.valueOf(userId),categoryItemId, content);
+        final CategoryItemReplyDTO itemReplyDTO = new CategoryItemReplyDTO(Long.valueOf(userId), categoryItemId, content);
 
         final CategoryItemReplyEntity itemReplyEntity = CategoryItemReplyDTO.toEntity(itemReplyDTO);
 
@@ -128,8 +128,8 @@ public class CategoryItemReplyController {
 //  -----------------------------------------------------
   @PutMapping("/update/page/{categoryItemId}")
   public ResponseEntity<?> update(@AuthenticationPrincipal final String userId,
-                                  @PathVariable(value = "categoryItemId") final Long categoryItemId,
-                                  @RequestBody final CategoryItemReplyDTO itemReplyDTO) {
+                                  @PathVariable(value = "categoryItemId", required = false) final Long categoryItemId,
+                                  @RequestBody(required = false) final CategoryItemReplyDTO itemReplyDTO) {
     final String message = "itemReply update";
 
     try {
@@ -174,7 +174,7 @@ public class CategoryItemReplyController {
 //  -----------------------------------------------------
   @DeleteMapping("/delete/{itemReplyId}")
   public ResponseEntity<?> delete(@AuthenticationPrincipal final String userId,
-                                  @PathVariable(value = "itemReplyId") final Long itemReplyId) {
+                                  @PathVariable(value = "itemReplyId", required = false) final Long itemReplyId) {
     final String message = "itemReply delete";
 
     try {

@@ -2,15 +2,16 @@ package com.bitcamp221.didabara.controller;
 
 import com.bitcamp221.didabara.dto.CategoryDTO;
 import com.bitcamp221.didabara.model.CategoryEntity;
-import com.bitcamp221.didabara.security.TokenProvider;
 import com.bitcamp221.didabara.service.CategoryService;
 import com.bitcamp221.didabara.util.ChangeType;
 import com.bitcamp221.didabara.util.LogMessage;
+import com.bitcamp221.didabara.util.UploadFile;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.List;
 import java.util.UUID;
@@ -21,10 +22,10 @@ import java.util.UUID;
 public class CategoryController {
 
   @Autowired
-  CategoryService categoryService;
+  private CategoryService categoryService;
 
   @Autowired
-  TokenProvider tokenProvider;
+  private UploadFile uploadFile;
 
   //  ---------------------------------------------------
 //  작성자 : 문병훈
@@ -95,19 +96,23 @@ public class CategoryController {
 //  작성자 : 문병훈
 //  메소드 정보 : 카테고리 생성 (생성 후 카테고리 내부)
 //  마지막 수정자 : 문병훈
-//  필요 데이터 : category(title, content, profileImageUrl)
+//  필요 데이터 : category(title, content), ImageFile
 //  -----------------------------------------------------
   @PostMapping("/create")
   public ResponseEntity<?> create(@AuthenticationPrincipal final String userId,
-                                  @RequestBody final CategoryDTO categoryDTO) {
+                                  @RequestPart(value = "categoryDTO", required = false) final CategoryDTO categoryDTO,
+                                  @RequestPart(value = "file", required = false) final MultipartFile file) {
     final String message = "category create";
 
     try {
       log.info(LogMessage.infoJoin(message));
 
-      if (userId != null || categoryDTO != null) {
+      if (userId != null && categoryDTO != null && file.getSize() != 0) {
         final String code = UUID.randomUUID().toString().substring(0, 8);
 
+        final String filePath = uploadFile.uploadCategoryImage(file);
+
+        categoryDTO.setProfileImageUrl(filePath);
         categoryDTO.setInviteCode(code);
         categoryDTO.setHost(Long.valueOf(userId));
 
