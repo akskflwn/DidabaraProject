@@ -89,7 +89,6 @@ const Join = () => {
 
   const {
     register,
-    control,
     handleSubmit,
     formState: { errors },
   } = useForm({ resolver: yupResolver(validationSchema) });

@@ -4,40 +4,36 @@ import styled from "styled-components";
 import axios from "axios";
 import { Send } from "@mui/icons-material";
 
-// const StyledButton = styled(Button)`
-//   && {
-//     width: 100%;
-//     height: 100%;
-//     color: #2f3640;
-//     border: #f1f3f5 solid 1px;
-//     background-color: #dadada;
-//     &:hover {
-//       background-color: #f1f3f5;
-//       border: #f1f3f5 solid 1px;
-//     }
-//   }
-// `;
-
 const StyledButton = styled(Button)`
   && {
     width: 100%;
     height: 100%;
-    color: #2f3640;
-    border: #f1f3f5 solid 1px;
-    background-color: #dadada;
+    color: #f1f3f5;
+    border-radius: 0;
+    background-color: rgb(47, 54, 64);
     &:hover {
-      background-color: #f1f3f5;
-      border: #f1f3f5 solid 1px;
+      background-color: rgb(30, 37, 46);
     }
   }
 `;
 
 const StyledGrid = styled(Grid)`
-  background-color: #2f3640;
+  background-color: #DCDCDC;
 `;
-const StyledText = styled(TextField)`
-  background-color: #f1f3f5;
-`;
+const StyledText = styled(TextField)({
+  "& .MuiOutlinedInput-root": {
+    "& fieldset": {
+      borderColor: "transparent",
+    },
+    "&:hover fieldset": {
+      borderColor: "transparent",
+    },
+    "&.Mui-focused fieldset": {
+      borderColor: "transparent",
+    },
+  },
+});
+
 function ReplyInput() {
   const replyRequest = (e) => {
     e.preventDefault();
@@ -56,12 +52,19 @@ function ReplyInput() {
 
   return (
     <form onSubmit={replyRequest}>
-      <StyledGrid container justifyContent={"center"} padding={1}>
-        <Grid item xs={10} height={102}>
-          <StyledText fullWidth multiline rows={3} maxRows={3} name="reply" />
+      <StyledGrid container justifyContent={"center"} >
+        <Grid item xs={10} height={95}>
+          <StyledText
+            fullWidth
+            multiline
+            rows={3}
+            maxRows={3}
+            name="reply"
+            placeholder="Add comment..."
+          />
         </Grid>
         <Grid item xs={2}>
-          <StyledButton type="submit" variant="outlined">
+          <StyledButton type="submit" variant="text">
             <Send />
           </StyledButton>
         </Grid>

@@ -91,6 +91,7 @@ function CreateModal() {
   const navi = useNavigate();
 
   const showFileImage = (e) => {
+    // 파일 이름을 빈 입력창에 표시함.//
     const filename = e.target.files[0].name;
     e.target.nextElementSibling.innerHTML = `${filename}`;
 
@@ -106,7 +107,7 @@ function CreateModal() {
     const data = new FormData(e.target);
 
     axios
-      .post(REQUEST_ADDRESS + "category/create", data, {
+      .post(REQUEST_ADDRESS + "upload/category", data, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
           "content-Type": "multipart/form-data",
@@ -119,7 +120,11 @@ function CreateModal() {
   return (
     <>
       <Background style={{ width: number }}></Background>
-      <StyledForm encType="multipart/form-data" onSubmit={makeCategory}>
+      <StyledForm
+        encType="multipart/form-data"
+        onSubmit={makeCategory}
+        id="myform"
+      >
         <SteyldCard>
           <StyledLeftBox>
             <div>
@@ -146,7 +151,7 @@ function CreateModal() {
               <StyledLabel htmlFor="file">배경이미지 선택하기</StyledLabel>
               <StyledFile
                 type="file"
-                name="profileImageUrl"
+                name="images"
                 id="file"
                 onChange={showFileImage}
               />

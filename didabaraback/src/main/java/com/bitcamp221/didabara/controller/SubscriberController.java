@@ -33,7 +33,7 @@ public class SubscriberController {
 //  -----------------------------------------------------
   @PostMapping("/create/{categoryId}")
   public void create(@AuthenticationPrincipal final String userId,
-                     @PathVariable(value = "categoryId") final Long categoryId) {
+                     @PathVariable(value = "categoryId", required = false) final Long categoryId) {
     final String message = "subscriber create";
 
     try {
@@ -62,7 +62,7 @@ public class SubscriberController {
 //  -----------------------------------------------------
   @DeleteMapping("/delete/{categoryId}")
   public void delete(@AuthenticationPrincipal final String userId,
-                     @PathVariable(value = "categoryId") final Long categoryId) {
+                     @PathVariable(value = "categoryId", required = false) final Long categoryId) {
     final String message = "subscriber delete";
 
     try {
@@ -92,7 +92,7 @@ public class SubscriberController {
 //  -----------------------------------------------------
   @GetMapping("/list/{categoryId}")
   public ResponseEntity<?> list(@AuthenticationPrincipal final String userId,
-                                @PathVariable(value = "categoryId") final Long categoryId) {
+                                @PathVariable(value = "categoryId", required = false) final Long categoryId) {
     final String message = "subscriber list";
 
     try {
@@ -104,9 +104,9 @@ public class SubscriberController {
 
         return ChangeType.toSubscriberDTO(subscriberEntities);
       } else {
-          log.error(LogMessage.errorNull(message));
+        log.error(LogMessage.errorNull(message));
 
-          throw new RuntimeException(LogMessage.errorNull(message));
+        throw new RuntimeException(LogMessage.errorNull(message));
       }
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));

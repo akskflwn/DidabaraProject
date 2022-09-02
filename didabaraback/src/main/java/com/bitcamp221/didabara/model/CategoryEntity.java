@@ -33,7 +33,7 @@ public class CategoryEntity extends BaseTimeEntity {
 //  @ColumnDefault("카테고리 기본 이미지")
   private String profileImageUrl;
 
-  public void changeEntity (final CategoryEntity categoryEntity){
+  public void changeEntity(final CategoryEntity categoryEntity) {
     this.id = categoryEntity.getId();
     this.host = categoryEntity.getHost();
     this.content = categoryEntity.getContent();

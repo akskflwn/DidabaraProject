@@ -16,7 +16,7 @@ const StyledButton = styled(Button)`
     height: 50px;
     border-radius: 2px;
     box-shadow: 1px 1px 3px gray;
-    background-color: #dadada;
+    background-color: #DCDCDC;
   }
 `;
 

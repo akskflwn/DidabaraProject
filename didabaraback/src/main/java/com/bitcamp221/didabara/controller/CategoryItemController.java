@@ -6,11 +6,13 @@ import com.bitcamp221.didabara.service.CategoryItemService;
 import com.bitcamp221.didabara.service.CategoryService;
 import com.bitcamp221.didabara.util.ChangeType;
 import com.bitcamp221.didabara.util.LogMessage;
+import com.bitcamp221.didabara.util.UploadFile;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -20,27 +22,36 @@ import java.util.*;
 public class CategoryItemController {
 
   @Autowired
-  CategoryItemService categoryItemService;
+  private CategoryItemService categoryItemService;
 
   @Autowired
-  CategoryService categoryService;
+  private CategoryService categoryService;
+
+  @Autowired
+  private UploadFile uploadFile;
 
   //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : item 생성
 //  마지막 수정자 : 문병훈
-//  필요 데이터 : category(id), categoryItem(title, content, itemPath, expiredDate)
+//  필요 데이터 : category(id), categoryItem(title, content, expiredDate), File
 //  -----------------------------------------------------
   @PostMapping("/create/page/{categoryId}")
   public ResponseEntity<?> create(@AuthenticationPrincipal final String userId,
-                                  @PathVariable(value = "categoryId") final Long categoryId,
-                                  @RequestBody final CategoryItemDTO categoryItemDTO) {
+                                  @PathVariable(value = "categoryId", required = false) final Long categoryId,
+                                  @RequestPart(value = "categoryItemDTO", required = false) final CategoryItemDTO categoryItemDTO,
+                                  @RequestPart(value = "file", required = false) final MultipartFile file) {
     final String message = "categoryItem create";
 
     try {
       log.info(LogMessage.infoJoin(message));
 
-      if (userId != null && Long.valueOf(userId) == categoryService.findHost(categoryId)) {
+      if (userId != null && Long.valueOf(userId) == categoryService.findHost(categoryId) &&
+              file.getSize() != 0 && categoryItemDTO != null) {
+
+        final String itemPath = uploadFile.uploadCategoryImage(file);
+
+        categoryItemDTO.setItemPath(itemPath);
         categoryItemDTO.setCategory(categoryId);
 
         final List<CategoryItemEntity> categoryItemEntities = categoryItemService
@@ -116,7 +127,7 @@ public class CategoryItemController {
 //  -----------------------------------------------------
   @GetMapping("/list/{categoryId}")
   public ResponseEntity<?> findList(@AuthenticationPrincipal final String userId,
-                                    @PathVariable(value = "categoryId") final Long categoryId) {
+                                    @PathVariable(value = "categoryId", required = false) final Long categoryId) {
     final String message = "categoryItem list";
 
     try {
@@ -146,7 +157,7 @@ public class CategoryItemController {
 //  -----------------------------------------------------
   @DeleteMapping("/delete/item-page/{categoryItemId}")
   public ResponseEntity<?> delete(@AuthenticationPrincipal final String userId,
-                                  @PathVariable(value = "categoryItemId") final Long categoryItemId) {
+                                  @PathVariable(value = "categoryItemId", required = false) final Long categoryItemId) {
     final String message = "categoryItem delete";
 
     try {
@@ -187,8 +198,8 @@ public class CategoryItemController {
 //  -----------------------------------------------------
   @PutMapping("/update/page/{categoryId}")
   public ResponseEntity<?> update(@AuthenticationPrincipal final String userId,
-                                  @PathVariable final Long categoryId,
-                                  @RequestBody final CategoryItemDTO categoryItemDTO) {
+                                  @PathVariable(value = "categoryId", required = false) final Long categoryId,
+                                  @RequestBody(required = false) final CategoryItemDTO categoryItemDTO) {
     final String message = "categoryItem update";
 
     try {
