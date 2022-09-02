@@ -18,6 +18,7 @@ import axios from "axios";
 import { Create } from "@mui/icons-material";
 import AvatarPickerModal from "./components/AvatarPickerModal";
 
+
 function Router() {
   const isLogin = useRecoilValue(loginState);
   const [user, setUser] = useRecoilState(userState);
@@ -81,6 +82,7 @@ function Router() {
         </Route>
         <Route path="/mypage" element={<Mypage />} />
       </Routes>
+  
     </BrowserRouter>
   );
 }
