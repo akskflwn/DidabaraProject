@@ -113,7 +113,12 @@ public class SubscriberService {
     }
   }
 
-  public boolean existsByCategoryIdAndUserId (final Long categoryId, final Long userId) {
+  //  ---------------------------------------------------
+//  작성자 : 문병훈
+//  메소드 정보 : 해당 카테고리가 존재하는지 확인
+//  마지막 수정자 : 문병훈
+//  -----------------------------------------------------
+  public boolean existsByCategoryIdAndUserId(final Long categoryId, final Long userId) {
     final String message = "subscriberService existsByCategoryIdAndUserId";
 
     try {

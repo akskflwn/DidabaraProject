@@ -20,7 +20,7 @@ public class UserInfoEntity extends BaseTimeEntity {
   @Column(name = "id")
   private Long id;
 
-  @Column(name = "job",  length = 30)
+  @Column(name = "job", length = 30)
   private String job;
 
   //  0은 일반 유저, 1은 관리자
@@ -37,9 +37,9 @@ public class UserInfoEntity extends BaseTimeEntity {
   //  @ColumnDefault("기본 프로필 제공 이미지 경로")
   private String profileImageUrl;
 
-  @Column(name = "file_name",length = 100)
+  @Column(name = "file_name", length = 100)
   private String filename;
 
-  @Column(name = "file_ori_name",length = 100)
+  @Column(name = "file_ori_name", length = 100)
   private String fileOriName;
 }
