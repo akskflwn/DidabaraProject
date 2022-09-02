@@ -16,7 +16,8 @@ import MypageMain from "./pages/MypageMain";
 import CreateModal from "./components/CreateModal";
 import axios from "axios";
 import { Create } from "@mui/icons-material";
-import Footer from "./components/Footer";
+import AvatarPickerModal from "./components/AvatarPickerModal";
+
 
 function Router() {
   const isLogin = useRecoilValue(loginState);
@@ -65,8 +66,9 @@ function Router() {
           <>
             <Route path="/dashboard" element={<DashBoard />} />
             <Route path="/mypage" element={<Mypage />}>
-              <Route path="main" element={<MypageMain />} />
-              <Route path="personal-info" element={<PersonalInfo />} />
+              <Route path=":main" element={<MypageMain />} />
+              <Route path=":personal-info" element={<PersonalInfo />} />
+              <Route path="updateimage" element={<AvatarPickerModal />} />
             </Route>
           </>
         )}
@@ -80,7 +82,7 @@ function Router() {
         </Route>
         <Route path="/mypage" element={<Mypage />} />
       </Routes>
-      <Footer />
+  
     </BrowserRouter>
   );
 }
