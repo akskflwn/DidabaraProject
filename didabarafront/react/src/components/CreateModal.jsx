@@ -5,6 +5,7 @@ import styled from "styled-components";
 import axios from "axios";
 import Pallet from "./Pallet";
 import { REQUEST_ADDRESS } from "../config/APIs";
+import ModalPopUp from "./ModalPopUp";
 
 const number = window.innerWidth;
 const Background = styled.div`
@@ -87,6 +88,7 @@ const StyledFile = styled.input`
   display: none;
 `;
 function CreateModal() {
+  const [showing, setShowing] = useState(false);
   const imgRef = useRef();
   const navi = useNavigate();
 
@@ -104,26 +106,45 @@ function CreateModal() {
 
   const makeCategory = (e) => {
     e.preventDefault();
-    const data = new FormData(e.target);
+    const ctData = new FormData(e.target);
+
+    const requestData = new FormData();
+
+    const category = {
+      title: ctData.get("title"),
+      content: ctData.get("content"),
+    };
+
+    const categoryDTO = JSON.stringify(category);
+
+    requestData.append(
+      "categoryDTO",
+      new Blob([categoryDTO], { type: "application/json" })
+    );
+    requestData.append("file", ctData.get("file"));
 
     axios
-      .post(REQUEST_ADDRESS + "upload/category", data, {
+      .post(REQUEST_ADDRESS + "category/create", requestData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => console.log(res), setShowing(true))
       .catch((err) => console.log(err));
   };
 
   return (
     <>
+      <ModalPopUp width={"300px"} height={"150px"}>
+        
+      </ModalPopUp>
       <Background style={{ width: number }}></Background>
       <StyledForm
         encType="multipart/form-data"
         onSubmit={makeCategory}
-        id="myform"
+        id="categoryDTO"
+        name="categoryDTO"
       >
         <SteyldCard>
           <StyledLeftBox>
@@ -151,7 +172,7 @@ function CreateModal() {
               <StyledLabel htmlFor="file">배경이미지 선택하기</StyledLabel>
               <StyledFile
                 type="file"
-                name="images"
+                name="file"
                 id="file"
                 onChange={showFileImage}
               />

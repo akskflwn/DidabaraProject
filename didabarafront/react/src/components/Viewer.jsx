@@ -8,11 +8,15 @@ function Viewer() {
     WebViewer(
       {
         path: "/webViewer/lib",
-        initialDoc: "files/PDFTRON_about.pdf",
+        initialDoc:
+          "https://didabara.s3.ap-northeast-2.amazonaws.com/myfile/26dea8.pdf",
       },
       viewer.current
     ).then((instance) => {
       const { documentViewer, annotationManager, Annotations } = instance.Core;
+      // instance.UI.loadDocument(
+      //   "https://didabara.s3.ap-northeast-2.amazonaws.com/myfile/d57f3c.pdf"
+      // );
     });
   }, []);
 

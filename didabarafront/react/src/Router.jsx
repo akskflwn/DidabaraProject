@@ -15,9 +15,7 @@ import PersonalInfo from "./pages/PersonalInfo";
 import MypageMain from "./pages/MypageMain";
 import CreateModal from "./components/CreateModal";
 import axios from "axios";
-import { Create } from "@mui/icons-material";
 import AvatarPickerModal from "./components/AvatarPickerModal";
-
 
 function Router() {
   const isLogin = useRecoilValue(loginState);
@@ -41,7 +39,7 @@ function Router() {
         })
         .then((res) => {
           console.log("user infomation received :", res.data);
-          setUser(res.data);
+          setUser({ ...res.data });
         })
         .catch((err) => console.log(err));
     }
@@ -52,9 +50,7 @@ function Router() {
       <NavigationBar />
       <AnimatePresence>{isLogin ? <Loginform /> : null}</AnimatePresence>
       <Routes>
-        <Route path="*" element={<Navigate to={user ? "/dashboard" : "/"} />} />
-        <Route path="/create" element={<CreateModal />} />
-        <Route path="/" element={<Home />} />
+        {/* <Route path="/:*" element={<Navigate to={user ? "/*" : "/"} />} /> */}
         {!user && (
           <>
             <Route path="/kakaologin" element={<KakaoLogin />} />
@@ -64,25 +60,18 @@ function Router() {
         )}
         {user && (
           <>
-            <Route path="/dashboard" element={<DashBoard />} />
+            <Route path="/dashboard" element={<DashBoard />}>
+              <Route path="/dashboard/create" element={<CreateModal />} />
+            </Route>
             <Route path="/mypage" element={<Mypage />}>
-              <Route path=":main" element={<MypageMain />} />
+              <Route path="main" element={<MypageMain />} />
               <Route path=":personal-info" element={<PersonalInfo />} />
               <Route path="updateimage" element={<AvatarPickerModal />} />
             </Route>
           </>
         )}
-
-        <Route path="/kakaologin" element={<KakaoLogin />} />
-        <Route path="/join" element={<Join />} />
-        <Route path="/emailconfig/:username" element={<EmailAuth />} />
-
-        <Route path="/dashboard" element={<DashBoard />}>
-          <Route path="/dashboard/create" element={<CreateModal />} />
-        </Route>
-        <Route path="/mypage" element={<Mypage />} />
+        <Route path="/" element={<Home />} />
       </Routes>
-  
     </BrowserRouter>
   );
 }
