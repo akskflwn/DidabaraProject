@@ -17,13 +17,6 @@ function Home() {
     axios.get();
   };
 
-  const getMysub = () => {
-    axios
-      .get(REQUEST_ADDRESS + "category/myList", {
-        headers: { Authorization: "Bearer " + localStorage.getItem("token") },
-      })
-      .then((res) => console.log(res));
-  };
 
   return (
     <>
@@ -33,7 +26,6 @@ function Home() {
           참가요청하기 <input name="text" type="text" />
           <button type="submit">참가하기</button>
         </form>
-        <button onClick={getMysub}>악시오스 요청</button>
       </IntroPartOne>
       <IntroPartTwo />
     </>

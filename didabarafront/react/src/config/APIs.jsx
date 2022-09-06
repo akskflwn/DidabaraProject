@@ -27,3 +27,13 @@ export const getUserData = () => {
       });
   }
 };
+
+export const getMyList = () => {
+  console.log("getting my create list from server...");
+
+  return axios.get(REQUEST_ADDRESS + "category/myList", {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  });
+};

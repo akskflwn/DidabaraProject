@@ -7,8 +7,6 @@ import { userState } from "../config/Atom";
 
 const StyledPaper = styled(Paper)`
   && {
-    width: 300;
-    border-radius: 0;
     cursor: grab;
     border-radius: 2px;
     :hover {

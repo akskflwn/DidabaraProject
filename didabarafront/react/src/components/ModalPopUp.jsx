@@ -9,24 +9,26 @@ const OverLay = styled.div`
   left: 0;
   top: 0;
   transition: hidden 0.5s;
+  overflow: scroll;
 `;
 
 const Modal = styled.div`
   position: absolute;
   background-color: white;
+  border-radius: 5px;
   left: 50%;
-  top: 20%;
+  top: 10%;
   transform: translateX(-50%);
 `;
 
-function ModalPopUp({ children, width, height, showing = false }) {
+function ModalPopUp({ children, width, height, Overlay }) {
   const controlShowOrNot = () => {};
 
   return (
     <>
       <OverLay
         onClick={controlShowOrNot}
-        style={{ display: showing ? "show" : "none" }}
+        style={{ backgroundColor: Overlay ? "show" : "transparent" }}
       >
         <Modal style={{ width: width, height: height }}>{children}</Modal>
       </OverLay>

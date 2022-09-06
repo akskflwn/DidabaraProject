@@ -14,64 +14,57 @@ import Mypage from "./pages/Mypage";
 import PersonalInfo from "./pages/PersonalInfo";
 import MypageMain from "./pages/MypageMain";
 import CreateModal from "./components/CreateModal";
-import axios from "axios";
 import AvatarPickerModal from "./components/AvatarPickerModal";
+import { useQuery } from "react-query";
+import { getUserData } from "./config/APIs";
+import ShowMyList from "./components/ShowMyList";
+import DnDropContext from "./components/DnDropContext";
 
 function Router() {
   const isLogin = useRecoilValue(loginState);
   const [user, setUser] = useRecoilState(userState);
 
-  useEffect(() => {
-    console.log("useEfffect running");
-    if (!localStorage.getItem("token")) {
-      console.log("Token is not in localStorage.. going to back home....");
-      return;
-    }
-    if (localStorage.getItem("token")) {
-      console.log(
-        "Token is in LocalStorage... initiate user login setting.... :"
-      );
-      axios
-        .get("http://localhost:8080/userinfo", {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          console.log("user infomation received :", res.data);
-          setUser({ ...res.data });
-        })
-        .catch((err) => console.log(err));
-    }
-  }, []);
+  const { isLoading } = useQuery("userData", getUserData, {
+    refetchOnWindowFocus: false,
+    retry: 0,
+    onSuccess: (data) => setUser(data),
+  });
 
   return (
     <BrowserRouter>
-      <NavigationBar />
-      <AnimatePresence>{isLogin ? <Loginform /> : null}</AnimatePresence>
-      <Routes>
-        <Route path="/:*" element={<Navigate to={user ? "/*" : "/"} />} />
-        {/* {!user && (
+      {isLoading ? null : (
+        <>
+          {" "}
+          <NavigationBar />
+          <AnimatePresence>{isLogin ? <Loginform /> : null}</AnimatePresence>
+          <Routes>
+            <Route path="/*" element={<Navigate to={user ? "/*" : "/"} />} />
+            {/* {!user && (
           <> */}
-        <Route path="/kakaologin" element={<KakaoLogin />} />
-        <Route path="/join" element={<Join />} />
-        <Route path="/emailconfig/:username" element={<EmailAuth />} />
-        {/* </>
+            <Route path="/kakaologin" element={<KakaoLogin />} />
+            <Route path="/join" element={<Join />} />
+            <Route path="/emailconfig/:username" element={<EmailAuth />} />
+            {/* </>
         )}
         {user && (
           <> */}
-        <Route path="/dashboard" element={<DashBoard />}>
-          <Route path="/dashboard/create" element={<CreateModal />} />
-        </Route>
-        <Route path="/mypage" element={<Mypage />}>
-          <Route path="main" element={<MypageMain />} />
-          <Route path=":personal-info" element={<PersonalInfo />} />
-          <Route path="updateimage" element={<AvatarPickerModal />} />
-        </Route>
-        {/* </>
+            <Route path="/dashboard" element={<DashBoard />}>
+              <Route path="/dashboard/mydocument" element={<ShowMyList />} />
+              <Route path="/dashboard/myjoinlist" element={<DnDropContext />} />
+            </Route>
+            <Route path="/dashboard/create" element={<CreateModal />} />
+
+            <Route path="/mypage" element={<Mypage />}>
+              <Route path="main" element={<MypageMain />} />
+              <Route path=":personal-info" element={<PersonalInfo />} />
+              <Route path="updateimage" element={<AvatarPickerModal />} />
+            </Route>
+            {/* </>
         )} */}
-        <Route path="/" element={<Home />} />
-      </Routes>
+            <Route path="/" element={<Home />} />
+          </Routes>
+        </>
+      )}
     </BrowserRouter>
   );
 }

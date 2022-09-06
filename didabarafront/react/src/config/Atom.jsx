@@ -15,3 +15,8 @@ export const loginState = atom({
   key: "loginState",
   default: false,
 });
+
+export const myDocumentState = atom({
+  key: "documentState",
+  default: [{ id: 1 }],
+});
