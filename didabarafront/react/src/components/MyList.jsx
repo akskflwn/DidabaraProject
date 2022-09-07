@@ -1,11 +1,11 @@
-import { Button } from "@mui/material";
 import axios from "axios";
-import React, { useState } from "react";
+import React from "react";
+import { useNavigate } from "react-router-dom";
 import { useSetRecoilState } from "recoil";
+
 import styled from "styled-components";
 import { REQUEST_ADDRESS } from "../config/APIs";
-import { myDocumentState } from "../config/Atom";
-import DeleteModal from "./DeleteModal";
+import { categoryIdState, categoryItem } from "../config/Atom";
 
 const Container = styled.div`
   border-radius: 0;
@@ -31,16 +31,6 @@ const Box = styled.div`
   flex-direction: column;
 `;
 
-const StyledButton = styled(Button)`
-  && {
-    /* flex: 1; */
-    color: white;
-    border: 1px solid transparent;
-    height: 25px;
-    background-color: rgba(0, 0, 0, 0.3);
-  }
-`;
-
 const StyledSpan = styled.span`
   display: flex;
   background-color: rgba(0, 0, 0, 0.3);
@@ -53,30 +43,29 @@ const StyledSpan = styled.span`
 `;
 
 function MyList({ title, content, imgSrc, id }) {
-  const [trashcan, setTrashcan] = useState(false);
-  const setMyDocumentState = useSetRecoilState(myDocumentState);
+  const navi = useNavigate();
+  const setCategoryItems = useSetRecoilState(categoryItem);
 
-  const deleteCategory = (e) => {
-    const yesOrNo = window.confirm(e.target.value, "하시겠습니까");
-    console.log(yesOrNo);
+  const goCategory = () => {
+    console.log("getting my item list of categories...");
 
-    if (yesOrNo) {
-      axios
-        .delete(REQUEST_ADDRESS + `category/delete/page/${id}`, {
-          headers: {
-            Authorization: "Bearer " + localStorage.getItem("token"),
-          },
-        })
-        .then((res) => {
-          console.log(res.data);
-          setMyDocumentState(res.data.resList);
-        })
-        .catch((err) => console.log(err));
-    }
+    axios
+      .get(REQUEST_ADDRESS + `categoryItem/list/${id}`, {
+        headers: {
+          Authorization: "Bearer " + localStorage.getItem("token"),
+        },
+      })
+      .then((res) => {
+        setCategoryItems(res.data.resList);
+        navi(`/dashboard/${id}`);
+      });
   };
-  const updateCategory = () => {};
+
   return (
-    <Container style={{ backgroundImage: `url(${imgSrc})` }}>
+    <Container
+      style={{ backgroundImage: `url(${imgSrc})` }}
+      onClick={goCategory}
+    >
       <StyledWapper>
         <Box>
           <StyledSpan>
@@ -94,28 +83,7 @@ function MyList({ title, content, imgSrc, id }) {
             <p style={{ lineHeight: "50%" }}>{content}</p>
           </StyledSpan>
         </Box>
-        <Box style={{ display: "flex", flexDirection: "column", gap: "5px" }}>
-          <StyledButton
-            variant="outlined"
-            onClick={() => {
-              setTrashcan((prev) => !prev);
-            }}
-            value="수정"
-          >
-            수정
-          </StyledButton>
-
-          <StyledButton
-            variant="outlined"
-            onClick={deleteCategory}
-            value="삭제"
-          >
-            삭제
-          </StyledButton>
-          {}
-        </Box>
       </StyledWapper>
-      {trashcan ? <DeleteModal /> : null}
     </Container>
   );
 }

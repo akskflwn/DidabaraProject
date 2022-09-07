@@ -1,6 +1,5 @@
 import { Button, FormLabel, TextField, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import Pallet from "./Pallet";
@@ -93,7 +92,6 @@ function CreateModal({ setShowing }) {
   const [inviteCode, setInviteCode] = useState("");
   const setMyDocumetnState = useSetRecoilState(myDocumentState);
   const imgRef = useRef();
-  const navi = useNavigate();
 
   const copyInviteCode = (e) => {
     e.target.select();

@@ -1,12 +1,13 @@
 import React, { useState } from "react";
 import { Button, Grid } from "@mui/material";
 import styled from "styled-components";
-import { Outlet, useMatch, useNavigate } from "react-router-dom";
+import { Outlet } from "react-router-dom";
 import Viewer from "../components/Viewer";
 import ReplyInput from "../components/ReplyInput";
 import ReplyContents from "../components/ReplyContents";
 import CreateModal from "../components/CreateModal";
-import CreateItem from "../components/CreateItem";
+import ShowMyList from "../components/ShowMyList";
+import DnDropContext from "../components/DnDropContext";
 
 const Item = styled(Grid)`
   /* border: 1px solid black; */
@@ -77,18 +78,15 @@ const SecondGrid = styled(StyledGrid)`
 `;
 
 function DashBoard() {
-  const navi = useNavigate(false);
   const [makeCategory, setMakeCategory] = useState(false);
-  const [makeItem, setMakeItem] = useState(false);
-  const myDocumentMatch = useMatch("dashboard/mydocument");
-  // const myJoinListMatch = useMatch("dashboard/myjoinlist");
+  const [showList, setShowList] = useState(true);
 
-  const tabControl = (value) => {
-    if (value === "myList") {
-      navi("mydocument");
+  const menuSelect = (e) => {
+    if (e.target.value === "myList") {
+      setShowList(true);
     }
-    if (value === "joinList") {
-      navi("myjoinlist");
+    if (e.target.value === "joinList") {
+      setShowList(false);
     }
   };
 
@@ -97,30 +95,20 @@ function DashBoard() {
       <FristGrid item xs={2}>
         <div>
           <ButtonJoinList
-            onClick={(e) => {
-              tabControl(e.target.value);
-            }}
-            $mylist={myDocumentMatch}
+            onClick={menuSelect}
+            $mylist={showList}
             value="joinList"
           >
             구독
           </ButtonJoinList>
-          <ButtonMyList
-            onClick={(e) => {
-              tabControl(e.target.value);
-            }}
-            $mylist={myDocumentMatch}
-            value="myList"
-          >
+          <ButtonMyList onClick={menuSelect} $mylist={showList} value="myList">
             나의 커뮤니티
           </ButtonMyList>
         </div>
 
+        <div>{showList ? <ShowMyList /> : <DnDropContext />}</div>
         <div>
-          <Outlet />
-        </div>
-        <div>
-          {myDocumentMatch ? (
+          {showList ? (
             <Button
               variant="contained"
               style={{ width: "100%", minHeight: "70px", height: "100%" }}
@@ -136,23 +124,9 @@ function DashBoard() {
         </div>
       </FristGrid>
       <SecondGrid container item xs={7} style={{ position: "relative" }}>
-        {myDocumentMatch && (
-          <div>
-            <Button
-              variant="contained"
-              onClick={() => {
-                setMakeItem(true);
-              }}
-            >
-              아이템
-            </Button>
-            {makeItem && <CreateItem setCreateItem={setMakeItem} />}
-          </div>
-        )}
-        {makeCategory ? (
-          <CreateModal showing={makeCategory} setShowing={setMakeCategory} />
-        ) : null}
-        <Item item style={{ width: "100%" }} xs={10}>
+        {makeCategory ? <CreateModal setShowing={setMakeCategory} /> : null}
+        <Item item style={{ width: "100%" }}>
+          <Outlet />
           {/* <Viewer /> */}
         </Item>
       </SecondGrid>

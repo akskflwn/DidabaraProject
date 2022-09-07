@@ -20,3 +20,13 @@ export const myDocumentState = atom({
   key: "documentState",
   default: [{ id: 1 }],
 });
+
+export const menuState = atom({
+  key: "menuState",
+  default: "Listing",
+});
+
+export const categoryItem = atom({
+  key: "categoryId",
+  default: [],
+});

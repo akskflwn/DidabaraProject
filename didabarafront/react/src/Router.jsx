@@ -1,6 +1,5 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import NavigationBar from "./components/NavigationBar";
 import DashBoard from "./pages/DashBoard";
 import Home from "./pages/Home";
 import Join from "./pages/Join";
@@ -8,17 +7,17 @@ import KakaoLogin from "./pages/KakaoLogin";
 import EmailAuth from "./pages/EmailAuth";
 import { useRecoilState, useRecoilValue } from "recoil";
 import { AnimatePresence } from "framer-motion";
-import Loginform from "./components/Loginform";
 import { loginState, userState } from "./config/Atom";
 import Mypage from "./pages/Mypage";
 import PersonalInfo from "./pages/PersonalInfo";
+import NavigationBar from "./components/NavigationBar";
 import MypageMain from "./pages/MypageMain";
+import Loginform from "./components/Loginform";
 import CreateModal from "./components/CreateModal";
 import AvatarPickerModal from "./components/AvatarPickerModal";
 import { useQuery } from "react-query";
 import { getUserData } from "./config/APIs";
-import ShowMyList from "./components/ShowMyList";
-import DnDropContext from "./components/DnDropContext";
+import DocumentList from "./components/DocumentList";
 
 function Router() {
   const isLogin = useRecoilValue(loginState);
@@ -49,8 +48,7 @@ function Router() {
         {user && (
           <> */}
             <Route path="/dashboard" element={<DashBoard />}>
-              <Route path="/dashboard/mydocument" element={<ShowMyList />} />
-              <Route path="/dashboard/myjoinlist" element={<DnDropContext />} />
+              <Route path="/dashboard/:document" element={<DocumentList />} />
             </Route>
             <Route path="/dashboard/create" element={<CreateModal />} />
 
