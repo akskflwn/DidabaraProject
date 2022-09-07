@@ -1,4 +1,4 @@
-import { atom } from "recoil";
+import { atom, selector } from "recoil";
 
 export const User = {
   id: "",
@@ -29,4 +29,17 @@ export const menuState = atom({
 export const categoryItem = atom({
   key: "categoryId",
   default: [],
+});
+
+export const itemMenuSelector = selector({
+  key: "itemSelector",
+  get: ({ get }) => {
+    const menu = get(menuState);
+    const items = get(categoryItem);
+
+    switch (menu) {
+      case "Listing" :
+        return items.filter((item) => item.expriedDate)
+    }
+  },
 });
