@@ -1,4 +1,4 @@
-package com.bitcamp221.didabara.dto;
+package com.bitcamp221.didabara.testpdf;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.*;
@@ -6,9 +6,6 @@ import com.amazonaws.util.IOUtils;
 import com.bitcamp221.didabara.mapper.UserInfoMapper;
 import com.bitcamp221.didabara.model.UserInfoEntity;
 import com.bitcamp221.didabara.presistence.UserInfoRepository;
-import com.documents4j.api.DocumentType;
-import com.documents4j.api.IConverter;
-import com.documents4j.job.LocalConverter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,7 +27,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 @PropertySource(value = "application.properties")
-public class S3Upload {
+public class S3UploadTest {
 
   @Autowired
   private UserInfoRepository userInfoRepository;
@@ -49,7 +46,7 @@ public class S3Upload {
     return s3Client.getUrl(bucket, fileName).toString();
   }
 
-  public String upload(MultipartFile file, String dirName, String id) throws IOException {
+  public String upload(MultipartFile file, String dirName) throws IOException {
     File uploadFile = convert(file).orElseThrow(() -> new IllegalArgumentException("file 전달에 실패했습니다."));
     String extension = uploadFile.getName().substring(uploadFile.getName().lastIndexOf("."));
     System.out.println("extension = " + extension);
@@ -70,26 +67,26 @@ public class S3Upload {
 
     File news = new File(System.getProperty("user.dir") + "/" + UUID.randomUUID() + extension);
     uploadFile.renameTo(news);
-    return upload(news, dirName, id);
+    return upload(news, dirName);
   }
 
-  public String upload(File uploadFile, String dirName, String id) {
+  public String upload(File uploadFile, String dirName) {
     String fileName = dirName + "/" + uploadFile.getName();
     String uploadImageURI = putS3(uploadFile, fileName);
-    String dBPathName = uploadImageURI.substring(0, 62);
+    String dBPathName = uploadImageURI.substring(0, 56);
     String extensionName = uploadImageURI.substring(uploadImageURI.lastIndexOf("/") + 1);
     String dbFilename = uploadImageURI.substring(uploadImageURI.lastIndexOf("/") + 1);
 
-    Optional<UserInfoEntity> byId = userInfoRepository.findById(Long.valueOf(id));
-    byId.get().setProfileImageUrl(dBPathName);
-    byId.get().setFilename(dbFilename);
-    userInfoRepository.save(byId.get());
+//    Optional<UserInfoEntity> byId = userInfoRepository.findById(Long.valueOf(id));
+//    byId.get().setProfileImageUrl(dBPathName);
+//    byId.get().setFilename(dbFilename);
+//    userInfoRepository.save(byId.get());
 
     removeNewFile(uploadFile);
     return uploadImageURI;
   }
 
-  private String putS3(File uploadFile, String fileName) {
+  public String putS3(File uploadFile, String fileName) {
     s3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
     return s3Client.getUrl(bucket, fileName).toString();
   }

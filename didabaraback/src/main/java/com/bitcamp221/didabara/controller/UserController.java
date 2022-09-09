@@ -1,26 +1,24 @@
 package com.bitcamp221.didabara.controller;
 
 
+import com.bitcamp221.didabara.dto.ResponseDTO;
+import com.bitcamp221.didabara.dto.UserDTO;
 import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.model.UserInfoEntity;
+import com.bitcamp221.didabara.notification.NotificationService;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
 import com.bitcamp221.didabara.presistence.UserInfoRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
-import com.bitcamp221.didabara.service.EmailConfigService;
+import com.bitcamp221.didabara.security.TokenProvider;
 import com.bitcamp221.didabara.service.UserService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
-import com.bitcamp221.didabara.dto.ResponseDTO;
-import com.bitcamp221.didabara.dto.UserDTO;
-import com.bitcamp221.didabara.security.TokenProvider;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -45,6 +43,9 @@ public class UserController {
     @Autowired
     private EmailConfigRepository emailConfigRepository;
 
+    @Autowired
+    NotificationService notificationService;
+
     //  회원가입
 //  http://localhost:8080/auth/signup
     @PostMapping("/signup")
@@ -60,6 +61,8 @@ public class UserController {
                     .username(userDTO.getUsername())
                     .password(passwordEncoder.encode(userDTO.getPassword()))
                     .nickname(userDTO.getNickname())
+                    .realName(userDTO.getRealName())
+                    .phoneNumber(userDTO.getPhoneNumber())
                     .build();
 
 //      서비스를 이용해 리포지터리에 유저 저장
@@ -99,7 +102,7 @@ public class UserController {
     }
 
     //  로그인
-    @PostMapping("/signin")
+    @PostMapping(value = "/signin")
     public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO) {
         UserEntity user;
         try {
@@ -149,8 +152,6 @@ public class UserController {
         }
 
     }
-
-
 
 
     //조회

@@ -3,7 +3,7 @@
  * -이상돈-
  */
 const API_KEY = "4af7c95054f7e1d31cff647965678936";
-const REDIRECTION = "http://localhost:8080/kakaologin";
+const REDIRECTION = "http://localhost:3000/kakaologin";
 
 /**
  * 카카오 로그인 요청 주소.
