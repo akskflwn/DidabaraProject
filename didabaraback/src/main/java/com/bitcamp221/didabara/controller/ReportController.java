@@ -98,7 +98,7 @@ public class ReportController {
 //  메소드 정보 : 특정 user의 Report List 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  @GetMapping("/MyList")
+  @GetMapping("/mylist")
   public ResponseEntity<?> MyList(@AuthenticationPrincipal final String userId) {
     final String message = "report MyList";
 

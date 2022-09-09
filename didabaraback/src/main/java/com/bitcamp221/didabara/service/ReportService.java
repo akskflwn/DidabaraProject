@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -72,7 +73,7 @@ public class ReportService {
 //  메소드 정보 : Report 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public ReportEntity findReport(final Long reportId) {
+  public Optional<ReportEntity> findReport(final Long reportId) {
     final String message = "reportService findReport";
 
     try {
@@ -82,7 +83,7 @@ public class ReportService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return reportRepository.findReport(reportId);
+      return reportRepository.findById(reportId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -105,7 +106,7 @@ public class ReportService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return reportRepository.findMyList(userId);
+      return reportRepository.findAllByWriter(userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 

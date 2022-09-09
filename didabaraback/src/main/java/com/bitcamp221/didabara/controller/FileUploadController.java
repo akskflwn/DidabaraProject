@@ -8,10 +8,6 @@ import com.bitcamp221.didabara.presistence.UserInfoRepository;
 import com.documents4j.api.DocumentType;
 import com.documents4j.api.IConverter;
 import com.documents4j.job.LocalConverter;
-import kr.dogfoot.hwplib.object.HWPFile;
-import kr.dogfoot.hwplib.reader.HWPReader;
-import kr.dogfoot.hwplib.tool.textextractor.TextExtractMethod;
-import kr.dogfoot.hwplib.tool.textextractor.TextExtractor;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -20,14 +16,10 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.*;
 import java.net.URI;
-import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.StandardCopyOption;
-import java.util.Optional;
 import java.util.UUID;
 
 
@@ -45,7 +37,7 @@ public class FileUploadController {
   @PostMapping("text")
   private ResponseEntity<?> uploadText(@RequestParam("images") MultipartFile files,
                                        @AuthenticationPrincipal String id) throws IOException {
-    return ResponseEntity.ok().body(s3Upload.upload(files, "myfile",id));
+    return ResponseEntity.ok().body(s3Upload.upload(files, "myfile", id));
   }
 
   @PostMapping

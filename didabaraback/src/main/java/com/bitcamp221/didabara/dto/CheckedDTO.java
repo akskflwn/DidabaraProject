@@ -3,8 +3,8 @@ package com.bitcamp221.didabara.dto;
 import com.bitcamp221.didabara.model.CheckedEntity;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
 

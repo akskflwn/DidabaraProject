@@ -36,6 +36,9 @@ public class CategoryItemEntity extends BaseTimeEntity {
   @Column(name = "expired_date", nullable = false)
   private LocalDate expiredDate;
 
+  @Column(name = "preview", nullable = false)
+  private String preview;
+
   public void changeEntity(final CategoryItemEntity categoryItemEntity) {
     this.id = categoryItemEntity.getId();
     this.category = categoryItemEntity.getCategory();
@@ -43,5 +46,6 @@ public class CategoryItemEntity extends BaseTimeEntity {
     this.title = categoryItemEntity.getTitle();
     this.content = categoryItemEntity.getContent();
     this.expiredDate = categoryItemEntity.getExpiredDate();
+    this.preview = categoryItemEntity.getPreview();
   }
 }

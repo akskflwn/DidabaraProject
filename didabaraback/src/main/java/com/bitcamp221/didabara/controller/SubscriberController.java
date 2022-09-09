@@ -1,5 +1,7 @@
 package com.bitcamp221.didabara.controller;
 
+import com.bitcamp221.didabara.dto.CategoryDTO;
+import com.bitcamp221.didabara.dto.FindMyJoinListDTO;
 import com.bitcamp221.didabara.dto.SubscriberDTO;
 import com.bitcamp221.didabara.model.SubscriberEntity;
 import com.bitcamp221.didabara.service.CategoryService;
@@ -29,15 +31,17 @@ public class SubscriberController {
 //  작성자 : 문병훈
 //  메소드 정보 : Subscriber 생성
 //  마지막 수정자 : 문병훈
-//  필요 데이터 : category(id)
+//  필요 데이터 : category(inviteCode)
 //  -----------------------------------------------------
-  @PostMapping("/create/{categoryId}")
+  @PostMapping("/create")
   public void create(@AuthenticationPrincipal final String userId,
-                     @PathVariable(value = "categoryId", required = false) final Long categoryId) {
+                     @RequestBody(required = false) final CategoryDTO categoryDTO) {
     final String message = "subscriber create";
 
     try {
       log.info(LogMessage.infoJoin(message));
+
+      final Long categoryId = categoryService.existsCategory(CategoryDTO.toEntity(categoryDTO));
 
       if (userId != null && categoryId != null) {
         SubscriberDTO subscriberDTO = new SubscriberDTO();
@@ -69,7 +73,7 @@ public class SubscriberController {
       log.info(LogMessage.infoJoin(message));
 
       if (userId != null && categoryId != null) {
-        subscriberService.deleteByCategoryIdAndUserId(categoryId, Long.valueOf(userId));
+        subscriberService.deleteByCategoryAndUser(categoryId, Long.valueOf(userId));
 
         log.info(LogMessage.infoComplete(message));
       } else {
@@ -103,6 +107,36 @@ public class SubscriberController {
         List<SubscriberEntity> subscriberEntities = subscriberService.findList(categoryId);
 
         return ChangeType.toSubscriberDTO(subscriberEntities);
+      } else {
+        log.error(LogMessage.errorNull(message));
+
+        throw new RuntimeException(LogMessage.errorNull(message));
+      }
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
+
+      return ChangeType.toException(e);
+    }
+  }
+
+  //  ---------------------------------------------------
+//  작성자 : 문병훈
+//  메소드 정보 : Subscriber join list 출력
+//  마지막 수정자 : 문병훈
+//  -----------------------------------------------------
+  @GetMapping("/myJoinList")
+  public ResponseEntity<?> findMyJoinList(@AuthenticationPrincipal final String userId) {
+    final String message = "subscriberController findMyJoinList";
+
+    try {
+      log.info(LogMessage.infoJoin(message));
+
+      if (userId != null) {
+        List<FindMyJoinListDTO> list = subscriberService.findMyJoinList(Long.valueOf(userId));
+
+        log.info(LogMessage.infoComplete(message));
+
+        return ResponseEntity.ok().body(list);
       } else {
         log.error(LogMessage.errorNull(message));
 

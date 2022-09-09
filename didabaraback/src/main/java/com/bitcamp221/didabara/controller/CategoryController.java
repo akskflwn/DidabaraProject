@@ -1,7 +1,9 @@
 package com.bitcamp221.didabara.controller;
 
 import com.bitcamp221.didabara.dto.CategoryDTO;
+import com.bitcamp221.didabara.dto.MyListDTO;
 import com.bitcamp221.didabara.model.CategoryEntity;
+import com.bitcamp221.didabara.service.CategoryItemService;
 import com.bitcamp221.didabara.service.CategoryService;
 import com.bitcamp221.didabara.util.ChangeType;
 import com.bitcamp221.didabara.util.LogMessage;
@@ -13,7 +15,9 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Slf4j
@@ -26,6 +30,9 @@ public class CategoryController {
 
   @Autowired
   private UploadFile uploadFile;
+
+  @Autowired
+  private CategoryItemService categoryItemService;
 
   //  ---------------------------------------------------
 //  작성자 : 문병훈
@@ -40,15 +47,21 @@ public class CategoryController {
       log.info(LogMessage.infoJoin(message));
 
       if (userId != null) {
-
-//    String 타입인 host를 롱 타입으로 변환
-//    Long.valueOf(userId);
-
         final List<CategoryEntity> categoryEntities = categoryService.findMyList(Long.valueOf(userId));
+
+        List<MyListDTO> list = new ArrayList<>();
+
+        for (CategoryEntity c : categoryEntities) {
+          MyListDTO myListDTO = new MyListDTO(c);
+
+          list.add(myListDTO);
+
+          list.get(list.size() - 1).setCount(categoryItemService.countByCategory(c.getId()));
+        }
 
         log.info(LogMessage.infoComplete(message));
 
-        return ChangeType.toCategoryDTO(categoryEntities);
+        return ResponseEntity.ok().body(list);
       } else {
         log.error(LogMessage.errorNull(message));
 
@@ -116,7 +129,7 @@ public class CategoryController {
         categoryDTO.setInviteCode(code);
         categoryDTO.setHost(Long.valueOf(userId));
 
-        final CategoryEntity entity = categoryService.create(CategoryDTO.toEntity(categoryDTO));
+        final Optional<CategoryEntity> entity = categoryService.create(CategoryDTO.toEntity(categoryDTO));
 
         final CategoryDTO DTO = new CategoryDTO(entity);
 
@@ -139,11 +152,12 @@ public class CategoryController {
 //  작성자 : 문병훈
 //  메소드 정보 : 내 카테고리 수정 (수정 후 카테고리 내부)
 //  마지막 수정자 : 문병훈
-//  필요 데이터 : category(id[필수], title, content, profileImageUrl)
+//  필요 데이터 : category(id[필수], title, content), imageFile
 //  -----------------------------------------------------
   @PutMapping("/update")
   public ResponseEntity<?> update(@AuthenticationPrincipal final String userId,
-                                  @RequestBody final CategoryDTO categoryDTO) {
+                                  @RequestPart(value = "categoryDTO", required = false) final CategoryDTO categoryDTO,
+                                  @RequestPart(value = "file", required = false) final MultipartFile file) {
     final String message = "category update";
 
     try {
@@ -152,7 +166,16 @@ public class CategoryController {
       if (userId != null && Long.valueOf(userId) == categoryService.findHost(categoryDTO.getId())) {
         categoryDTO.setHost(Long.valueOf(userId));
 
-        final CategoryEntity entity = categoryService
+        if (file != null) {
+          final String filePath = uploadFile.uploadCategoryImage(file);
+
+          categoryDTO.setProfileImageUrl(filePath);
+        } else {
+
+          categoryDTO.setProfileImageUrl(categoryService.findUrl(categoryDTO.getId()));
+        }
+
+        final Optional<CategoryEntity> entity = categoryService
                 .update(CategoryDTO.toEntity(categoryDTO));
 
         log.info(LogMessage.infoComplete(message));

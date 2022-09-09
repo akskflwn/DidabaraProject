@@ -37,8 +37,6 @@ public class EmailConfigService {
   private final JavaMailSender mailSender;
 
 
-
-
   /**
    * 작성자 : 김남주
    * 빨간줄 보이는게 맞습니다.
@@ -61,7 +59,7 @@ public class EmailConfigService {
   public boolean checkEmail(Map emailAuthCodeMap) {
     Iterator<String> iter = emailAuthCodeMap.keySet().iterator();
 
-    while(iter.hasNext()) {
+    while (iter.hasNext()) {
       String key = iter.next();
       String value = (String) emailAuthCodeMap.get(key);
 

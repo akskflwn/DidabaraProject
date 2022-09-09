@@ -60,7 +60,7 @@ public class CategoryItemReplyService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryItemReplyRepository.findList(itemId);
+      return categoryItemReplyRepository.findAllByCategoryItem(itemId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -83,7 +83,7 @@ public class CategoryItemReplyService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryItemReplyRepository.findMyList(userId);
+      return categoryItemReplyRepository.findAllByWriter(userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -108,7 +108,7 @@ public class CategoryItemReplyService {
 
       categoryItemReplyRepository.save(itemReplyEntity);
 
-      return categoryItemReplyRepository.findList(itemReplyEntity.getCategoryItem());
+      return categoryItemReplyRepository.findAllByCategoryItem(itemReplyEntity.getCategoryItem());
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -133,7 +133,7 @@ public class CategoryItemReplyService {
 
       categoryItemReplyRepository.deleteById(itemReplyId);
 
-      return categoryItemReplyRepository.findList(categoryItemId);
+      return categoryItemReplyRepository.findAllByCategoryItem(categoryItemId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -164,7 +164,7 @@ public class CategoryItemReplyService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryItemReplyRepository.findList(itemReplyEntity.getCategoryItem());
+      return categoryItemReplyRepository.findAllByCategoryItem(itemReplyEntity.getCategoryItem());
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 

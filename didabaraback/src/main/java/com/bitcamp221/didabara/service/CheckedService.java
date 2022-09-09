@@ -83,7 +83,7 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      checkedRepository.deleteAllByCategoryItem(categoryItemId);
+      checkedRepository.deleteByCategoryItem(categoryItemId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -152,7 +152,7 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.findMyCheckList(userId);
+      return checkedRepository.findAllByUser(userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -193,7 +193,7 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.existsByUserId(userId);
+      return checkedRepository.existsByUser(userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 

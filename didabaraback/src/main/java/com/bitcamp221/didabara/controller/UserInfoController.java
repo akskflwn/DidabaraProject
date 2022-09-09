@@ -70,9 +70,10 @@ public class UserInfoController {
   /**
    * 작성자 : 김남주
    * 메서드 기능 : admin 권한일시 유저의 밴 관리
-   *              유저의 ban 값이 true면 fasle로 false면 true
+   * 유저의 ban 값이 true면 fasle로 false면 true
    * 마지막 작성자 : 김남주
-   * @param id token user id
+   *
+   * @param id     token user id
    * @param userId 밴을 관리할 유저의 아이디
    * @return UserInfoEntity
    */
@@ -148,14 +149,15 @@ public class UserInfoController {
     byIdMyPage.put("password", null);
 
 
-
     return ResponseEntity.ok().body(byIdMyPage);
   }
+
   /**
    * 작성자 : 김남주
    * 메서드 기능 : 마이페이지 수정 (값이 안들어올시에는 유저의 원래 입력값으로 업데이트)
    * 마지막 작성자 : 김남주
-   * @param id JWT id
+   *
+   * @param id  JWT id
    * @param uid 컬럼명들
    * @return
    */
@@ -175,6 +177,7 @@ public class UserInfoController {
   /**
    * 작성자 : 김남주
    * 메서드 기능 : 회원 탈퇴
+   *
    * @param id
    * @return
    */
@@ -194,6 +197,6 @@ public class UserInfoController {
   @PostMapping
   private ResponseEntity<?> uploadText(@RequestParam("images") MultipartFile files,
                                        @AuthenticationPrincipal String id) throws IOException {
-    return ResponseEntity.ok().body(s3Upload.upload(files, "myfile",id));
+    return ResponseEntity.ok().body(s3Upload.upload(files, "myfile", id));
   }
 }

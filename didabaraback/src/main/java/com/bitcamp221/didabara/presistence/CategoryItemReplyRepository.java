@@ -10,12 +10,9 @@ import java.util.List;
 
 @Repository
 public interface CategoryItemReplyRepository extends JpaRepository<CategoryItemReplyEntity, Long> {
+  List<CategoryItemReplyEntity> findAllByCategoryItem(@Param(value = "categoryItem") final Long categoryItem);
 
-  @Query("SELECT r FROM CategoryItemReplyEntity r WHERE r.categoryItem = :categoryItemId")
-  List<CategoryItemReplyEntity> findList(@Param(value = "categoryItemId") final Long categoryItemId);
-
-  @Query("SELECT r FROM CategoryItemReplyEntity r WHERE r.writer = :userId")
-  List<CategoryItemReplyEntity> findMyList(@Param(value = "userId") final Long userId);
+  List<CategoryItemReplyEntity> findAllByWriter(@Param(value = "writer") final Long writer);
 
   @Query("SELECT r.writer FROM CategoryItemReplyEntity r WHERE r.id = :itemReplyId")
   Long findWriter(@Param(value = "itemReplyId") final Long itemReplyId);

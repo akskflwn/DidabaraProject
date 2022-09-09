@@ -24,9 +24,9 @@ public class EmailConfigEntity extends BaseTimeEntity {
 
   @Column(name = "check_user")
   @ColumnDefault("false")
-  private  Boolean check;
+  private Boolean check;
 
-  public void setCheck(Boolean check){
-    this.check=check;
+  public void setCheck(Boolean check) {
+    this.check = check;
   }
 }

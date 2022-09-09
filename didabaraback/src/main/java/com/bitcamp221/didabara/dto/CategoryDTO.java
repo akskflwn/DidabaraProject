@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Builder
 @Data
@@ -32,6 +33,17 @@ public class CategoryDTO {
     this.profileImageUrl = categoryEntity.getProfileImageUrl();
     this.createdDate = categoryEntity.getCreatedDate();
     this.modifiedDate = categoryEntity.getModifiedDate();
+  }
+
+  public CategoryDTO(Optional<CategoryEntity> categoryEntity) {
+    this.id = categoryEntity.get().getId();
+    this.host = categoryEntity.get().getHost();
+    this.title = categoryEntity.get().getTitle();
+    this.content = categoryEntity.get().getContent();
+    this.inviteCode = categoryEntity.get().getInviteCode();
+    this.profileImageUrl = categoryEntity.get().getProfileImageUrl();
+    this.createdDate = categoryEntity.get().getCreatedDate();
+    this.modifiedDate = categoryEntity.get().getModifiedDate();
   }
 
   public static CategoryEntity toEntity(final CategoryDTO categoryDTO) {

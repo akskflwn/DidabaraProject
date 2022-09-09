@@ -11,7 +11,6 @@ import com.bitcamp221.didabara.security.TokenProvider;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.ibatis.jdbc.Null;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -78,15 +77,12 @@ public class UserService {
       //로그인할떄 유저의 아이디랑 비빌번호가 일치할때
       //ban check을한다
 
-      UserInfoEntity bancheck =userInfoRepository.findById(originalUser.getId()).orElseThrow(() ->
+      UserInfoEntity bancheck = userInfoRepository.findById(originalUser.getId()).orElseThrow(() ->
               new IllegalArgumentException("해당 아이디가 없습니다."));
 
-      if(!bancheck.isBan())
-      {
+      if (!bancheck.isBan()) {
         return originalUser;
-      }
-      else
-      {
+      } else {
         log.warn("User {} hasbaned", username);
         throw new Exception("user has been baned.");
       }
@@ -97,12 +93,13 @@ public class UserService {
 
   //조회
   //username으로 조회하기
-  public UserEntity findUser ( final String username){
+  public UserEntity findUser(final String username) {
     return userRepository.findByUsername(username);
   }
+
   //조회
   //userid로 조회하기
-  public UserEntity findById (Long id){
+  public UserEntity findById(Long id) {
     //orElseThrow( )는 Optional 클래스에 포함된 메서드로,
     // Entity 조회와 예외 처리를 단 한 줄로 처리할 수 있음
     UserEntity user = userRepository.findById(id).orElseThrow(() ->
@@ -112,7 +109,7 @@ public class UserService {
 
   //수정
   @Transactional
-  public UserEntity update (UserEntity userEntity){
+  public UserEntity update(UserEntity userEntity) {
     UserEntity user = userRepository.findById(userEntity.getId()).orElseThrow(() ->
             new IllegalArgumentException("해당 아이디가 없습니다."));
 
@@ -126,7 +123,7 @@ public class UserService {
 
   //삭제
 
-  public void deleteUser (Long id){
+  public void deleteUser(Long id) {
     UserEntity findUser = userRepository.findById(id).orElseThrow(() ->
             new IllegalArgumentException("해당 아이디가 없습니다"));
     userRepository.delete(findUser);
@@ -134,7 +131,7 @@ public class UserService {
 
   //에러 처리를 하는 이유는 프로그램이 에러로 인해 종료되지않게 하기 위함
   //유효성 검증
-  private void validate ( final UserEntity entity){
+  private void validate(final UserEntity entity) {
     if (entity == null) {
       log.warn("Error: Entity can not be null");
       throw new RuntimeException("Entity cannot be null");
@@ -146,7 +143,7 @@ public class UserService {
   }
 
 
-  public UserDTO createKakaoUser (String token) throws IOException {
+  public UserDTO createKakaoUser(String token) throws IOException {
 
     System.out.println("token = " + token);
 
@@ -296,12 +293,8 @@ public class UserService {
   }
 
 
-
-
-
-
   /* 카카오 로그인(test) */
-  public String[] getKaKaoAccessToken (String code){
+  public String[] getKaKaoAccessToken(String code) {
     String access_Token = "";
     String refresh_Token = "";
     String reqURL = "https://kauth.kakao.com/oauth/token";

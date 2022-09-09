@@ -9,16 +9,11 @@ import lombok.NoArgsConstructor;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class RequestDTO {
+public class FindMyJoinListDTO {
   private Long id;
-  private CategoryDTO category;
-  private CategoryItemDTO categoryItem;
-  private CategoryItemReplyDTO reply;
-  private UserDTO user;
-  private UserInfoDTO userInfo;
-
   private String title;
   private String content;
+  private String categoryProfileImageUrl;
   private String nickname;
-  private String profileImageUrl;
+  private String userProfileImageUrl;
 }

@@ -3,16 +3,13 @@ package com.bitcamp221.didabara.controller;
 import com.bitcamp221.didabara.dto.CheckedDTO;
 import com.bitcamp221.didabara.model.CheckedEntity;
 import com.bitcamp221.didabara.model.SubscriberEntity;
-import com.bitcamp221.didabara.service.CategoryService;
 import com.bitcamp221.didabara.service.CheckedService;
 import com.bitcamp221.didabara.util.ChangeType;
 import com.bitcamp221.didabara.util.LogMessage;
 import lombok.extern.slf4j.Slf4j;
-import net.bytebuddy.utility.nullability.AlwaysNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

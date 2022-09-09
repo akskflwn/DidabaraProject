@@ -1,5 +1,6 @@
 package com.bitcamp221.didabara.service;
 
+import com.bitcamp221.didabara.dto.FindMyJoinListDTO;
 import com.bitcamp221.didabara.model.SubscriberEntity;
 import com.bitcamp221.didabara.presistence.SubscriberRepository;
 import com.bitcamp221.didabara.util.LogMessage;
@@ -72,7 +73,7 @@ public class SubscriberService {
 //  메소드 정보 : Subscriber 삭제
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public void deleteByCategoryIdAndUserId(final Long categoryId, final Long userId) {
+  public void deleteByCategoryAndUser(final Long categoryId, final Long userId) {
     final String message = "subscriberService deleteByCategoryIdAndUserId";
 
     try {
@@ -82,7 +83,7 @@ public class SubscriberService {
       log.info(LogMessage.infoJoin(message));
       log.info("값 {}, {}", categoryId, userId);
 
-      subscriberRepository.deleteByCategoryIdAndUserId(categoryId, userId);
+      subscriberRepository.deleteByCategoryAndUser(categoryId, userId);
 
       log.info(LogMessage.infoComplete(message));
     } catch (Exception e) {
@@ -105,7 +106,7 @@ public class SubscriberService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return subscriberRepository.findList(categoryId);
+      return subscriberRepository.findAllByCategory(categoryId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -129,7 +130,25 @@ public class SubscriberService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return subscriberRepository.existsByCategoryIdAndUserId(categoryId, userId);
+      return subscriberRepository.existsByCategoryAndUser(categoryId, userId);
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
+
+      throw new RuntimeException(LogMessage.errorJoin(message));
+    }
+  }
+
+  public List<FindMyJoinListDTO> findMyJoinList(final Long userId) {
+    final String message = "subscriberController findMyJoinList";
+
+    try {
+      log.info(LogMessage.infoJoin(message));
+
+      validateId(userId, message);
+
+      log.info(LogMessage.infoComplete(message));
+
+      return subscriberRepository.findMyJoinList(userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 

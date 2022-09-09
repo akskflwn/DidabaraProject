@@ -7,6 +7,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 @Builder
 @Data
@@ -30,6 +31,16 @@ public class ReportDTO {
     this.reportCategory = reportEntity.getReportCategory();
     this.createdDate = reportEntity.getCreatedDate();
     this.modifiedDate = reportEntity.getModifiedDate();
+  }
+
+  public ReportDTO(Optional<ReportEntity> report) {
+    this.id = report.get().getId();
+    this.writer = report.get().getWriter();
+    this.category = report.get().getCategory();
+    this.content = report.get().getContent();
+    this.reportCategory = report.get().getReportCategory();
+    this.createdDate = report.get().getCreatedDate();
+    this.modifiedDate = report.get().getModifiedDate();
   }
 
   public static ReportEntity toEntity(final ReportDTO reportDTO) {

@@ -2,7 +2,6 @@ package com.bitcamp221.didabara.testpdf;
 
 import com.bitcamp221.didabara.model.UserInfoEntity;
 import com.itextpdf.text.*;
-import com.itextpdf.text.Font;
 import com.itextpdf.text.pdf.PdfPCell;
 import com.itextpdf.text.pdf.PdfPTable;
 import com.itextpdf.text.pdf.PdfWriter;

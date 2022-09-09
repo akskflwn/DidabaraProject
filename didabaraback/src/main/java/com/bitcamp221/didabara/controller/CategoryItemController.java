@@ -14,7 +14,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.List;
 
 @Slf4j
 @RestController
@@ -153,7 +153,7 @@ public class CategoryItemController {
 //  작성자 : 문병훈
 //  메소드 정보 : categoryItem 삭제
 //  마지막 수정자 : 문병훈
-//  필요 데이터 : category(id), categoryItem(category, id)
+//  필요 데이터 : categoryItem(id)
 //  -----------------------------------------------------
   @DeleteMapping("/delete/item-page/{categoryItemId}")
   public ResponseEntity<?> delete(@AuthenticationPrincipal final String userId,

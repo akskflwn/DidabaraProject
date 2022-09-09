@@ -62,7 +62,7 @@ public class CategoryItemService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryItemRepository.findCategoryItemList(categoryItemEntity.getCategory());
+      return categoryItemRepository.findAllByCategory(categoryItemEntity.getCategory());
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message), e);
 
@@ -85,7 +85,7 @@ public class CategoryItemService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryItemRepository.findCategoryItemList(categoryId);
+      return categoryItemRepository.findAllByCategory(categoryId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -112,7 +112,7 @@ public class CategoryItemService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryItemRepository.findCategoryItemList(categoryId);
+      return categoryItemRepository.findAllByCategory(categoryId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -145,7 +145,25 @@ public class CategoryItemService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryItemRepository.findCategoryItemList(categoryItemEntity.getCategory());
+      return categoryItemRepository.findAllByCategory(categoryItemEntity.getCategory());
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
+
+      throw new RuntimeException(LogMessage.errorJoin(message));
+    }
+  }
+
+  public Long countByCategory(final Long categoryId) {
+    final String message = "categoryItemService countById";
+
+    try {
+      log.info(LogMessage.infoJoin(message));
+
+      validateId(categoryId, message);
+
+      log.info(LogMessage.infoComplete(message));
+
+      return categoryItemRepository.countByCategory(categoryId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
