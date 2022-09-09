@@ -11,93 +11,93 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ChangeType {
 
-  public static ResponseEntity toCategoryDTO(final List<CategoryEntity> entities) {
-    final List<CategoryDTO> categoryDTOS = entities
-            .stream()
-            .map(CategoryDTO::new)
-            .collect(Collectors.toList());
+    public static ResponseEntity toCategoryDTO(final List<CategoryEntity> entities) {
+        final List<CategoryDTO> categoryDTOS = entities
+                .stream()
+                .map(CategoryDTO::new)
+                .collect(Collectors.toList());
 
-    final ResponseDTO<CategoryDTO> responseDTO = ResponseDTO
-            .<CategoryDTO>builder()
-            .resList(categoryDTOS)
-            .build();
+        final ResponseDTO<CategoryDTO> responseDTO = ResponseDTO
+                .<CategoryDTO>builder()
+                .resList(categoryDTOS)
+                .build();
 
-    return ResponseEntity.ok().body(responseDTO);
-  }
+        return ResponseEntity.ok().body(responseDTO);
+    }
 
-  public static ResponseEntity toCategoryItemDTO(final List<CategoryItemEntity> entities) {
-    final List<CategoryItemDTO> categoryItemDTOS = entities
-            .stream()
-            .map(CategoryItemDTO::new)
-            .collect(Collectors.toList());
+    public static ResponseEntity toCategoryItemDTO(final List<CategoryItemEntity> entities) {
+        final List<CategoryItemDTO> categoryItemDTOS = entities
+                .stream()
+                .map(CategoryItemDTO::new)
+                .collect(Collectors.toList());
 
-    final ResponseDTO<CategoryItemDTO> responseDTO = ResponseDTO
-            .<CategoryItemDTO>builder()
-            .resList(categoryItemDTOS)
-            .build();
+        final ResponseDTO<CategoryItemDTO> responseDTO = ResponseDTO
+                .<CategoryItemDTO>builder()
+                .resList(categoryItemDTOS)
+                .build();
 
-    return ResponseEntity.ok().body(responseDTO);
-  }
+        return ResponseEntity.ok().body(responseDTO);
+    }
 
-  public static ResponseEntity toItemReplyDTO(final List<CategoryItemReplyEntity> entities) {
-    final List<CategoryItemReplyDTO> replyDTOS = entities
-            .stream()
-            .map(CategoryItemReplyDTO::new)
-            .collect(Collectors.toList());
+    public static ResponseEntity toItemReplyDTO(final List<CategoryItemReplyEntity> entities) {
+        final List<CategoryItemReplyDTO> replyDTOS = entities
+                .stream()
+                .map(CategoryItemReplyDTO::new)
+                .collect(Collectors.toList());
 
-    final ResponseDTO<CategoryItemReplyDTO> responseDTO = ResponseDTO
-            .<CategoryItemReplyDTO>builder()
-            .resList(replyDTOS)
-            .build();
+        final ResponseDTO<CategoryItemReplyDTO> responseDTO = ResponseDTO
+                .<CategoryItemReplyDTO>builder()
+                .resList(replyDTOS)
+                .build();
 
-    return ResponseEntity.ok().body(responseDTO);
-  }
+        return ResponseEntity.ok().body(responseDTO);
+    }
 
-  public static ResponseEntity toReportDTO(final List<ReportEntity> entities) {
-    final List<ReportDTO> reportDTOS = entities
-            .stream()
-            .map(ReportDTO::new)
-            .collect(Collectors.toList());
+    public static ResponseEntity toReportDTO(final List<ReportEntity> entities) {
+        final List<ReportDTO> reportDTOS = entities
+                .stream()
+                .map(ReportDTO::new)
+                .collect(Collectors.toList());
 
-    final ResponseDTO<ReportDTO> responseDTO = ResponseDTO
-            .<ReportDTO>builder()
-            .resList(reportDTOS)
-            .build();
+        final ResponseDTO<ReportDTO> responseDTO = ResponseDTO
+                .<ReportDTO>builder()
+                .resList(reportDTOS)
+                .build();
 
-    return ResponseEntity.ok().body(responseDTO);
-  }
+        return ResponseEntity.ok().body(responseDTO);
+    }
 
-  public static ResponseEntity toSubscriberDTO(final List<SubscriberEntity> entities) {
-    final List<SubscriberDTO> subscriberDTOS = entities
-            .stream()
-            .map(SubscriberDTO::new)
-            .collect(Collectors.toList());
+    public static ResponseEntity toSubscriberDTO(final List<SubscriberEntity> entities) {
+        final List<SubscriberDTO> subscriberDTOS = entities
+                .stream()
+                .map(SubscriberDTO::new)
+                .collect(Collectors.toList());
 
-    final ResponseDTO<SubscriberDTO> responseDTO = ResponseDTO
-            .<SubscriberDTO>builder()
-            .resList(subscriberDTOS)
-            .build();
+        final ResponseDTO<SubscriberDTO> responseDTO = ResponseDTO
+                .<SubscriberDTO>builder()
+                .resList(subscriberDTOS)
+                .build();
 
-    return ResponseEntity.ok().body(responseDTO);
-  }
+        return ResponseEntity.ok().body(responseDTO);
+    }
 
-  public static ResponseEntity toCheckedDTO(final List<CheckedEntity> entities) {
-    final List<CheckedDTO> checkedDTOS = entities
-            .stream()
-            .map(CheckedDTO::new)
-            .collect(Collectors.toList());
+    public static ResponseEntity toCheckedDTO(final List<CheckedEntity> entities) {
+        final List<CheckedDTO> checkedDTOS = entities
+                .stream()
+                .map(CheckedDTO::new)
+                .collect(Collectors.toList());
 
-    final ResponseDTO<CheckedDTO> responseDTO = ResponseDTO
-            .<CheckedDTO>builder()
-            .resList(checkedDTOS)
-            .build();
+        final ResponseDTO<CheckedDTO> responseDTO = ResponseDTO
+                .<CheckedDTO>builder()
+                .resList(checkedDTOS)
+                .build();
 
-    return ResponseEntity.ok().body(responseDTO);
-  }
+        return ResponseEntity.ok().body(responseDTO);
+    }
 
-  public static ResponseEntity toException(final Exception e) {
-    final ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
+    public static ResponseEntity toException(final Exception e) {
+        final ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();
 
-    return ResponseEntity.badRequest().body(responseDTO);
-  }
+        return ResponseEntity.badRequest().body(responseDTO);
+    }
 }

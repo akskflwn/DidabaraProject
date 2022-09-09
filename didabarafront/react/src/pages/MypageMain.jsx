@@ -1,15 +1,14 @@
 import React from "react";
 import {
-  Container,
   Avatar,
   Typography,
   Grid,
   Button,
-  CardMedia,
 } from "@mui/material";
 import { useRecoilState } from "recoil";
 import { userState } from "../config/Atom";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 
 function MypageMain() {
   const [userInfo, setUserInfo] = useRecoilState(userState);

@@ -42,6 +42,9 @@ public class UserController {
   @Autowired
   private EmailConfigRepository emailConfigRepository;
 
+//  @Autowired
+//  NotificationService notificationService;
+
   //  회원가입
 //  http://localhost:8080/auth/signup
   @PostMapping("/signup")
@@ -57,6 +60,8 @@ public class UserController {
               .username(userDTO.getUsername())
               .password(passwordEncoder.encode(userDTO.getPassword()))
               .nickname(userDTO.getNickname())
+              .realName(userDTO.getRealName())
+              .phoneNumber(userDTO.getPhoneNumber())
               .build();
 
 //      서비스를 이용해 리포지터리에 유저 저장
@@ -96,7 +101,7 @@ public class UserController {
   }
 
   //  로그인
-  @PostMapping("/signin")
+  @PostMapping(value = "/signin")
   public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO) {
     UserEntity user;
     try {

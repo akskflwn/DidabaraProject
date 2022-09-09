@@ -1,4 +1,4 @@
-import { Button, Grid, TextField, Typography } from "@mui/material";
+import { Button, Grid, TextField } from "@mui/material";
 import React from "react";
 import styled from "styled-components";
 import axios from "axios";
@@ -18,7 +18,7 @@ const StyledButton = styled(Button)`
 `;
 
 const StyledGrid = styled(Grid)`
-  background-color: #DCDCDC;
+  background-color: #dcdcdc;
 `;
 const StyledText = styled(TextField)({
   "& .MuiOutlinedInput-root": {
@@ -52,13 +52,12 @@ function ReplyInput() {
 
   return (
     <form onSubmit={replyRequest}>
-      <StyledGrid container justifyContent={"center"} >
+      <StyledGrid container justifyContent={"center"}>
         <Grid item xs={10} height={95}>
           <StyledText
             fullWidth
             multiline
             rows={3}
-            maxRows={3}
             name="reply"
             placeholder="Add comment..."
           />

@@ -1,13 +1,14 @@
 package com.bitcamp221.didabara.websoket;
 
-
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @NoArgsConstructor
 @AllArgsConstructor
-@Getter
-@Setter
-@ToString
+@Data
+@Builder
 public class Message {
   private String senderName;
   private String receiverName;

@@ -23,48 +23,48 @@ import java.io.IOException;
 @Component
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
-  @Autowired
-  private TokenProvider tokenProvider;
+    @Autowired
+    private TokenProvider tokenProvider;
 
-  @Override
-  protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-    try {
-      // 요청에서 토큰 가져오기
-      String token = parseBearerToken(request);
+    @Override
+    protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
+        try {
+            // 요청에서 토큰 가져오기
+            String token = parseBearerToken(request);
 
-      log.info("Filter is running...");
+            log.info("Filter is running...");
 
-      //토큰 검사하기 및 시큐리티 등록
-      if (token != null && !token.equalsIgnoreCase("null")) {
-        String userid = tokenProvider.validateAndGetUserId(token);
-        log.info("Authenticated userID:" + userid);
+            //토큰 검사하기 및 시큐리티 등록
+            if (token != null && !token.equalsIgnoreCase("null")) {
+                String userid = tokenProvider.validateAndGetUserId(token);
+                log.info("Authenticated userID:" + userid);
 
-        //인증완료 : SecurityContextHolder 에 등록해야 인증된 사용자로 판단
-        AbstractAuthenticationToken authenticationToken =
-                new UsernamePasswordAuthenticationToken(
-                        userid, null, AuthorityUtils.NO_AUTHORITIES);
+                //인증완료 : SecurityContextHolder 에 등록해야 인증된 사용자로 판단
+                AbstractAuthenticationToken authenticationToken =
+                        new UsernamePasswordAuthenticationToken(
+                                userid, null, AuthorityUtils.NO_AUTHORITIES);
 
-        authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
-        SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
-        securityContext.setAuthentication(authenticationToken);
+                authenticationToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
+                SecurityContext securityContext = SecurityContextHolder.createEmptyContext();
+                securityContext.setAuthentication(authenticationToken);
 
-        SecurityContextHolder.setContext(securityContext);
+                SecurityContextHolder.setContext(securityContext);
 
-      }
-    } catch (Exception ex) {
-      logger.error("Could not set user authentication in security context", ex);
+            }
+        } catch (Exception ex) {
+            logger.error("Could not set user authentication in security context", ex);
+        }
+        filterChain.doFilter(request, response);
     }
-    filterChain.doFilter(request, response);
-  }
 
-  //http 요청의 헤더를 파싱해서 bearer 토큰을 리턴한다
-  private String parseBearerToken(HttpServletRequest request) {
-    String bearerToken = request.getHeader("Authorization");
+    //http 요청의 헤더를 파싱해서 bearer 토큰을 리턴한다
+    private String parseBearerToken(HttpServletRequest request) {
+        String bearerToken = request.getHeader("Authorization");
 
-    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
-      return bearerToken.substring(7);
+        if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+            return bearerToken.substring(7);
+        }
+        return null;
+
     }
-    return null;
-
-  }
 }

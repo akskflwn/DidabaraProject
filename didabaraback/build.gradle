@@ -115,7 +115,9 @@ dependencies {
 
   // https://mvnrepository.com/artifact/org.springframework.security/spring-security-jwt
   implementation group: 'org.springframework.security', name: 'spring-security-jwt', version: '1.0.10.RELEASE'
-
+  implementation 'org.springframework.kafka:spring-kafka'
+  implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+  implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 }
 
 tasks.named('test') {

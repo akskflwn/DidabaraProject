@@ -1,16 +1,22 @@
 package com.bitcamp221.didabara.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-@Data
+@Getter
+@Setter
 public class UserUserInfoDTO {
+
   private String nickname;
   private String job;
   private String password;
+  private String username;
+  private String realName;
+
+  @Override
+  public String toString() {
+    return "nickname:" + nickname + " job:" + job + " password:" + password + " username:" + username + " realName:" + realName;
+  }
 }

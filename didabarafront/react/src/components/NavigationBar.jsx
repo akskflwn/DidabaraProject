@@ -1,5 +1,5 @@
 import React from "react";
-import { Grid, Button, Typography } from "@mui/material";
+import { Button, Typography } from "@mui/material";
 import PictureAsPdfSharpIcon from "@mui/icons-material/PictureAsPdfSharp";
 import LoginSharpIcon from "@mui/icons-material/LoginSharp";
 import LogoutSharpIcon from "@mui/icons-material/LogoutSharp";
@@ -12,6 +12,21 @@ const StyledButton = styled(Button)`
   && {
     color: rgba(220, 221, 225, 1);
   }
+`;
+
+const TopContainer = styled.div`
+  display: flex;
+
+  justify-content: flex-start;
+  align-items: center;
+  height: 45px;
+  z-index: 5;
+  background-color: rgba(47, 54, 64, 1);
+`;
+
+const MenuBox = styled.div`
+  display: flex;
+  margin-left: auto;
 `;
 
 function NavigationBar() {
@@ -28,95 +43,65 @@ function NavigationBar() {
   /** 이벤트에 따라 유저의 상태를 관리하기 위한 Recoil */
   const user = useRecoilValue(userState);
   return (
-    <Grid
-      container
-      justifyContent="center"
-      alignItems="center"
-      style={{
-        position: "sticky",
-        top: 0,
-        backgroundColor: "rgba(47, 54, 64,1.0)",
-        padding: "10px",
-        zIndex: "5",
-      }}
-    >
-      <Grid
-        container
-        item
-        xs={6}
-        md={5}
-        spacing={2}
-        alignItems="center"
-        justifyContent="start"
-      >
-        <Grid item display="flex" alignItems="center" ml={2}>
-          <PictureAsPdfSharpIcon
-            style={{
-              cursor: "pointer",
-              color: "rgba(220, 221, 225, 1)",
-            }}
-            fontSize="large"
-            onClick={() => {
-              return user ? navi("/dashboard") : navi("/");
-            }}
-          />
-        </Grid>
-      </Grid>
+    <TopContainer>
+      <PictureAsPdfSharpIcon
+        style={{
+          cursor: "pointer",
+          color: "rgba(220, 221, 225, 1)",
+          marginLeft: "15px",
+        }}
+        fontSize="large"
+        onClick={() => {
+          return user ? navi("/dashboard") : navi("/");
+        }}
+      />
 
-      <Grid container item xs={6} md={5} justifyContent="end">
+      <MenuBox>
         {user ? (
-          <Grid item display="flex" alignItems="center" mr={3}>
-            <StyledButton
-              variant="black"
-              onClick={() => {
-                localStorage.removeItem("token");
-                localStorage.removeItem("user");
-                userLogout();
-                navi("/");
-              }}
-            >
-              <LogoutSharpIcon />
-              <Typography ml={1}>logout</Typography>
-            </StyledButton>
-          </Grid>
+          <StyledButton
+            variant="black"
+            onClick={() => {
+              localStorage.removeItem("token");
+              localStorage.removeItem("user");
+              userLogout();
+              navi("/");
+            }}
+          >
+            <LogoutSharpIcon />
+            <Typography ml={1}>logout</Typography>
+          </StyledButton>
         ) : (
-          <Grid item display="flex" alignItems="center" mr={3}>
-            <StyledButton
-              variant="black"
-              onClick={() => {
-                setLoginState(true);
-              }}
-            >
-              <LoginSharpIcon />
-              <Typography ml={1}>login</Typography>
-            </StyledButton>
-          </Grid>
+          <StyledButton
+            variant="black"
+            onClick={() => {
+              setLoginState(true);
+            }}
+          >
+            <LoginSharpIcon />
+            <Typography ml={1}>login</Typography>
+          </StyledButton>
         )}
         {user ? (
-          <Grid item mr={2}>
-            <StyledButton
-              variant="black"
-              onClick={() => {
-                navi("/mypage/main");
-              }}
-            >
-              <Typography>mypage</Typography>
-            </StyledButton>
-          </Grid>
+          <StyledButton
+            variant="black"
+            onClick={() => {
+              navi("/mypage/main");
+            }}
+          >
+            <Typography>mypage</Typography>
+          </StyledButton>
         ) : (
-          <Grid item mr={2}>
-            <StyledButton
-              variant="black"
-              onClick={() => {
-                navi("/join");
-              }}
-            >
-              <Typography>Join</Typography>
-            </StyledButton>
-          </Grid>
+          <StyledButton
+            variant="black"
+            onClick={() => {
+              navi("/join");
+            }}
+          >
+            <Typography>Join</Typography>
+          </StyledButton>
         )}
-      </Grid>
-    </Grid>
+      </MenuBox>
+    </TopContainer>
   );
 }
 

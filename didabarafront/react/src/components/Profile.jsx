@@ -7,9 +7,6 @@ import { userState } from "../config/Atom";
 
 const StyledPaper = styled(Paper)`
   && {
-    width: 300;
-    border-radius: 0;
-    box-shadow: 1px 1px 3px gray;
     cursor: grab;
     border-radius: 2px;
     :hover {
@@ -19,17 +16,20 @@ const StyledPaper = styled(Paper)`
   }
 `;
 const Wrapper = styled.div`
-  display: flex;
+  display: grid;
+  grid-template-columns: 30% 70%;
   align-items: center;
   justify-content: space-around;
-  padding: 10px;
+  padding: 8px 0px;
 `;
 const ImgBlock = styled.div`
   display: flex;
-  padding: 5px;
-  margin: 5px;
+  padding: 0px 10px;
+  border-right: 1px solid grey;
+  /* margin: 5px; */
   flex-direction: column;
   justify-content: space-around;
+  align-items: center;
 `;
 const Img = styled(Avatar)`
   && {
@@ -41,8 +41,8 @@ const InfoLine = styled.div`
   display: flex;
   flex-direction: column;
   width: 200px;
-  text-align: left;
-  justify-content: flex-start;
+  text-align: center;
+  justify-content: space-around;
   height: 80px;
 `;
 const H4 = styled.h4`

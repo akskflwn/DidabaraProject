@@ -14,27 +14,27 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class SubscriberDTO {
 
-  private Long id;
-  private Long category;
-  private Long user;
-  private LocalDate createdDate;
-  private LocalDate modifiedDate;
+    private Long id;
+    private Long category;
+    private Long user;
+    private LocalDate createdDate;
+    private LocalDate modifiedDate;
 
-  public SubscriberDTO(SubscriberEntity subscriberEntity) {
-    this.id = subscriberEntity.getId();
-    this.category = subscriberEntity.getCategory();
-    this.user = subscriberEntity.getUser();
-    this.createdDate = subscriberEntity.getCreatedDate();
-    this.modifiedDate = subscriberEntity.getModifiedDate();
+    public SubscriberDTO(SubscriberEntity subscriberEntity) {
+        this.id = subscriberEntity.getId();
+        this.category = subscriberEntity.getCategory();
+        this.user = subscriberEntity.getUser();
+        this.createdDate = subscriberEntity.getCreatedDate();
+        this.modifiedDate = subscriberEntity.getModifiedDate();
 
-  }
+    }
 
-  public static SubscriberEntity toEntity(final SubscriberDTO subscriberDTO) {
+    public static SubscriberEntity toEntity(final SubscriberDTO subscriberDTO) {
 
-    return SubscriberEntity.builder()
-            .id(subscriberDTO.getId())
-            .category(subscriberDTO.getCategory())
-            .user(subscriberDTO.getUser())
-            .build();
-  }
+        return SubscriberEntity.builder()
+                .id(subscriberDTO.getId())
+                .category(subscriberDTO.getCategory())
+                .user(subscriberDTO.getUser())
+                .build();
+    }
 }

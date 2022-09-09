@@ -69,6 +69,7 @@ public interface UserInfoMapper {
           "SET user.nickname = #{uid.nickname}, " +
           "user.password = #{uid.password}, " +
           "user_info.job = #{uid.job}, " +
+          "user.username = #{uid.username}, " +
           "user_info.modified_date = current_date() " +
           "WHERE user.id = #{id} ")
   int updateUserInfoDTO(@Param("id") String id, @Param("uid") UserUserInfoDTO uid);

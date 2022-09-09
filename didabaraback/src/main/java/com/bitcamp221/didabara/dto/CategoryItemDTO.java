@@ -14,25 +14,28 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CategoryItemDTO {
 
-  private Long id;
-  private Long category;
-  private String itemPath;
-  private String title;
-  private String content;
-  private LocalDate expiredDate;
-  private LocalDate createdDate;
-  private LocalDate modifiedDate;
+    private Long id;
+    private Long category;
+    private String itemPath;
+    private String title;
+    private String content;
+    private LocalDate expiredDate;
+    private LocalDate createdDate;
+    private LocalDate modifiedDate;
 
-  public CategoryItemDTO(CategoryItemEntity categoryItemEntity) {
-    this.id = categoryItemEntity.getId();
-    this.category = categoryItemEntity.getCategory();
-    this.itemPath = categoryItemEntity.getItemPath();
-    this.title = categoryItemEntity.getTitle();
-    this.content = categoryItemEntity.getContent();
-    this.expiredDate = categoryItemEntity.getExpiredDate();
-    this.createdDate = categoryItemEntity.getCreatedDate();
-    this.modifiedDate = categoryItemEntity.getModifiedDate();
-  }
+    private String preview;
+
+    public CategoryItemDTO(CategoryItemEntity categoryItemEntity) {
+        this.id = categoryItemEntity.getId();
+        this.category = categoryItemEntity.getCategory();
+        this.itemPath = categoryItemEntity.getItemPath();
+        this.title = categoryItemEntity.getTitle();
+        this.content = categoryItemEntity.getContent();
+        this.expiredDate = categoryItemEntity.getExpiredDate();
+        this.createdDate = categoryItemEntity.getCreatedDate();
+        this.modifiedDate = categoryItemEntity.getModifiedDate();
+        this.preview = categoryItemEntity.getPreview();
+    }
 
 //  public CategoryItemDTO(Map map, int year, int month, int day) {
 //    this.category = Long.valueOf(String.valueOf(map.get("categoryId")));
@@ -42,15 +45,16 @@ public class CategoryItemDTO {
 //    this.expiredDate = LocalDate.of(year, month, day);
 //  }
 
-  public static CategoryItemEntity toEntity(final CategoryItemDTO categoryItemDTO) {
+    public static CategoryItemEntity toEntity(final CategoryItemDTO categoryItemDTO) {
 
-    return CategoryItemEntity.builder()
-            .id(categoryItemDTO.getId())
-            .category(categoryItemDTO.getCategory())
-            .itemPath(categoryItemDTO.getItemPath())
-            .title(categoryItemDTO.getTitle())
-            .content(categoryItemDTO.getContent())
-            .expiredDate(categoryItemDTO.getExpiredDate())
-            .build();
-  }
+        return CategoryItemEntity.builder()
+                .id(categoryItemDTO.getId())
+                .category(categoryItemDTO.getCategory())
+                .itemPath(categoryItemDTO.getItemPath())
+                .title(categoryItemDTO.getTitle())
+                .content(categoryItemDTO.getContent())
+                .expiredDate(categoryItemDTO.getExpiredDate())
+                .preview(categoryItemDTO.getPreview())
+                .build();
+    }
 }

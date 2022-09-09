@@ -3,8 +3,10 @@ package com.bitcamp221.didabara.controller;
 import com.bitcamp221.didabara.dto.S3Upload;
 import com.bitcamp221.didabara.dto.UserUserInfoDTO;
 import com.bitcamp221.didabara.mapper.UserInfoMapper;
+import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.model.UserInfoEntity;
 import com.bitcamp221.didabara.presistence.UserInfoRepository;
+import com.bitcamp221.didabara.presistence.UserRepository;
 import com.bitcamp221.didabara.service.UserInfoService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
@@ -16,6 +18,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -45,6 +49,31 @@ public class UserInfoController {
 
   @Autowired
   private S3Upload s3Upload;
+
+  @Autowired
+  private UserRepository userRepository;
+
+  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+
+  @PostMapping("/changepassword")
+  public ResponseEntity<?> getMyPassword(@AuthenticationPrincipal String id, @RequestBody Map map) {
+    System.out.println("id = " + id);
+    System.out.println("map.toString() = " + map.toString());
+    UserEntity byId = userRepository.findById(Long.valueOf(id)).orElseThrow(() -> new IllegalArgumentException("사용자가 없습니다."));
+
+    try {
+      if (userInfoService.checkAndChange(byId, map, passwordEncoder)) {
+        return ResponseEntity.ok().body("업데이트 완료");
+      }
+
+    } catch (Exception e) {
+      log.error(e.getMessage());
+      return ResponseEntity.badRequest().body(e.getMessage());
+    }
+
+
+    return ResponseEntity.badRequest().body("업데이트 완료 안됌");
+  }
 
   @GetMapping("/{fileName}")
   public ResponseEntity<Resource> resourceFileDownload(@PathVariable String fileName) {
@@ -112,8 +141,8 @@ public class UserInfoController {
 
     File destinationFile;
     String destinationFileName;
-//        String fileUrl = "C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\";
-    String fileUrl = "https://didabara.s3.ap-northeast-2.amazonaws.com/myfile/";
+    String fileUrl = "C:\\projectbit\\didabara\\didabaraback\\src\\main\\resources\\static\\imgs\\";
+//    String fileUrl = "https://didabara.s3.ap-northeast-2.amazonaws.com/myfile/";
 
     do {
       destinationFileName = code + "." + sourceFileNameExtension;
@@ -164,13 +193,20 @@ public class UserInfoController {
   @PatchMapping
   public ResponseEntity<?> updateMyPage(@AuthenticationPrincipal String id, @RequestBody UserUserInfoDTO uid) {
 
+    String s = uid.toString();
+    System.out.println("s = " + s);
+    // s = nickname:dwkow job:null password:1111 username:adwddawd realName:dwdadw
+
+
     int checkRow = userInfoService.updateMyPage(id, uid);
 
-    if (checkRow < 0) {
+    System.out.println("checkRow = " + checkRow);
+
+    if (checkRow < 2) {
       return ResponseEntity.badRequest().body("업데이트 실패");
     }
 
-    return ResponseEntity.ok().body("업데이트 완료");
+    return ResponseEntity.ok().body(uid);
   }
 
 

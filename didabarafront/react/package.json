@@ -17,16 +17,23 @@
     "@testing-library/react": "^13.3.0",
     "@testing-library/user-event": "^13.5.0",
     "axios": "^0.27.2",
+<<<<<<< HEAD
     "framer-motion": "^7.3.2",
+=======
+    "framer-motion": "^7.2.0",
+    "net": "^1.0.2",
+>>>>>>> 9b8c9cfc3e6496dd113bfb91126930a8e3201f1c
     "react": "^18.2.0",
     "react-beautiful-dnd": "^13.1.0",
     "react-dom": "^18.2.0",
     "react-hook-form": "^7.34.2",
     "react-query": "^3.39.2",
     "react-router-dom": "^6.3.0",
-    "react-scripts": "5.0.1",
+    "react-scripts": "^5.0.1",
     "recoil": "^0.7.5",
     "screw-filereader": "^1.4.3",
+    "sockjs-client": "^1.6.1",
+    "stompjs": "^2.3.3",
     "styled-components": "^5.3.5",
     "web-vitals": "^2.1.4",
     "yup": "^0.32.11"

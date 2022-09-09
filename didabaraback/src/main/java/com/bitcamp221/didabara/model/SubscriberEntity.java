@@ -15,14 +15,14 @@ import javax.persistence.*;
 @Table(name = "subscriber")
 public class SubscriberEntity extends BaseTimeEntity {
 
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(name = "category_id", nullable = false)
-  private Long category;
+    @Column(name = "category_id", nullable = false)
+    private Long category;
 
-  @Column(name = "user_id", nullable = false)
-  private Long user;
+    @Column(name = "user_id", nullable = false)
+    private Long user;
 }
