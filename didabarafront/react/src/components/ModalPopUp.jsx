@@ -10,6 +10,7 @@ const OverLay = styled.div`
   top: 0;
   transition: hidden 0.5s;
   overflow: scroll;
+  z-index: 50;
 `;
 
 const Modal = styled.div`
@@ -17,8 +18,9 @@ const Modal = styled.div`
   background-color: white;
   border-radius: 5px;
   left: 50%;
-  top: 10%;
+  top: 15%;
   transform: translateX(-50%);
+  z-index: 50;
 `;
 
 function ModalPopUp({ children, width, height, Overlay }) {

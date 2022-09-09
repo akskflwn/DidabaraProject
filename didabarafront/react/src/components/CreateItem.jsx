@@ -1,9 +1,47 @@
 import axios from "axios";
 import React from "react";
+import { useSetRecoilState } from "recoil";
+import styled from "styled-components";
 import { REQUEST_ADDRESS } from "../config/APIs";
+import { categoryItem } from "../config/Atom";
 import ModalPopUp from "./ModalPopUp";
 
+const Container = styled.div`
+  padding: 20px;
+`;
+const StyledForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+`;
+const ClosingButton = styled.button`
+  position: absolute;
+  width: 60px;
+  height: 26px;
+  font-weight: bold;
+  border-radius: 13px;
+  top: 10px;
+  right: 15px;
+`;
+const TitleAndContent = styled.input`
+  height: 50px;
+  border-radius: 10px;
+  border: 1px solid #2f3640;
+  color: #2f3640;
+  &:focus {
+    outline: none;
+  }
+
+  &.title {
+    font-size: 2rem;
+  }
+  &.content {
+    font-size: 1.2rem;
+  }
+`;
+
 function CreateItem({ id, control }) {
+  const setCategoryItem = useSetRecoilState(categoryItem);
   const sendCreateRequest = (e) => {
     e.preventDefault();
     const originalData = new FormData(e.target);
@@ -28,7 +66,10 @@ function CreateItem({ id, control }) {
           Authorization: "Bearer " + localStorage.getItem("token"),
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res);
+        setCategoryItem(res.data.resList);
+      })
       .catch((err) => console.log(err));
   };
   const close = () => {
@@ -36,15 +77,25 @@ function CreateItem({ id, control }) {
   };
   return (
     <ModalPopUp width={"800px"} height={"650px"} Overlay={true}>
-      {id} 아이템만들기 CreateItem
-      <form onSubmit={sendCreateRequest}>
-        <input type="text" name="title"></input>
-        <input type="text" name="content"></input>
-        <input type="file" name="file"></input>
-        <input type="date" name="expiredDate"></input>
-        <button type="submit">보내기</button>
-      </form>
-      <button onClick={close}>이거 닫기</button>
+      <Container>
+        {id} 아이템만들기 CreateItem
+        <StyledForm onSubmit={sendCreateRequest}>
+          <TitleAndContent
+            type="text"
+            name="title"
+            className="title"
+          ></TitleAndContent>
+          <TitleAndContent
+            type="text"
+            name="content"
+            className="content"
+          ></TitleAndContent>
+          <input type="file" name="file"></input>
+          <input type="date" name="expiredDate"></input>
+          <button type="submit">보내기</button>
+        </StyledForm>
+        <ClosingButton onClick={close}>X</ClosingButton>
+      </Container>
     </ModalPopUp>
   );
 }

@@ -38,3 +38,12 @@ export const getMyList = () => {
   });
 };
 
+export const getItemList = (id) => {
+  console.log("item list loading...");
+
+  return axios.get(REQUEST_ADDRESS + `categoryItem/list/${id}`, {
+    headers: {
+      Authorization: "Bearer " + localStorage.getItem("token"),
+    },
+  });
+};

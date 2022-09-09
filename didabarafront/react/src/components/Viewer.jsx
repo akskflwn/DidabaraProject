@@ -1,15 +1,14 @@
 import React, { useRef, useEffect } from "react";
 import WebViewer from "@pdftron/webviewer";
 
-function Viewer() {
+function Viewer({ path }) {
   const viewer = useRef(null);
 
   useEffect(() => {
     WebViewer(
       {
         path: "/webViewer/lib",
-        initialDoc:
-          "https://didabara.s3.ap-northeast-2.amazonaws.com/myfile/26dea8.pdf",
+        initialDoc: path,
       },
       viewer.current
     ).then((instance) => {

@@ -36,10 +36,20 @@ export const itemMenuSelector = selector({
   get: ({ get }) => {
     const menu = get(menuState);
     const items = get(categoryItem);
-
+    if (items.length === 0) return null;
     switch (menu) {
-      case "Listing" :
-        return items.filter((item) => item.expriedDate)
+      case "Listing":
+        return items.filter(
+          (item) => Date.parse(item.expiredDate) > Date.now()
+        );
+
+      case "Out Dated":
+        return items.filter(
+          (item) => Date.parse(item.expiredDate) < Date.now()
+        );
+
+      case "All List":
+        return items;
     }
   },
 });

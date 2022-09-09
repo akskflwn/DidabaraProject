@@ -10,10 +10,11 @@ import { myDocumentState } from "../config/Atom";
 
 const StyledForm = styled.form`
   display: flex;
+  width: 100%;
   flex-direction: column;
-  height: 90%;
+  height: 100%;
   align-self: center;
-  justify-self: center;
+  justify-content: space-around;
   gap: 10px;
 `;
 
@@ -59,7 +60,7 @@ const StyledFile = styled.input`
 `;
 
 const StyledWrap = styled.div`
-  width: 360px;
+  width: 400px;
   height: 100%;
   padding: 15px 20px;
 `;

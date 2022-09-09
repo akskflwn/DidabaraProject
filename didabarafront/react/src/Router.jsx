@@ -30,14 +30,14 @@ function Router() {
   });
 
   return (
-    <BrowserRouter>
+    <>
       {isLoading ? null : (
         <>
           {" "}
           <NavigationBar />
           <AnimatePresence>{isLogin ? <Loginform /> : null}</AnimatePresence>
           <Routes>
-            <Route path="/*" element={<Navigate to={user ? "/*" : "/"} />} />
+            <Route path="/*" element={<Navigate to={!user && "/"} />} />
             {/* {!user && (
           <> */}
             <Route path="/kakaologin" element={<KakaoLogin />} />
@@ -63,7 +63,7 @@ function Router() {
           </Routes>
         </>
       )}
-    </BrowserRouter>
+    </>
   );
 }
 

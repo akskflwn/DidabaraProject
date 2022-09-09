@@ -9,7 +9,9 @@ function DnDropContext() {
 
   return (
     <DragDropContext onDragEnd={dragEng}>
-      <div style={{ padding: "2px" }}>
+      <div
+        style={{ padding: "2px", backgroundColor: "#DCDCDC", height: "100%" }}
+      >
         <DropBox />
       </div>
     </DragDropContext>

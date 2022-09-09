@@ -42,7 +42,7 @@ const StyledSpan = styled.span`
   margin: 5px;
 `;
 
-function MyList({ title, content, imgSrc, id }) {
+function MyList({ title, content, imgSrc, id, code, host }) {
   const navi = useNavigate();
   const setCategoryItems = useSetRecoilState(categoryItem);
 
@@ -57,7 +57,13 @@ function MyList({ title, content, imgSrc, id }) {
       })
       .then((res) => {
         setCategoryItems(res.data.resList);
-        navi(`/dashboard/${id}`);
+        console.log(res.data.resList);
+        navi(`/dashboard/${id}`, {
+          state: {
+            inviteCode: code,
+            host: host,
+          },
+        });
       });
   };
 

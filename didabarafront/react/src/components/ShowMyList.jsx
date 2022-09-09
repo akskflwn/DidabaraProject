@@ -7,7 +7,7 @@ import { myDocumentState } from "../config/Atom";
 import MyList from "./MyList";
 
 const StyledGrid = styled.div`
-  background-color: #f1f3f5;
+  background-color: #dcdcdc;
   overflow-y: scroll;
   overflow-x: hidden;
   height: 100%;
@@ -47,6 +47,8 @@ function ShowMyList() {
               content={list.content}
               imgSrc={list.profileImageUrl}
               id={list.id}
+              code={list.inviteCode}
+              host={list.host}
             />
           ))}
     </StyledGrid>

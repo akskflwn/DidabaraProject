@@ -2,12 +2,10 @@ import React, { useState } from "react";
 import { Button, Grid } from "@mui/material";
 import styled from "styled-components";
 import { Outlet } from "react-router-dom";
-import Viewer from "../components/Viewer";
-import ReplyInput from "../components/ReplyInput";
-import ReplyContents from "../components/ReplyContents";
 import CreateModal from "../components/CreateModal";
 import ShowMyList from "../components/ShowMyList";
 import DnDropContext from "../components/DnDropContext";
+import InviteInput from "../components/InviteInput";
 
 const Item = styled(Grid)`
   /* border: 1px solid black; */
@@ -61,25 +59,27 @@ const StyledGrid = styled(Grid)`
     }
   }
 `;
-const FristGrid = styled(StyledGrid)`
-  && {
-    background-color: #f1f3f5;
-    height: 100%;
-    display: grid;
-    grid-template-rows: 5% 87% 8%;
-  }
+const FristGrid = styled.div`
+  background-color: #f1f3f5;
+  height: 100%;
+  display: grid;
+  grid-template-rows: 5% 87% 8%;
 `;
 
-const SecondGrid = styled(StyledGrid)`
-  && {
-    display: grid;
-    grid-template-rows: auto;
-  }
+const SecondGrid = styled.div`
+  display: grid;
+  height: 100%;
+`;
+const Container = styled.div`
+  display: grid;
+  grid-template-columns: 15% 85%;
+  height: calc(100% - 45px);
 `;
 
 function DashBoard() {
   const [makeCategory, setMakeCategory] = useState(false);
   const [showList, setShowList] = useState(true);
+  const [invite, setInvite] = useState(false);
 
   const menuSelect = (e) => {
     if (e.target.value === "myList") {
@@ -91,8 +91,8 @@ function DashBoard() {
   };
 
   return (
-    <Grid container style={{ height: "96vh" }}>
-      <FristGrid item xs={2}>
+    <Container>
+      <FristGrid>
         <div>
           <ButtonJoinList
             onClick={menuSelect}
@@ -111,7 +111,7 @@ function DashBoard() {
           {showList ? (
             <Button
               variant="contained"
-              style={{ width: "100%", minHeight: "70px", height: "100%" }}
+              style={{ width: "100%", height: "100%" }}
               onClick={() => {
                 setMakeCategory(true);
               }}
@@ -119,33 +119,24 @@ function DashBoard() {
               커뮤니티 생성
             </Button>
           ) : (
-            "초대코드입력"
+            <Button
+              variant="contained"
+              style={{ width: "100%", height: "100%" }}
+              onClick={() => {
+                setInvite(true);
+              }}
+            >
+              초대코드가 있으신가요?
+            </Button>
           )}
         </div>
       </FristGrid>
-      <SecondGrid container item xs={7} style={{ position: "relative" }}>
-        {makeCategory ? <CreateModal setShowing={setMakeCategory} /> : null}
-        <Item item style={{ width: "100%" }}>
-          <Outlet />
-          {/* <Viewer /> */}
-        </Item>
+      <SecondGrid style={{ position: "relative" }}>
+        {makeCategory && <CreateModal setShowing={setMakeCategory} />}
+        {invite && <InviteInput setInvite={setInvite} />}
+        <Outlet />
       </SecondGrid>
-      <Grid item xs={3} style={{ height: "100%" }}>
-        <Item
-          style={{
-            height: "100%",
-            display: "flex",
-            flexDirection: "column",
-            justifyContent: "space-between",
-          }}
-        >
-          <>
-            <ReplyContents />
-          </>
-          <ReplyInput />
-        </Item>
-      </Grid>
-    </Grid>
+    </Container>
   );
 }
 
