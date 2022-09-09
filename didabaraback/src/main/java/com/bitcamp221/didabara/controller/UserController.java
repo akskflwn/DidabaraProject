@@ -61,6 +61,8 @@ public class UserController {
                     .username(userDTO.getUsername())
                     .password(passwordEncoder.encode(userDTO.getPassword()))
                     .nickname(userDTO.getNickname())
+                    .realName(userDTO.getRealName())
+                    .phoneNumber(userDTO.getPhoneNumber())
                     .build();
 
 //      서비스를 이용해 리포지터리에 유저 저장

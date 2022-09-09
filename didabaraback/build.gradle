@@ -19,74 +19,92 @@ repositories {
 }
 
 dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
-    implementation 'org.springframework.boot:spring-boot-starter-security'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
-    implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
-    implementation 'org.springframework.boot:spring-boot-starter-test'
-    compileOnly 'org.projectlombok:lombok'
-    developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    runtimeOnly 'com.h2database:h2'
-    runtimeOnly 'mysql:mysql-connector-java'
-    annotationProcessor 'org.projectlombok:lombok'
-    testImplementation 'org.springframework.boot:spring-boot-starter-test'
-    testImplementation 'org.springframework.security:spring-security-test'
-    implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
+  implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
+  implementation 'org.springframework.boot:spring-boot-starter-security'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.mybatis.spring.boot:mybatis-spring-boot-starter:2.2.2'
+  implementation 'org.thymeleaf.extras:thymeleaf-extras-springsecurity5'
+  implementation 'org.springframework.boot:spring-boot-starter-test'
+  compileOnly 'org.projectlombok:lombok'
+  developmentOnly 'org.springframework.boot:spring-boot-devtools'
+  runtimeOnly 'com.h2database:h2'
+  runtimeOnly 'mysql:mysql-connector-java'
+  annotationProcessor 'org.projectlombok:lombok'
+  testImplementation 'org.springframework.boot:spring-boot-starter-test'
+  testImplementation 'org.springframework.security:spring-security-test'
+  implementation group: 'io.jsonwebtoken', name: 'jjwt-api', version: '0.11.2'
 
-    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
-    runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
+  // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-impl
+  runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-impl', version: '0.11.2'
+  // https://mvnrepository.com/artifact/io.jsonwebtoken/jjwt-jackson
+  runtimeOnly group: 'io.jsonwebtoken', name: 'jjwt-jackson', version: '0.11.2'
 
-    implementation 'org.springframework.boot:spring-boot-starter-mail'
+  implementation 'org.springframework.boot:spring-boot-starter-mail'
 
-    // kakao 로그인
-    implementation 'com.google.code.gson:gson:2.8.7'
+  // kakao 로그인
+  implementation'com.google.code.gson:gson:2.8.7'
 
-    implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.7'
-    implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
+  implementation 'com.github.gavlyukovskiy:p6spy-spring-boot-starter:1.5.7'
+// https://mvnrepository.com/artifact/commons-io/commons-io
+  implementation group: 'commons-io', name: 'commons-io', version: '2.11.0'
 
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+  implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
 
-    implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.3'
+  // https://mvnrepository.com/artifact/com.itextpdf/itextpdf
+  implementation group: 'com.itextpdf', name: 'itextpdf', version: '5.5.13.3'
 
-    implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.7.2'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
+// https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-websocket
+  implementation group: 'org.springframework.boot', name: 'spring-boot-starter-websocket', version: '2.7.2'
+  implementation 'org.springframework.boot:spring-boot-starter-websocket'
 
-    implementation 'com.documents4j:documents4j-local:1.1.7'
-    implementation 'com.documents4j:documents4j-transformer-msoffice-word:1.1.7'
+  implementation 'com.documents4j:documents4j-local:1.1.7'
+  implementation 'com.documents4j:documents4j-transformer-msoffice-word:1.1.7'
 
-    implementation group: 'com.documents4j', name: 'documents4j-transformer-msoffice-powerpoint', version: '1.1.9'
-    implementation group: 'com.documents4j', name: 'documents4j-transformer-msoffice-excel', version: '1.1.9'
-    implementation group: 'com.documents4j', name: 'documents4j-transformer-msoffice-base', version: '1.1.9'
-    implementation group: 'com.documents4j', name: 'documents4j-transformer-msoffice', version: '1.1.9', ext: 'pom'
-    implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
-    implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.2'
-    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
-    implementation group: 'org.apache.pdfbox', name: 'fontbox', version: '3.0.0-alpha3'
+  // https://mvnrepository.com/artifact/commons-io/commons-io
+  // https://mvnrepository.com/artifact/com.documents4j/documents4j-transformer-msoffice-powerpoint
+  implementation group: 'com.documents4j', name: 'documents4j-transformer-msoffice-powerpoint', version: '1.1.9'
+  // https://mvnrepository.com/artifact/com.documents4j/documents4j-transformer-msoffice-excel
+  implementation group: 'com.documents4j', name: 'documents4j-transformer-msoffice-excel', version: '1.1.9'
+  // https://mvnrepository.com/artifact/com.documents4j/documents4j-transformer-msoffice-base
+  implementation group: 'com.documents4j', name: 'documents4j-transformer-msoffice-base', version: '1.1.9'
+// https://mvnrepository.com/artifact/com.documents4j/documents4j-transformer-msoffice
+  implementation group: 'com.documents4j', name: 'documents4j-transformer-msoffice', version: '1.1.9', ext: 'pom'
+// https://mvnrepository.com/artifact/org.apache.poi/poi
+  implementation group: 'org.apache.poi', name: 'poi', version: '5.2.2'
+// https://mvnrepository.com/artifact/org.apache.poi/poi-scratchpad
+  implementation group: 'org.apache.poi', name: 'poi-scratchpad', version: '5.2.2'
+// https://mvnrepository.com/artifact/org.apache.poi/poi
+// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
+// https://mvnrepository.com/artifact/org.apache.pdfbox/fontbox
+  implementation group: 'org.apache.pdfbox', name: 'fontbox', version: '3.0.0-alpha3'
 
-    implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '3.0.0-alpha3'
-    implementation group: 'com.itextpdf', name: 'itext-asian', version: '5.2.0'
-    implementation group: 'org.apache.xmlgraphics', name: 'batik-bridge', version: '1.14'
-    implementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2'
+// https://mvnrepository.com/artifact/org.apache.pdfbox/pdfbox
+  implementation group: 'org.apache.pdfbox', name: 'pdfbox', version: '3.0.0-alpha3'
+// https://mvnrepository.com/artifact/com.itextpdf/itext-asian
+  implementation group: 'com.itextpdf', name: 'itext-asian', version: '5.2.0'
+// https://mvnrepository.com/artifact/org.apache.xmlgraphics/batik-bridge
+  implementation group: 'org.apache.xmlgraphics', name: 'batik-bridge', version: '1.14'
+// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-schemas
+  implementation group: 'org.apache.poi', name: 'poi-ooxml-schemas', version: '4.1.2'
 
-    implementation group: 'org.apache.poi', name: 'poi-ooxml-lite', version: '5.2.2'
-    implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
+// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml-lite
+  implementation group: 'org.apache.poi', name: 'poi-ooxml-lite', version: '5.2.2'
+// https://mvnrepository.com/artifact/org.apache.poi/poi-ooxml
+  implementation group: 'org.apache.poi', name: 'poi-ooxml', version: '5.2.2'
 
+// https://mvnrepository.com/artifact/commons-fileupload/commons-fileupload
+  implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
 
-    implementation group: 'commons-fileupload', name: 'commons-fileupload', version: '1.4'
+  implementation 'org.springframework.boot:spring-boot-starter-web'
+  implementation 'org.springframework.boot:spring-boot-starter-websocket'
+  // https://mvnrepository.com/artifact/kr.dogfoot/hwplib
+  implementation group: 'kr.dogfoot', name: 'hwplib', version: '1.1.1'
 
-    implementation 'org.springframework.boot:spring-boot-starter-web'
-    implementation 'org.springframework.boot:spring-boot-starter-websocket'
-    implementation 'org.webjars:webjars-locator-core'
-    implementation 'org.webjars:sockjs-client:1.0.2'
-    implementation 'org.webjars:stomp-websocket:2.3.3'
-    implementation 'org.webjars:bootstrap:3.3.7'
-    implementation 'org.webjars:jquery:3.1.1-1'
-
-    implementation group: 'kr.dogfoot', name: 'hwplib', version: '1.1.1'
-
-    implementation 'org.springframework.kafka:spring-kafka'
-
+  implementation ' e-iceblue :spire.pdf:5.4.0'
+  implementation 'org.springframework.kafka:spring-kafka'
+  implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+  implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
 }
 
 tasks.named('test') {

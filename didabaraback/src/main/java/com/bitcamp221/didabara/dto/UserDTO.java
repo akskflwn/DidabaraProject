@@ -14,14 +14,16 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UserDTO {
 
-    private Long id;
-    private String username;
-    private String password;
-    private String nickname;
+  private Long id;
+  private String username;
+  private String password;
+  private String nickname;
 
-    private String token;
-    private LocalDate createdDate;
-    private LocalDate modifiedDate;
+  private String token;
+  private String phoneNumber;
+  private String realName;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
     //  DB에서 꺼내온 Entity를 new UserDTO(userEntity)를 하여서
 //  DTO로 변환해서 사용!
