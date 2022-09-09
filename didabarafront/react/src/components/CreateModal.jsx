@@ -1,54 +1,23 @@
-import { Button, Card, FormLabel, TextField, Typography } from "@mui/material";
+import { Button, FormLabel, TextField, Typography } from "@mui/material";
 import React, { useRef, useState } from "react";
-import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import axios from "axios";
 import Pallet from "./Pallet";
 import { REQUEST_ADDRESS } from "../config/APIs";
-
-const number = window.innerWidth;
-const Background = styled.div`
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  position: fixed;
-  left: 0;
-  top: 0;
-  transition: hidden 0.5s;
-`;
+import ModalPopUp from "./ModalPopUp";
+import { useSetRecoilState } from "recoil";
+import { myDocumentState } from "../config/Atom";
 
 const StyledForm = styled.form`
-  display: grid;
+  display: flex;
+  width: 100%;
+  flex-direction: column;
   height: 100%;
   align-self: center;
-  justify-self: center;
+  justify-content: space-around;
+  gap: 10px;
 `;
 
-const SteyldCard = styled(Card)`
-  && {
-    display: grid;
-    grid-template-columns: 55% 45%;
-    width: 40%;
-    height: 420px;
-    position: fixed;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%);
-    top: 50%;
-    min-height: 420px;
-    min-width: 560px;
-    transition: all 0.5s;
-    padding: 20px 20px;
-    @media screen and (max-width: 600px) {
-      grid-template-columns: repeat(1, 1fr);
-      overflow-y: scroll;
-    }
-  }
-`;
-
-const StyledLeftBox = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-`;
 const StyledLabel = styled(FormLabel)`
   && {
     display: flex;
@@ -57,16 +26,19 @@ const StyledLabel = styled(FormLabel)`
     height: 40px;
     align-items: center;
     justify-content: center;
+    margin-top: 15px;
     &:hover {
       cursor: pointer;
     }
   }
 `;
 const StyledImg = styled.img`
-  width: 90%;
-  height: 60%;
+  width: 100%;
+  height: 50%;
   border: 1px solid #c4c4c4;
   border-radius: 5px;
+  overflow: hidden;
+  background-size: cover;
 
   @media screen and (max-width: 700px) {
     height: 400px;
@@ -86,9 +58,52 @@ const StyledFile = styled.input`
   position: absolute;
   display: none;
 `;
-function CreateModal() {
+
+const StyledWrap = styled.div`
+  width: 400px;
+  height: 100%;
+  padding: 15px 20px;
+`;
+const Wrap = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+`;
+const InviteCode = styled.input`
+  text-align: center;
+  border: none;
+  font-family: "Franklin Gothic Medium", "Arial Narrow", Arial, sans-serif;
+  font-size: 2rem;
+  cursor: pointer;
+  margin-bottom: 15px;
+  width: 80%;
+  background-color: #e4e4e4;
+  border-radius: 5px;
+  color: #6565f1;
+  ::selection {
+    background-color: transparent;
+  }
+  :focus {
+    outline: none;
+  }
+`;
+function CreateModal({ setShowing }) {
+  const [inviteCode, setInviteCode] = useState("");
+  const setMyDocumetnState = useSetRecoilState(myDocumentState);
   const imgRef = useRef();
-  const navi = useNavigate();
+
+  const copyInviteCode = (e) => {
+    e.target.select();
+    document.execCommand("copy");
+    alert("복사되었습니다.");
+  };
+
+  const outOfCreation = () => {
+    setInviteCode("");
+    setShowing(false);
+  };
 
   const showFileImage = (e) => {
     // 파일 이름을 빈 입력창에 표시함.//
@@ -104,87 +119,80 @@ function CreateModal() {
 
   const makeCategory = (e) => {
     e.preventDefault();
-    const data = new FormData(e.target);
+    const ctData = new FormData(e.target);
+
+    const requestData = new FormData();
+
+    const category = {
+      title: ctData.get("title"),
+      content: ctData.get("content"),
+    };
+
+    const categoryDTO = JSON.stringify(category);
+
+    requestData.append(
+      "categoryDTO",
+      new Blob([categoryDTO], { type: "application/json" })
+    );
+    requestData.append("file", ctData.get("file"));
 
     axios
-      .post(REQUEST_ADDRESS + "upload/category", data, {
+      .post(REQUEST_ADDRESS + "category/create", requestData, {
         headers: {
           Authorization: "Bearer " + localStorage.getItem("token"),
-          "content-Type": "multipart/form-data",
+          "Content-Type": "multipart/form-data",
         },
       })
-      .then((res) => console.log(res))
+      .then((res) => {
+        console.log(res.data);
+        setMyDocumetnState((prev) => [...prev, { ...res.data }]);
+        setInviteCode(res.data.inviteCode);
+      })
       .catch((err) => console.log(err));
   };
 
   return (
     <>
-      <Background style={{ width: number }}></Background>
-      <StyledForm
-        encType="multipart/form-data"
-        onSubmit={makeCategory}
-        id="myform"
-      >
-        <SteyldCard>
-          <StyledLeftBox>
-            <div>
-              <Typography ml={2} mb={1}>
-                제목
-              </Typography>
-              <StyledTextField
-                type="text"
-                name="title"
-                label="제목을 입력해주세요."
-                fullWidth
-              />
-              <Typography ml={2} mt={2} mb={1}>
-                내용
-              </Typography>
-              <StyledTextField
-                type="text"
-                name="content"
-                label="소개"
-                fullWidth
-              />
-            </div>
-            <div>
-              <StyledLabel htmlFor="file">배경이미지 선택하기</StyledLabel>
-              <StyledFile
-                type="file"
-                name="images"
-                id="file"
-                onChange={showFileImage}
-              />
-              <StyledDiv
-                style={{
-                  height: "2rem",
-                  display: " flex",
-                  alignItems: "center",
-                  borderRadius: "5px",
-                  backgroundColor: " #f1f1f1",
-                  color: "RGB(220, 220, 220)",
-                }}
-                id="fileName"
-              >
-                Selected Images
-              </StyledDiv>
-            </div>
-            <div>
-              <Typography mb={1}>또는 배경색 선택하기</Typography>
-              <Pallet imgRef={imgRef} />
-            </div>
-          </StyledLeftBox>
-          <StyledDiv
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              flexDirection: "column",
-              alignItems: "center",
-              border: "none",
-            }}
-          >
+      <ModalPopUp width={"400px"} height={"600px"} Overlay={true}>
+        <StyledWrap>
+          <StyledForm onSubmit={makeCategory}>
+            <Typography> 제목</Typography>
+            <StyledTextField
+              type="text"
+              name="title"
+              label="제목을 입력해주세요."
+              fullWidth
+            />
+            <Typography mt={1}>내용</Typography>
+            <StyledTextField
+              type="text"
+              name="content"
+              label="소개"
+              fullWidth
+            />
+            <StyledLabel htmlFor="file">배경이미지 선택하기</StyledLabel>
+            <StyledFile
+              type="file"
+              name="file"
+              id="file"
+              onChange={showFileImage}
+            />
+            <StyledDiv
+              style={{
+                height: "2rem",
+                display: " flex",
+                alignItems: "center",
+                borderRadius: "5px",
+                backgroundColor: " #f1f1f1",
+                color: "RGB(220, 220, 220)",
+              }}
+              id="fileName"
+            >
+              Selected Images
+            </StyledDiv>
             <StyledImg src="" alt="bakcground" ref={imgRef} />
-            <div style={{ width: "90%" }}>
+            <Pallet imgRef={imgRef} />
+            <div style={{ width: "100%" }}>
               <Button
                 variant="outlined"
                 style={{ width: "100%" }}
@@ -196,15 +204,36 @@ function CreateModal() {
                 variant="outlined"
                 style={{ width: "100%" }}
                 onClick={() => {
-                  navi(-1);
+                  setShowing(false);
                 }}
               >
                 <Typography>취소 / 나가기</Typography>
               </Button>
             </div>
-          </StyledDiv>
-        </SteyldCard>
-      </StyledForm>
+          </StyledForm>
+        </StyledWrap>
+      </ModalPopUp>
+      {inviteCode && (
+        <ModalPopUp width={"600px"} height={"300px"} Overlay={false}>
+          <Wrap>
+            <h2>커뮤니티 생성 완료</h2>
+            <h3>초대코드 : (클릭시 복사됩니다)</h3>
+            <InviteCode
+              type="text"
+              value={inviteCode}
+              readOnly
+              onClick={copyInviteCode}
+            />
+            <Button
+              variant="outlined"
+              style={{ color: "grey", border: "1px solid grey", width: "80%" }}
+              onClick={outOfCreation}
+            >
+              돌아가기
+            </Button>
+          </Wrap>
+        </ModalPopUp>
+      )}
     </>
   );
 }

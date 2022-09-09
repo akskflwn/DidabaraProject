@@ -3,7 +3,9 @@ import { Droppable } from "react-beautiful-dnd";
 import styled from "styled-components";
 import Profile from "./Profile";
 
-const Area = styled.div``;
+const Area = styled.div`
+  background-color: #dcdcdc;
+`;
 
 const list = [
   {
