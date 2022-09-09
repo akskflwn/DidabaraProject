@@ -15,61 +15,61 @@ import java.util.Map;
 @Service
 public class UserInfoService {
 
-  @Autowired
-  private UserInfoMapper userInfoMapper;
+    @Autowired
+    private UserInfoMapper userInfoMapper;
 
-  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-  @Autowired
-  UserInfoRepository userInfoRepository;
+    @Autowired
+    UserInfoRepository userInfoRepository;
 
 
-  public int updateMyPage(String id, UserUserInfoDTO uid) {
+    public int updateMyPage(String id, UserUserInfoDTO uid) {
 
-    UserUserInfoDTO byDTO = userInfoMapper.findByDTO(id);
+        UserUserInfoDTO byDTO = userInfoMapper.findByDTO(id);
 
-    if (uid.getNickname() == null) {
-      uid.setNickname(byDTO.getNickname());
+        if (uid.getNickname() == null) {
+            uid.setNickname(byDTO.getNickname());
+        }
+
+        if (uid.getJob() == null) {
+            uid.setJob(byDTO.getJob());
+        }
+
+        if (uid.getPassword() == null) {
+            uid.setPassword(byDTO.getPassword());
+        }
+
+        String encode = passwordEncoder.encode(uid.getPassword());
+
+        uid.setPassword(encode);
+
+        return userInfoMapper.updateUserInfoDTO(id, uid);
     }
 
-    if (uid.getJob() == null) {
-      uid.setJob(byDTO.getJob());
+    /**
+     * 작성자 : 김남주
+     * 메서드 기능 : 내 정보 보기
+     * 마지막 작성자 : 김남주
+     *
+     * @param id
+     * @return Map
+     */
+    public Map findByIdMyPage(Long id) {
+
+        Map byMap = userInfoMapper.findByMap(id);
+
+        return byMap;
     }
 
-    if (uid.getPassword() == null) {
-      uid.setPassword(byDTO.getPassword());
+
+    public int delete(String id) throws Exception {
+        int checkRow = userInfoMapper.deleteUserAndInfo(id);
+        log.info("checkRow={}", checkRow);
+        if (checkRow != 0) {
+            return checkRow;
+        } else {
+            throw new Exception("삭제 실패");
+        }
     }
-
-    String encode = passwordEncoder.encode(uid.getPassword());
-
-    uid.setPassword(encode);
-
-    return userInfoMapper.updateUserInfoDTO(id, uid);
-  }
-
-  /**
-   * 작성자 : 김남주
-   * 메서드 기능 : 내 정보 보기
-   * 마지막 작성자 : 김남주
-   *
-   * @param id
-   * @return Map
-   */
-  public Map findByIdMyPage(Long id) {
-
-    Map byMap = userInfoMapper.findByMap(id);
-
-    return byMap;
-  }
-
-
-  public int delete(String id) throws Exception {
-    int checkRow = userInfoMapper.deleteUserAndInfo(id);
-    log.info("checkRow={}", checkRow);
-    if (checkRow != 0) {
-      return checkRow;
-    } else {
-      throw new Exception("삭제 실패");
-    }
-  }
 }

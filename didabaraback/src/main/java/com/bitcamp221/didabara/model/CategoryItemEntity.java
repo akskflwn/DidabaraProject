@@ -16,32 +16,32 @@ import java.time.LocalDate;
 @Table(name = "category_item")
 public class CategoryItemEntity extends BaseTimeEntity {
 
-  @Id
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  @Column(name = "id", unique = true, nullable = false)
-  private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", unique = true, nullable = false)
+    private Long id;
 
-  @Column(name = "category_id", nullable = false)
-  private Long category;
+    @Column(name = "category_id", nullable = false)
+    private Long category;
 
-  @Column(name = "item_path", nullable = false)
-  private String itemPath;
+    @Column(name = "item_path", nullable = false)
+    private String itemPath;
 
-  @Column(name = "title", nullable = false, length = 30)
-  private String title;
+    @Column(name = "title", nullable = false, length = 30)
+    private String title;
 
-  @Column(name = "content", nullable = false)
-  private String content;
+    @Column(name = "content", nullable = false)
+    private String content;
 
-  @Column(name = "expired_date", nullable = false)
-  private LocalDate expiredDate;
+    @Column(name = "expired_date", nullable = false)
+    private LocalDate expiredDate;
 
-  public void changeEntity(final CategoryItemEntity categoryItemEntity) {
-    this.id = categoryItemEntity.getId();
-    this.category = categoryItemEntity.getCategory();
-    this.itemPath = categoryItemEntity.getItemPath();
-    this.title = categoryItemEntity.getTitle();
-    this.content = categoryItemEntity.getContent();
-    this.expiredDate = categoryItemEntity.getExpiredDate();
-  }
+    public void changeEntity(final CategoryItemEntity categoryItemEntity) {
+        this.id = categoryItemEntity.getId();
+        this.category = categoryItemEntity.getCategory();
+        this.itemPath = categoryItemEntity.getItemPath();
+        this.title = categoryItemEntity.getTitle();
+        this.content = categoryItemEntity.getContent();
+        this.expiredDate = categoryItemEntity.getExpiredDate();
+    }
 }

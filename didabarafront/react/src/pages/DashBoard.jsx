@@ -6,6 +6,7 @@ import { Outlet, useNavigate } from "react-router-dom";
 import CreateNewFolderOutlinedIcon from "@mui/icons-material/CreateNewFolderOutlined";
 import Viewer from "../components/Viewer";
 import ReplyInput from "../components/ReplyInput";
+import ChatInput from "../components/ChatInput";
 
 const Item = styled(Grid)`
   /* border: 1px solid black; */
@@ -16,7 +17,7 @@ const StyledButton = styled(Button)`
     height: 50px;
     border-radius: 2px;
     box-shadow: 1px 1px 3px gray;
-    background-color: #DCDCDC;
+    background-color: #dcdcdc;
   }
 `;
 
@@ -63,6 +64,9 @@ function DashBoard() {
             justifyContent: "flex-end",
           }}
         >
+          ChatInput
+          <ChatInput />
+          <br />
           <ReplyInput />
         </Item>
       </Grid>

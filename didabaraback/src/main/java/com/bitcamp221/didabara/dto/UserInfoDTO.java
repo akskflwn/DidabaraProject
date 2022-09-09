@@ -14,33 +14,33 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class UserInfoDTO {
 
-  private Long id;
-  private String job;
-  private int role;
-  private boolean ban;
-  private String profileImageUrl;
-  private LocalDate createdDate;
-  private LocalDate modifiedDate;
+    private Long id;
+    private String job;
+    private int role;
+    private boolean ban;
+    private String profileImageUrl;
+    private LocalDate createdDate;
+    private LocalDate modifiedDate;
 
-  //xpt
-  public UserInfoDTO(UserInfoEntity userInfoEntity) {
-    this.id = userInfoEntity.getId();
-    this.job = userInfoEntity.getJob();
-    this.role = userInfoEntity.getRole();
-    this.ban = userInfoEntity.isBan();
-    this.profileImageUrl = userInfoEntity.getProfileImageUrl();
-    this.createdDate = userInfoEntity.getCreatedDate();
-    this.modifiedDate = userInfoEntity.getModifiedDate();
-  }
+    //xpt
+    public UserInfoDTO(UserInfoEntity userInfoEntity) {
+        this.id = userInfoEntity.getId();
+        this.job = userInfoEntity.getJob();
+        this.role = userInfoEntity.getRole();
+        this.ban = userInfoEntity.isBan();
+        this.profileImageUrl = userInfoEntity.getProfileImageUrl();
+        this.createdDate = userInfoEntity.getCreatedDate();
+        this.modifiedDate = userInfoEntity.getModifiedDate();
+    }
 
-  public static UserInfoEntity toEntity(final UserInfoDTO userInfoDTO) {
+    public static UserInfoEntity toEntity(final UserInfoDTO userInfoDTO) {
 
-    return UserInfoEntity.builder()
-            .id(userInfoDTO.getId())
-            .job(userInfoDTO.getJob())
-            .role(userInfoDTO.getRole())
-            .ban(userInfoDTO.isBan())
-            .profileImageUrl(userInfoDTO.getProfileImageUrl())
-            .build();
-  }
+        return UserInfoEntity.builder()
+                .id(userInfoDTO.getId())
+                .job(userInfoDTO.getJob())
+                .role(userInfoDTO.getRole())
+                .ban(userInfoDTO.isBan())
+                .profileImageUrl(userInfoDTO.getProfileImageUrl())
+                .build();
+    }
 }

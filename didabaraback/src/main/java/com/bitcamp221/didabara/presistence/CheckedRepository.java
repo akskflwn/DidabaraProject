@@ -13,22 +13,22 @@ import java.util.List;
 @Repository
 public interface CheckedRepository extends JpaRepository<CheckedEntity, Long> {
 
-  @Modifying
-  @Query("DELETE FROM CheckedEntity c WHERE c.categoryItem = :categoryItemId")
-  void deleteAllByCategoryItem(@Param("categoryItemId") final Long categoryItemId);
+    @Modifying
+    @Query("DELETE FROM CheckedEntity c WHERE c.categoryItem = :categoryItemId")
+    void deleteAllByCategoryItem(@Param("categoryItemId") final Long categoryItemId);
 
-  @Query("SELECT c.user FROM CheckedEntity c WHERE c.categoryItem = :categoryItemId")
-  List<CheckedEntity> checkUserList(@Param("categoryItemId") final Long categoryItemId);
+    @Query("SELECT c.user FROM CheckedEntity c WHERE c.categoryItem = :categoryItemId")
+    List<CheckedEntity> checkUserList(@Param("categoryItemId") final Long categoryItemId);
 
-  @Query("SELECT s.user FROM SubscriberEntity s LEFT JOIN CheckedEntity c WHERE s.category = :categoryItemId AND c.id IS NULL")
-  List<SubscriberEntity> unCheckUserList(@Param("categoryItemId") final Long categoryItemId);
+    @Query("SELECT s.user FROM SubscriberEntity s LEFT JOIN CheckedEntity c WHERE s.category = :categoryItemId AND c.id IS NULL")
+    List<SubscriberEntity> unCheckUserList(@Param("categoryItemId") final Long categoryItemId);
 
-  @Query("SELECT c FROM CheckedEntity c WHERE c.user = :userId")
-  List<CheckedEntity> findMyCheckList(@Param("userId") final Long userId);
+    @Query("SELECT c FROM CheckedEntity c WHERE c.user = :userId")
+    List<CheckedEntity> findMyCheckList(@Param("userId") final Long userId);
 
-  @Query("SELECT c FROM CheckedEntity c WHERE c.id = :userId")
-  List<CheckedEntity> findMyUnCheckList(@Param("userId") final Long userId);
+    @Query("SELECT c FROM CheckedEntity c WHERE c.id = :userId")
+    List<CheckedEntity> findMyUnCheckList(@Param("userId") final Long userId);
 
-  @Query("SELECT c FROM CheckedEntity c WHERE c.user = : userId")
-  boolean existsByUserId(@Param("userId") final Long userId);
+    @Query("SELECT c FROM CheckedEntity c WHERE c.user = : userId")
+    boolean existsByUserId(@Param("userId") final Long userId);
 }
