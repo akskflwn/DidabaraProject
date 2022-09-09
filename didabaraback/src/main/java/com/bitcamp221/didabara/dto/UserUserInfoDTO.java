@@ -10,6 +10,7 @@ import lombok.*;
 @Getter
 @Setter
 public class UserUserInfoDTO {
+
   private String nickname;
   private String job;
   private String password;

@@ -6,6 +6,7 @@ import com.bitcamp221.didabara.dto.UserDTO;
 import com.bitcamp221.didabara.model.EmailConfigEntity;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.model.UserInfoEntity;
+import com.bitcamp221.didabara.notification.NotificationService;
 import com.bitcamp221.didabara.presistence.EmailConfigRepository;
 import com.bitcamp221.didabara.presistence.UserInfoRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
@@ -41,6 +42,9 @@ public class UserController {
 
     @Autowired
     private EmailConfigRepository emailConfigRepository;
+
+    @Autowired
+    NotificationService notificationService;
 
     //  회원가입
 //  http://localhost:8080/auth/signup
@@ -98,7 +102,7 @@ public class UserController {
     }
 
     //  로그인
-    @PostMapping("/signin")
+    @PostMapping(value = "/signin")
     public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO) {
         UserEntity user;
         try {

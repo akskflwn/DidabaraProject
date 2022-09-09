@@ -34,11 +34,10 @@ public class UserEntity extends BaseTimeEntity {
   private String realName;
 
   public void changePassword(String password) {
-    this.password = password;
+      this.password = password;
   }
 
   public void changeNickname(String nickname) {
-    this.nickname = nickname;
+      this.nickname = nickname;
   }
-
 }

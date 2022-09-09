@@ -11,23 +11,22 @@ import java.util.Map;
 @Mapper
 public interface UserMapper {
 
-  @Update("UPDATE user SET nickname=#{user.nickname}, password=#{user.password} WHERE username=#{user.username}")
-  int updateUser(@Param("user") UserEntity userEntity);
+    @Update("UPDATE user SET nickname=#{user.nickname}, password=#{user.password} WHERE username=#{user.username}")
+    int updateUser(@Param("user") UserEntity userEntity);
 
-  @Select("SELECT * FROM user WHERE username=#{email}")
-  UserEntity selectUserIdByEmail(@Param("email") String email);
+    @Select("SELECT * FROM user WHERE username=#{email}")
+    UserEntity selectUserIdByEmail(@Param("email") String email);
 
-  @Select("SELECT user.username, emailconfig.auth_code " +
-          "FROM user " +
-          "JOIN emailconfig " +
-          "ON user.id = emailconfig.id " +
-          "WHERE emailconfig.auth_code = #{map.authCode} AND user.username = #{map.username}")
-  Map selectUsernameAndAuthCode(@Param("map") Map map);
+    @Select("SELECT user.username, emailconfig.auth_code " +
+            "FROM user " +
+            "JOIN emailconfig " +
+            "ON user.id = emailconfig.id " +
+            "WHERE emailconfig.auth_code = #{map.authCode} AND user.username = #{map.username}")
+    Map selectUsernameAndAuthCode(@Param("map") Map map);
 
-  @Select("SELECT username,emailconfig.auth_code FROM USER JOIN emailconfig ON USER.ID =emailconfig.ID" +
-          "WHERE USER.USERNAME=#{username}")
-  String findByUserName(@Param("username") String username);
-
+    @Select("SELECT username,emailconfig.auth_code FROM USER JOIN emailconfig ON USER.ID =emailconfig.ID" +
+            "WHERE USER.USERNAME=#{username}")
+    String findByUserName(@Param("username") String username);
 
   @Select("SELECT id FROM user ORDER BY id DESC LIMIT 1")
   Long lastOneIndex();

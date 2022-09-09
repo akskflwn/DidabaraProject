@@ -20,138 +20,138 @@ import java.util.UUID;
 @PropertySource(value = "application.properties")
 public class UploadFile {
 
-  @Value("${cloud.aws.s3.bucket}")
-  private String bucket;
+    @Value("${cloud.aws.s3.bucket}")
+    private String bucket;
 
-  private final AmazonS3Client s3Client;
+    private final AmazonS3Client s3Client;
 
-  private final String dirName = "myfile";
+    private final String dirName = "myfile";
 
-  public String uploadCategoryImage(final MultipartFile file) {
-    final String message = "UploadFile uploadCategoryImage";
+    public String uploadCategoryImage(final MultipartFile file) {
+        final String message = "UploadFile uploadCategoryImage";
 
-    try {
-      if (file.getSize() != 0) {
-        log.info(LogMessage.infoJoin(message));
+        try {
+            if (file.getSize() != 0) {
+                log.info(LogMessage.infoJoin(message));
 
-        final File uploadFile = convert(file);
+                final File uploadFile = convert(file);
 
-        log.info("업로드 파일 : " + uploadFile);
+                log.info("업로드 파일 : " + uploadFile);
 
-        final String extension = uploadFile.getName().substring(uploadFile.getName().lastIndexOf("."));
+                final String extension = uploadFile.getName().substring(uploadFile.getName().lastIndexOf("."));
 
-        log.info("익스텐션 : " + extension);
+                log.info("익스텐션 : " + extension);
 
-        final File refactoring = new File(System.getProperty("user.dir") + "/" +
-                UUID.randomUUID() + extension);
+                final File refactoring = new File(System.getProperty("user.dir") + "/" +
+                        UUID.randomUUID() + extension);
 
-        log.info("리펙토링 : " + refactoring);
+                log.info("리펙토링 : " + refactoring);
 
-        XFile xFile1 = new XFile(uploadFile.getName());
+                XFile xFile1 = new XFile(uploadFile.getName());
 
-        xFile1.renameTo(refactoring);
+                xFile1.renameTo(refactoring);
 
-        log.info("리펙토링 이름 : " + refactoring.getName());
+                log.info("리펙토링 이름 : " + refactoring.getName());
 
-        final String uploadFileURI = putS3(refactoring, dirName + "/" + refactoring.getName());
+                final String uploadFileURI = putS3(refactoring, dirName + "/" + refactoring.getName());
 
-        log.info("파일 URI : " + uploadFileURI);
+                log.info("파일 URI : " + uploadFileURI);
 
-        removeNewFile(refactoring);
+                removeNewFile(refactoring);
 
-        log.info(LogMessage.infoComplete(message));
+                log.info(LogMessage.infoComplete(message));
 
-        return uploadFileURI;
-      } else {
-        log.error(LogMessage.errorNull(message));
+                return uploadFileURI;
+            } else {
+                log.error(LogMessage.errorNull(message));
 
-        throw new RuntimeException(LogMessage.errorNull(message));
-      }
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
+                throw new RuntimeException(LogMessage.errorNull(message));
+            }
+        } catch (Exception e) {
+            log.error(LogMessage.errorJoin(message));
 
-      throw new RuntimeException(LogMessage.errorJoin(message));
-    }
-  }
-
-  private String putS3(final File uploadFile, final String fileName) {
-    final String message = "UploadFile putS3";
-
-    log.info("업로드 파일 : {}", uploadFile);
-    try {
-      if (uploadFile != null && fileName != null) {
-        log.info(LogMessage.infoJoin(message));
-
-        s3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
-
-        log.info(LogMessage.infoComplete(message));
-
-        return s3Client.getUrl(bucket, fileName).toString();
-      } else {
-        log.error(LogMessage.errorNull(message));
-
-        throw new RuntimeException(LogMessage.errorNull(message));
-      }
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
-
-      throw new RuntimeException(LogMessage.errorJoin(message));
-    }
-  }
-
-  private File convert(final MultipartFile file) {
-    final String message = "UploadFile convert";
-
-    try {
-      log.info(LogMessage.infoJoin(message));
-
-      if (file.getSize() != 0) {
-        final File convertFile = new File(System.getProperty("user.dir") + "/" + file.getOriginalFilename());
-
-        log.info("컨버트 파일 : " + convertFile);
-
-        if (convertFile.createNewFile()) {
-          try {
-            final FileOutputStream fos = new FileOutputStream(convertFile);
-
-            fos.write(file.getBytes());
-
-            return convertFile;
-          } catch (Exception e) {
-            log.warn(LogMessage.errorNull(message));
-
-            throw new RuntimeException(LogMessage.errorNull(message));
-          }
-        } else {
-          log.warn(LogMessage.errorNull(message));
-
-          throw new RuntimeException(LogMessage.errorNull(message));
+            throw new RuntimeException(LogMessage.errorJoin(message));
         }
-      } else {
-        log.error(LogMessage.errorNull(message));
-
-        throw new RuntimeException(LogMessage.errorNull(message));
-      }
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
-
-      throw new RuntimeException(LogMessage.errorJoin(message));
     }
-  }
 
-  public void removeNewFile(final File file) {
-    final String message = "UploadFile removeNewFile";
+    private String putS3(final File uploadFile, final String fileName) {
+        final String message = "UploadFile putS3";
 
-    try {
-      if (file.delete()) {
-        log.info(LogMessage.infoComplete(message));
-      } else {
-        log.warn(LogMessage.errorExist(message));
-      }
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
+        log.info("업로드 파일 : {}", uploadFile);
+        try {
+            if (uploadFile != null && fileName != null) {
+                log.info(LogMessage.infoJoin(message));
 
-      throw new RuntimeException(LogMessage.errorJoin(message));
+                s3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+
+                log.info(LogMessage.infoComplete(message));
+
+                return s3Client.getUrl(bucket, fileName).toString();
+            } else {
+                log.error(LogMessage.errorNull(message));
+
+                throw new RuntimeException(LogMessage.errorNull(message));
+            }
+        } catch (Exception e) {
+            log.error(LogMessage.errorJoin(message));
+
+            throw new RuntimeException(LogMessage.errorJoin(message));
+        }
     }
-  }
+
+    private File convert(final MultipartFile file) {
+        final String message = "UploadFile convert";
+
+        try {
+            log.info(LogMessage.infoJoin(message));
+
+            if (file.getSize() != 0) {
+                final File convertFile = new File(System.getProperty("user.dir") + "/" + file.getOriginalFilename());
+
+                log.info("컨버트 파일 : " + convertFile);
+
+                if (convertFile.createNewFile()) {
+                    try {
+                        final FileOutputStream fos = new FileOutputStream(convertFile);
+
+                        fos.write(file.getBytes());
+
+                        return convertFile;
+                    } catch (Exception e) {
+                        log.warn(LogMessage.errorNull(message));
+
+                        throw new RuntimeException(LogMessage.errorNull(message));
+                    }
+                } else {
+                    log.warn(LogMessage.errorNull(message));
+
+                    throw new RuntimeException(LogMessage.errorNull(message));
+                }
+            } else {
+                log.error(LogMessage.errorNull(message));
+
+                throw new RuntimeException(LogMessage.errorNull(message));
+            }
+        } catch (Exception e) {
+            log.error(LogMessage.errorJoin(message));
+
+            throw new RuntimeException(LogMessage.errorJoin(message));
+        }
+    }
+
+    public void removeNewFile(final File file) {
+        final String message = "UploadFile removeNewFile";
+
+        try {
+            if (file.delete()) {
+                log.info(LogMessage.infoComplete(message));
+            } else {
+                log.warn(LogMessage.errorExist(message));
+            }
+        } catch (Exception e) {
+            log.error(LogMessage.errorJoin(message));
+
+            throw new RuntimeException(LogMessage.errorJoin(message));
+        }
+    }
 }

@@ -17,14 +17,14 @@ public class CheckedEntity extends BaseTimeEntity {
 //  해당 테이블 생성이 안된 유저는 문서를 읽지 않는 유저로 null반환.
 //  left join해서 널일 경우 false로 인식하게 하면 됨.
 
-  @Id
-  @Column(name = "id")
-  @GeneratedValue(strategy = GenerationType.IDENTITY)
-  private Long id;
+    @Id
+    @Column(name = "id")
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-  @Column(name = "user_id", nullable = false)
-  private Long user;
+    @Column(name = "user_id", nullable = false)
+    private Long user;
 
-  @Column(name = "category_item_id", nullable = false)
-  private Long categoryItem;
+    @Column(name = "category_item_id", nullable = false)
+    private Long categoryItem;
 }
