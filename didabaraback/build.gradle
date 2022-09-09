@@ -103,6 +103,9 @@ dependencies {
 
   implementation ' e-iceblue :spire.pdf:5.4.0'
   implementation 'org.springframework.kafka:spring-kafka'
+  implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+  implementation group: 'net.nurigo', name: 'javaSDK', version: '2.2'
+
 
 }
 

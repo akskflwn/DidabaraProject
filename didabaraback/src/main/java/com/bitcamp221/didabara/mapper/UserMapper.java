@@ -31,4 +31,7 @@ public interface UserMapper {
 
   @Select("SELECT id FROM user ORDER BY id DESC LIMIT 1")
   Long lastOneIndex();
+
+  @Select("SELECT username FROM user WHERE phone_number=#{ph}")
+  String findUserPhoneNumber(@Param("ph") String phoneNum);
 }

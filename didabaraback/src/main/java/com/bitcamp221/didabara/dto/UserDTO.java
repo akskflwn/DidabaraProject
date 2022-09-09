@@ -20,6 +20,9 @@ public class UserDTO {
   private String nickname;
 
   private String token;
+
+  private String phoneNumber;
+  private String realName;
   private LocalDate createdDate;
   private LocalDate modifiedDate;
 

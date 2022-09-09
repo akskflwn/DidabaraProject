@@ -1,8 +1,11 @@
 package com.bitcamp221.didabara.service;
 
+import com.bitcamp221.didabara.dto.UserDTO;
 import com.bitcamp221.didabara.dto.UserUserInfoDTO;
 import com.bitcamp221.didabara.mapper.UserInfoMapper;
+import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.UserInfoRepository;
+import com.bitcamp221.didabara.presistence.UserRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -10,6 +13,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
+import java.util.Optional;
 
 @Slf4j
 @Service
@@ -23,6 +27,8 @@ public class UserInfoService {
   @Autowired
   UserInfoRepository userInfoRepository;
 
+  @Autowired
+  private UserRepository userRepository;
 
   public int updateMyPage(String id, UserUserInfoDTO uid) {
 
@@ -39,6 +45,7 @@ public class UserInfoService {
     if (uid.getPassword() == null) {
       uid.setPassword(byDTO.getPassword());
     }
+
 
     String encode = passwordEncoder.encode(uid.getPassword());
 
@@ -71,5 +78,25 @@ public class UserInfoService {
     } else {
       throw new Exception("삭제 실패");
     }
+  }
+
+  public boolean checkAndChange(UserEntity byId, Map map, PasswordEncoder passwordEncoder) throws Exception {
+
+    String currentPassword = (String) map.get("currentPassword");
+    System.out.println("currentPassword = " + currentPassword);
+    if (passwordEncoder.matches(currentPassword, byId.getPassword())) {
+      String changePassword = (String) map.get("password");
+      System.out.println("changePassword = " + changePassword);
+      String encodePassword = passwordEncoder.encode(changePassword);
+      byId.setPassword(encodePassword);
+
+      userRepository.save(byId);
+
+      return true;
+    } else {
+      throw new Exception("패스워드가 일치하지 않습니다.");
+    }
+
+
   }
 }
