@@ -8,15 +8,15 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 public class WebMvcConfig implements WebMvcConfigurer {
 
 
-    private final long MAX_AGE_SECS = 3600;
+  private final long MAX_AGE_SECS = 3600;
 
-    @Override
-    public void addCorsMappings(CorsRegistry registry) {
-        // 모든 경로에 대해
-        registry.addMapping("/**")
-                .allowedOrigins("http://localhost:3000", "http://192.168.0.57:3000")
-                .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
-                .allowedHeaders("*")
-                .maxAge(MAX_AGE_SECS);
-    }
+  @Override
+  public void addCorsMappings(CorsRegistry registry) {
+    // 모든 경로에 대해
+    registry.addMapping("/**")
+            .allowedOrigins("http://localhost:3000", "http://192.168.0.57:3000")
+            .allowedMethods("GET", "POST", "PUT", "PATCH", "DELETE", "OPTIONS")
+            .allowedHeaders("*")
+            .maxAge(MAX_AGE_SECS);
+  }
 }

@@ -10,10 +10,10 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class FindMyJoinListDTO {
-    private Long id;
-    private String title;
-    private String content;
-    private String categoryProfileImageUrl;
-    private String nickname;
-    private String userProfileImageUrl;
+  private Long id;
+  private String title;
+  private String content;
+  private String categoryProfileImageUrl;
+  private String nickname;
+  private String userProfileImageUrl;
 }

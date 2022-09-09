@@ -7,7 +7,6 @@ import com.bitcamp221.didabara.service.CategoryService;
 import com.bitcamp221.didabara.util.ChangeType;
 import com.bitcamp221.didabara.util.LogMessage;
 import com.bitcamp221.didabara.util.UploadFile;
-import com.bitcamp221.didabara.websoket.ChatService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -28,8 +27,6 @@ public class CategoryItemController {
     @Autowired
     private CategoryService categoryService;
 
-    @Autowired
-    private ChatService chatService;
     @Autowired
     private UploadFile uploadFile;
 
@@ -61,9 +58,6 @@ public class CategoryItemController {
                         .create(CategoryItemDTO.toEntity(categoryItemDTO));
 
                 log.info(LogMessage.infoComplete(message));
-
-                chatService.createRoom(categoryItemDTO.getTitle());
-
 
                 return ChangeType.toCategoryItemDTO(categoryItemEntities);
             } else {
@@ -159,7 +153,7 @@ public class CategoryItemController {
 //  작성자 : 문병훈
 //  메소드 정보 : categoryItem 삭제
 //  마지막 수정자 : 문병훈
-//  필요 데이터 : category(id), categoryItem(category, id)
+//  필요 데이터 : categoryItem(id)
 //  -----------------------------------------------------
     @DeleteMapping("/delete/item-page/{categoryItemId}")
     public ResponseEntity<?> delete(@AuthenticationPrincipal final String userId,

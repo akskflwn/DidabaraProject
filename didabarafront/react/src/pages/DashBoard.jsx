@@ -17,6 +17,13 @@ const Item = styled(Grid)`
 `;
 const StyledButton = styled(Button)`
   && {
+<<<<<<< HEAD
+    width: 100%;
+    height: 50px;
+    border-radius: 2px;
+    box-shadow: 1px 1px 3px gray;
+    background-color: #dcdcdc;
+=======
     width: 50%;
     height: 100%;
     border-radius: 0px;
@@ -27,6 +34,7 @@ const StyledButton = styled(Button)`
       color: inherit;
     }
     border-bottom: none !important;
+>>>>>>> 9b8c9cfc3e6496dd113bfb91126930a8e3201f1c
   }
 `;
 

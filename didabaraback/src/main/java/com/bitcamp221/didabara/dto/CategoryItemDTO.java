@@ -23,6 +23,8 @@ public class CategoryItemDTO {
     private LocalDate createdDate;
     private LocalDate modifiedDate;
 
+    private String preview;
+
     public CategoryItemDTO(CategoryItemEntity categoryItemEntity) {
         this.id = categoryItemEntity.getId();
         this.category = categoryItemEntity.getCategory();
@@ -32,6 +34,7 @@ public class CategoryItemDTO {
         this.expiredDate = categoryItemEntity.getExpiredDate();
         this.createdDate = categoryItemEntity.getCreatedDate();
         this.modifiedDate = categoryItemEntity.getModifiedDate();
+        this.preview = categoryItemEntity.getPreview();
     }
 
 //  public CategoryItemDTO(Map map, int year, int month, int day) {
@@ -51,6 +54,7 @@ public class CategoryItemDTO {
                 .title(categoryItemDTO.getTitle())
                 .content(categoryItemDTO.getContent())
                 .expiredDate(categoryItemDTO.getExpiredDate())
+                .preview(categoryItemDTO.getPreview())
                 .build();
     }
 }

@@ -10,10 +10,16 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class RequestDTO {
-    private Long id;
-    private CategoryDTO category;
-    private CategoryItemDTO categoryItem;
-    private CategoryItemReplyDTO reply;
-    private UserDTO user;
-    private UserInfoDTO userInfo;
+
+  private Long id;
+  private CategoryDTO category;
+  private CategoryItemDTO categoryItem;
+  private CategoryItemReplyDTO reply;
+  private UserDTO user;
+  private UserInfoDTO userInfo;
+
+  private String title;
+  private String content;
+  private String nickname;
+  private String profileImageUrl;
 }

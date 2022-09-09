@@ -16,200 +16,200 @@ import java.util.Optional;
 @Transactional
 public class CategoryItemReplyService {
 
-    @Autowired
-    private CategoryItemReplyRepository categoryItemReplyRepository;
+  @Autowired
+  private CategoryItemReplyRepository categoryItemReplyRepository;
 
-    //  ---------------------------------------------------
+  //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : 받아온 데이터에 대해서 사전 검사
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-    private void validate(final CategoryItemReplyEntity itemReplyEntity, final String message) {
-        if (itemReplyEntity == null) {
-            log.error(LogMessage.errorNull(message));
+  private void validate(final CategoryItemReplyEntity itemReplyEntity, final String message) {
+    if (itemReplyEntity == null) {
+      log.error(LogMessage.errorNull(message));
 
-            throw new RuntimeException(LogMessage.errorNull(message));
-        }
+      throw new RuntimeException(LogMessage.errorNull(message));
     }
+  }
 
-    //  ---------------------------------------------------
+  //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : 받아온 데이터에 대해서 사전 검사
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-    private void validateId(final Long id, final String message) {
-        if (id == null) {
-            log.error(LogMessage.errorNull(message));
+  private void validateId(final Long id, final String message) {
+    if (id == null) {
+      log.error(LogMessage.errorNull(message));
 
-            throw new RuntimeException(LogMessage.errorNull(message));
-        }
+      throw new RuntimeException(LogMessage.errorNull(message));
     }
+  }
 
-    //  ---------------------------------------------------
+  //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : list 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-    public List<CategoryItemReplyEntity> findList(final Long itemId) {
-        final String message = "itemReplyService findList";
+  public List<CategoryItemReplyEntity> findList(final Long itemId) {
+    final String message = "itemReplyService findList";
 
-        try {
-            log.info(LogMessage.infoJoin(message));
+    try {
+      log.info(LogMessage.infoJoin(message));
 
-            validateId(itemId, message);
+      validateId(itemId, message);
 
-            log.info(LogMessage.infoComplete(message));
+      log.info(LogMessage.infoComplete(message));
 
-            return categoryItemReplyRepository.findList(itemId);
-        } catch (Exception e) {
-            log.error(LogMessage.errorJoin(message));
+      return categoryItemReplyRepository.findAllByCategoryItem(itemId);
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
 
-            throw new RuntimeException(LogMessage.errorJoin(message));
-        }
+      throw new RuntimeException(LogMessage.errorJoin(message));
     }
+  }
 
-    //  ---------------------------------------------------
+  //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : 내 리스트 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-    public List<CategoryItemReplyEntity> findMyList(final Long userId) {
-        final String message = "itemReplyService findMyList";
+  public List<CategoryItemReplyEntity> findMyList(final Long userId) {
+    final String message = "itemReplyService findMyList";
 
-        try {
-            log.info(LogMessage.infoJoin(message));
+    try {
+      log.info(LogMessage.infoJoin(message));
 
-            validateId(userId, message);
+      validateId(userId, message);
 
-            log.info(LogMessage.infoComplete(message));
+      log.info(LogMessage.infoComplete(message));
 
-            return categoryItemReplyRepository.findMyList(userId);
-        } catch (Exception e) {
-            log.error(LogMessage.errorJoin(message));
+      return categoryItemReplyRepository.findAllByWriter(userId);
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
 
-            throw new RuntimeException(LogMessage.errorJoin(message));
-        }
+      throw new RuntimeException(LogMessage.errorJoin(message));
     }
+  }
 
-    //  ---------------------------------------------------
+  //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : Reply 생성
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-    public List<CategoryItemReplyEntity> create(final CategoryItemReplyEntity itemReplyEntity) {
-        final String message = "itemReplyService create";
+  public List<CategoryItemReplyEntity> create(final CategoryItemReplyEntity itemReplyEntity) {
+    final String message = "itemReplyService create";
 
-        try {
-            log.info(LogMessage.infoJoin(message));
+    try {
+      log.info(LogMessage.infoJoin(message));
 
-            validate(itemReplyEntity, message);
+      validate(itemReplyEntity, message);
 
-            log.info(LogMessage.infoComplete(message));
+      log.info(LogMessage.infoComplete(message));
 
-            categoryItemReplyRepository.save(itemReplyEntity);
+      categoryItemReplyRepository.save(itemReplyEntity);
 
-            return categoryItemReplyRepository.findList(itemReplyEntity.getCategoryItem());
-        } catch (Exception e) {
-            log.error(LogMessage.errorJoin(message));
+      return categoryItemReplyRepository.findAllByCategoryItem(itemReplyEntity.getCategoryItem());
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
 
-            throw new RuntimeException(LogMessage.errorJoin(message));
-        }
+      throw new RuntimeException(LogMessage.errorJoin(message));
     }
+  }
 
-    //  ---------------------------------------------------
+  //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : Reply 삭제
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-    public List<CategoryItemReplyEntity> deleteById(final Long itemReplyId) {
-        final String message = "itemReplyService deleteById";
+  public List<CategoryItemReplyEntity> deleteById(final Long itemReplyId) {
+    final String message = "itemReplyService deleteById";
 
-        try {
-            log.info(LogMessage.infoJoin(message));
+    try {
+      log.info(LogMessage.infoJoin(message));
 
-            validateId(itemReplyId, message);
+      validateId(itemReplyId, message);
 
-            final Long categoryItemId = categoryItemReplyRepository.findCategoryItemId(itemReplyId);
+      final Long categoryItemId = categoryItemReplyRepository.findCategoryItemId(itemReplyId);
 
-            categoryItemReplyRepository.deleteById(itemReplyId);
+      categoryItemReplyRepository.deleteById(itemReplyId);
 
-            return categoryItemReplyRepository.findList(categoryItemId);
-        } catch (Exception e) {
-            log.error(LogMessage.errorJoin(message));
+      return categoryItemReplyRepository.findAllByCategoryItem(categoryItemId);
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
 
-            throw new RuntimeException(LogMessage.errorJoin(message));
-        }
+      throw new RuntimeException(LogMessage.errorJoin(message));
     }
+  }
 
-    //  ---------------------------------------------------
+  //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : Reply 수정
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-    public List<CategoryItemReplyEntity> update(final CategoryItemReplyEntity itemReplyEntity) {
-        final String message = "itemReplyService update";
+  public List<CategoryItemReplyEntity> update(final CategoryItemReplyEntity itemReplyEntity) {
+    final String message = "itemReplyService update";
 
-        try {
-            log.info(LogMessage.infoJoin(message));
+    try {
+      log.info(LogMessage.infoJoin(message));
 
-            validate(itemReplyEntity, message);
+      validate(itemReplyEntity, message);
 
-            final Optional<CategoryItemReplyEntity> original = categoryItemReplyRepository.findById(itemReplyEntity.getId());
+      final Optional<CategoryItemReplyEntity> original = categoryItemReplyRepository.findById(itemReplyEntity.getId());
 
-            original.ifPresent(entity -> {
-                entity.changeEntity(itemReplyEntity);
+      original.ifPresent(entity -> {
+        entity.changeEntity(itemReplyEntity);
 
-                categoryItemReplyRepository.save(entity);
-            });
+        categoryItemReplyRepository.save(entity);
+      });
 
-            log.info(LogMessage.infoComplete(message));
+      log.info(LogMessage.infoComplete(message));
 
-            return categoryItemReplyRepository.findList(itemReplyEntity.getCategoryItem());
-        } catch (Exception e) {
-            log.error(LogMessage.errorJoin(message));
+      return categoryItemReplyRepository.findAllByCategoryItem(itemReplyEntity.getCategoryItem());
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
 
-            throw new RuntimeException(LogMessage.errorJoin(message));
-        }
+      throw new RuntimeException(LogMessage.errorJoin(message));
     }
+  }
 
-    //  ---------------------------------------------------
+  //  ---------------------------------------------------
 //  작성자 : 문병훈
 //  메소드 정보 : Reply Writer 찾기
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-    public Long findWriter(final Long itemReplyId) {
-        final String message = "itemReplyService findWriter";
+  public Long findWriter(final Long itemReplyId) {
+    final String message = "itemReplyService findWriter";
 
-        try {
-            log.info(LogMessage.infoJoin(message));
+    try {
+      log.info(LogMessage.infoJoin(message));
 
-            validateId(itemReplyId, message);
+      validateId(itemReplyId, message);
 
-            log.info(LogMessage.infoComplete(message));
+      log.info(LogMessage.infoComplete(message));
 
-            return categoryItemReplyRepository.findWriter(itemReplyId);
-        } catch (Exception e) {
-            log.error(LogMessage.errorJoin(message));
+      return categoryItemReplyRepository.findWriter(itemReplyId);
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
 
-            throw new RuntimeException(LogMessage.errorJoin(message));
-        }
+      throw new RuntimeException(LogMessage.errorJoin(message));
     }
+  }
 
-    public Long findCategoryId(final Long itemReplyId) {
-        final String message = "itemReplyService findCategoryId";
+  public Long findCategoryId(final Long itemReplyId) {
+    final String message = "itemReplyService findCategoryId";
 
-        try {
-            log.info(LogMessage.infoJoin(message));
+    try {
+      log.info(LogMessage.infoJoin(message));
 
-            validateId(itemReplyId, message);
+      validateId(itemReplyId, message);
 
-            log.info(LogMessage.infoComplete(message));
+      log.info(LogMessage.infoComplete(message));
 
-            return categoryItemReplyRepository.findCategoryItemId(itemReplyId);
-        } catch (Exception e) {
-            log.error(LogMessage.errorJoin(message));
+      return categoryItemReplyRepository.findCategoryItemId(itemReplyId);
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
 
-            throw new RuntimeException(LogMessage.errorJoin(message));
-        }
+      throw new RuntimeException(LogMessage.errorJoin(message));
     }
+  }
 }

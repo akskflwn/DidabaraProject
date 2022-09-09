@@ -1,10 +1,9 @@
 package com.bitcamp221.didabara.presistence;
 
-import com.bitcamp221.didabara.dto.findMyJoinListDTO;
+import com.bitcamp221.didabara.dto.FindMyJoinListDTO;
 import com.bitcamp221.didabara.model.SubscriberEntity;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
 
@@ -13,20 +12,20 @@ import java.util.List;
 @Repository
 public interface SubscriberRepository extends JpaRepository<SubscriberEntity, Long> {
 
-    @Modifying
-    @Query("DELETE FROM SubscriberEntity s WHERE s.category = :categoryId AND s.user = :userId")
-    void deleteByCategoryIdAndUserId(@Param("categoryId") final Long categoryId, @Param("userId") final Long userId);
+//  @Modifying
+//  @Query("DELETE FROM SubscriberEntity s WHERE s.category = :categoryId AND s.user = :userId")
+//  void deleteByCategoryIdAndUserId(@Param("categoryId") final Long categoryId, @Param("userId") final Long userId);
 
-    @Query("SELECT s FROM SubscriberEntity s WHERE s.category = :categoryId")
-    List<SubscriberEntity> findList(@Param("categoryId") final Long categoryId);
+  void deleteByCategoryAndUser(@Param("category") final Long category, @Param("user") final Long user);
 
-    @Query("SELECT s.id FROM SubscriberEntity s WHERE s.category = :categoryId AND s.user = :userId")
-    boolean existsByCategoryIdAndUserId(@Param("categoryId") final Long categoryId, @Param("userId") final Long userId);
+  List<SubscriberEntity> findAllByCategory(@Param("category") final Long category);
 
-    String findMyJoinList = "SELECT new com.bitcamp221.didabara.dto.findMyJoinListDTO(c.id, c.title, c.content, c.profileImageUrl, u.nickname, ui.profileImageUrl) " +
-            "FROM SubscriberEntity s INNER JOIN CategoryEntity c ON s.user = :userId AND c.id = s.category " +
-            "INNER JOIN UserEntity u ON u.id = c.host INNER JOIN UserInfoEntity ui ON u.id = ui.id";
+  boolean existsByCategoryAndUser(@Param("category") final Long category, @Param("user") final Long user);
 
-    @Query(value = findMyJoinList)
-    List<findMyJoinListDTO> findMyJoinList(@Param("userId") final Long userId);
+  String findMyJoinList = "SELECT new com.bitcamp221.didabara.dto.FindMyJoinListDTO(c.id, c.title, c.content, c.profileImageUrl, u.nickname, ui.profileImageUrl) " +
+          "FROM SubscriberEntity s INNER JOIN CategoryEntity c ON s.user = :userId AND c.id = s.category " +
+          "INNER JOIN UserEntity u ON u.id = c.host INNER JOIN UserInfoEntity ui ON u.id = ui.id";
+
+  @Query(value = findMyJoinList)
+  List<FindMyJoinListDTO> findMyJoinList(@Param("userId") final Long userId);
 }
