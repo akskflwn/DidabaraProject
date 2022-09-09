@@ -19,12 +19,9 @@ public class CategoryService {
   @Autowired
   private CategoryRepository categoryRepository;
 
-  @Autowired
-  private CategoryMapper categoryMapper;
-
   //  -----------------------------------------------------
 //  작성자 : 문병훈
-//  메소드 정보 : DB로부터 받아온 Entity에 대해서 사전 검사
+//  메소드 정보 : 받아온 데이터에 대해서 사전 검사
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
   private void validate(final CategoryEntity categoryEntity, final String message) {
@@ -221,13 +218,24 @@ public class CategoryService {
     }
   }
 
-  public boolean existByCategory (final Long categoryId) {
-    try {
-      log.info("exist join success");
+  //  ---------------------------------------------------
+//  작성자 : 문병훈
+//  메소드 정보 : category item id로 host 찾기
+//  마지막 수정자 : 문병훈
+//  -----------------------------------------------------
+  public Long findCategoryItemHost(final Long itemId) {
+    final String message = "categoryService findCategoryHost";
 
-      return categoryRepository.findById(categoryId).isEmpty();
-    } catch (Exception e){
-      log.info("exist join failed");
+    try {
+      log.info(LogMessage.infoJoin(message));
+
+      validateId(itemId, message);
+
+      log.info(LogMessage.infoComplete(message));
+
+      return categoryRepository.findCategoryHost(itemId);
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
 
       throw new RuntimeException(LogMessage.errorJoin(message));
     }
