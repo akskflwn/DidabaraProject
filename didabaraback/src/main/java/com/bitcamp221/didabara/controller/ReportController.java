@@ -36,7 +36,8 @@ public class ReportController {
     try {
       log.info(LogMessage.infoJoin(message));
 
-      if (userId != null && categoryId != null && reportDTO != null) {
+      if (userId != null && categoryId != null && reportDTO != null &&
+              !reportService.existsByCategoryAndWriter(categoryId, Long.valueOf(userId))) {
         reportDTO.setCategory(categoryId);
         reportDTO.setWriter(Long.valueOf(userId));
 

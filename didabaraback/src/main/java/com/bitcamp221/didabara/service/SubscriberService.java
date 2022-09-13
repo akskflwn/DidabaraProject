@@ -119,7 +119,7 @@ public class SubscriberService {
 //  메소드 정보 : 해당 카테고리가 존재하는지 확인
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public boolean existsByCategoryIdAndUserId(final Long categoryId, final Long userId) {
+  public boolean existsByCategoryAndUser(final Long categoryId, final Long userId) {
     final String message = "subscriberService existsByCategoryIdAndUserId";
 
     try {
@@ -139,20 +139,39 @@ public class SubscriberService {
   }
 
   public List<FindMyJoinListDTO> findMyJoinList(final Long userId) {
-    final String message = "subscriberController findMyJoinList";
+    final String message = "subscriberService findMyJoinList";
 
-    try {
-      log.info(LogMessage.infoJoin(message));
+//    try {
+    log.info(LogMessage.infoJoin(message));
 
-      validateId(userId, message);
+    validateId(userId, message);
 
-      log.info(LogMessage.infoComplete(message));
+    log.info(LogMessage.infoComplete(message));
 
-      return subscriberRepository.findMyJoinList(userId);
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
-
-      throw new RuntimeException(LogMessage.errorJoin(message));
-    }
+    return subscriberRepository.findMyJoinList(userId);
+//    } catch (Exception e) {
+//      log.error(LogMessage.errorJoin(message));
+//
+//      throw new RuntimeException(LogMessage.errorJoin(message));
+//    }
   }
+
+//  public Boolean findByCategoryAndUser(final Long category, final Long user) {
+//    final String message = "subscriberService findByCategoryAndUser";
+//
+//    try {
+//      log.info(LogMessage.infoJoin(message));
+//
+//      validateId(category, message);
+//      validateId(user, message);
+//
+//      log.info(LogMessage.infoComplete(message));
+//
+//      return subscriberRepository.existsByCategoryAndUser(category, user);
+//    } catch (Exception e) {
+//      log.error(LogMessage.errorJoin(message));
+//
+//      throw new RuntimeException(LogMessage.errorJoin(message));
+//    }
+//  }
 }

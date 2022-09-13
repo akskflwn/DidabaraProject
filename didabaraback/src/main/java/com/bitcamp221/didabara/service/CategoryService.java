@@ -7,13 +7,11 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 
 @Slf4j
 @Service
-@Transactional
 public class CategoryService {
 
   @Autowired
@@ -39,6 +37,14 @@ public class CategoryService {
 //  -----------------------------------------------------
   private void validateId(final Long id, final String message) {
     if (id == null) {
+      log.error(LogMessage.errorNull(message));
+
+      throw new RuntimeException(LogMessage.errorNull(message));
+    }
+  }
+
+  private void validateString(final String st, final String message) {
+    if (st == null) {
       log.error(LogMessage.errorNull(message));
 
       throw new RuntimeException(LogMessage.errorNull(message));
@@ -203,19 +209,19 @@ public class CategoryService {
   public Long findHost(final Long categoryId) {
     final String message = "categoryService findHost";
 
-    try {
-      log.info(LogMessage.infoJoin(message));
+//    try {
+    log.info(LogMessage.infoJoin(message));
 
-      validateId(categoryId, message);
+    validateId(categoryId, message);
 
-      log.info(LogMessage.infoComplete(message));
+    log.info(LogMessage.infoComplete(message));
 
-      return categoryRepository.findHost(categoryId);
-    } catch (Exception e) {
-      log.error(LogMessage.errorJoin(message));
-
-      throw new RuntimeException(LogMessage.errorJoin(message));
-    }
+    return categoryRepository.findHost(categoryId);
+//    } catch (Exception e) {
+//      log.error(LogMessage.errorJoin(message));
+//
+//      throw new RuntimeException(LogMessage.errorJoin(message));
+//    }
   }
 
   //  ---------------------------------------------------
@@ -246,17 +252,17 @@ public class CategoryService {
 //  메소드 정보 : Category 일치 확인
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public Long existsCategory(final CategoryEntity categoryEntity) {
-    final String message = "categoryService existsCategory";
+  public Long findCategoryId(final String inviteCode) {
+    final String message = "categoryService findCategoryId";
 
     try {
       log.info(LogMessage.infoJoin(message));
 
-      validate(categoryEntity, message);
+      validateString(inviteCode, message);
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryRepository.existsCategory(categoryEntity.getInviteCode());
+      return categoryRepository.findCategory(inviteCode);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -275,6 +281,24 @@ public class CategoryService {
       log.info(LogMessage.infoComplete(message));
 
       return categoryRepository.findUrl(id);
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
+
+      throw new RuntimeException(LogMessage.errorJoin(message));
+    }
+  }
+
+  public boolean existsByUser(final String inviteCode, final Long userId) {
+    final String message = "CategoryService existsByUser";
+
+    try {
+      log.info(LogMessage.infoJoin(message));
+
+      validateId(userId, message);
+
+      log.info(LogMessage.infoComplete(message));
+
+      return categoryRepository.existsByUser(inviteCode, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 

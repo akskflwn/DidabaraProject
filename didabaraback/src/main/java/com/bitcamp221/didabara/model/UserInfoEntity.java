@@ -15,31 +15,31 @@ import javax.persistence.*;
 @Data
 public class UserInfoEntity extends BaseTimeEntity {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  @Column(name = "id")
+  private Long id;
 
-    @Column(name = "job", length = 30)
-    private String job;
+  @Column(name = "job", length = 30)
+  private String job;
 
-    //  0은 일반 유저, 1은 관리자
-    @Column(name = "role")
-    @ColumnDefault("0")
-    private int role;
+  //  0은 일반 유저, 1은 관리자
+  @Column(name = "role")
+  @ColumnDefault("0")
+  private int role;
 
-    @Column(name = "ban")
-    @ColumnDefault("false")
-    private boolean ban;
+  @Column(name = "ban")
+  @ColumnDefault("false")
+  private boolean ban;
 
-    //  프로필 사진 컬럼
-    //  @ColumnDefault("기본 프로필 제공 이미지 경로")
-    @Column(name = "profile_image_url", length = 100)
-    private String profileImageUrl;
+  //  프로필 사진 컬럼
+  @Column(name = "profile_image_url", length = 100)
+  //  @ColumnDefault("기본 프로필 제공 이미지 경로")
+  private String profileImageUrl;
 
-    @Column(name = "file_name", length = 100)
-    private String filename;
+  @Column(name = "file_name", length = 100)
+  private String filename;
 
-    @Column(name = "file_ori_name", length = 100)
-    private String fileOriName;
+  @Column(name = "file_ori_name", length = 100)
+  private String fileOriName;
 }

@@ -2,7 +2,14 @@ package com.bitcamp221.didabara.util;
 
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
+import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.bitcamp221.didabara.testpdf.S3UploadTest;
+import com.groupdocs.conversion.Converter;
+import com.groupdocs.conversion.filetypes.FileType;
+import com.groupdocs.conversion.options.convert.ConvertOptions;
+import com.groupdocs.conversion.options.convert.PdfConvertOptions;
+import com.groupdocs.conversion.options.load.WordProcessingLoadOptions;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -12,6 +19,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.UUID;
 
 @Slf4j
@@ -20,138 +29,207 @@ import java.util.UUID;
 @PropertySource(value = "application.properties")
 public class UploadFile {
 
-    @Value("${cloud.aws.s3.bucket}")
-    private String bucket;
+  @Value("${cloud.aws.s3.bucket}")
+  private String bucket;
 
-    private final AmazonS3Client s3Client;
+  private final AmazonS3Client s3Client;
 
-    private final String dirName = "myfile";
+  private final S3UploadTest s3UploadTest;
 
-    public String uploadCategoryImage(final MultipartFile file) {
-        final String message = "UploadFile uploadCategoryImage";
+  private final String dirName = "myfile";
 
-        try {
-            if (file.getSize() != 0) {
-                log.info(LogMessage.infoJoin(message));
+  public String uploadCategoryImage(final MultipartFile file) {
+    final String message = "UploadFile uploadCategoryImage";
 
-                final File uploadFile = convert(file);
+    try {
+      if (file.getSize() != 0) {
+        log.info(LogMessage.infoJoin(message));
 
-                log.info("업로드 파일 : " + uploadFile);
+        final File uploadFile = convert(file);
 
-                final String extension = uploadFile.getName().substring(uploadFile.getName().lastIndexOf("."));
+        log.info("업로드 파일 : " + uploadFile);
 
-                log.info("익스텐션 : " + extension);
+        final String extension = uploadFile.getName().substring(uploadFile.getName().lastIndexOf("."));
 
-                final File refactoring = new File(System.getProperty("user.dir") + "/" +
-                        UUID.randomUUID() + extension);
+        log.info("익스텐션 : " + extension);
 
-                log.info("리펙토링 : " + refactoring);
+        final File refactoring = new File(System.getProperty("user.dir") + "/" +
+                UUID.randomUUID() + extension);
 
-                XFile xFile1 = new XFile(uploadFile.getName());
+        log.info("리펙토링 : " + refactoring);
 
-                xFile1.renameTo(refactoring);
+        XFile xFile1 = new XFile(uploadFile.getName());
 
-                log.info("리펙토링 이름 : " + refactoring.getName());
+        xFile1.renameTo(refactoring);
 
-                final String uploadFileURI = putS3(refactoring, dirName + "/" + refactoring.getName());
+        log.info("리펙토링 이름 : " + refactoring.getName());
 
-                log.info("파일 URI : " + uploadFileURI);
+        final String uploadFileURI = putS3(refactoring, dirName + "/" + refactoring.getName());
 
-                removeNewFile(refactoring);
+        log.info("파일 URI : " + uploadFileURI);
 
-                log.info(LogMessage.infoComplete(message));
+        removeNewFile(refactoring);
 
-                return uploadFileURI;
-            } else {
-                log.error(LogMessage.errorNull(message));
+        log.info(LogMessage.infoComplete(message));
 
-                throw new RuntimeException(LogMessage.errorNull(message));
-            }
-        } catch (Exception e) {
-            log.error(LogMessage.errorJoin(message));
+        return uploadFileURI;
+      } else {
+        log.error(LogMessage.errorNull(message));
 
-            throw new RuntimeException(LogMessage.errorJoin(message));
-        }
+        throw new RuntimeException(LogMessage.errorNull(message));
+      }
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
+
+      throw new RuntimeException(LogMessage.errorJoin(message));
     }
+  }
 
-    private String putS3(final File uploadFile, final String fileName) {
-        final String message = "UploadFile putS3";
+  public List<String> uploadCategoryItem(final MultipartFile file) {
+    final String message = "UploadFile uploadCategoryItem";
 
-        log.info("업로드 파일 : {}", uploadFile);
-        try {
-            if (uploadFile != null && fileName != null) {
-                log.info(LogMessage.infoJoin(message));
+    try {
+      log.info(LogMessage.infoJoin(message));
 
-                s3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+      if (file.getSize() != 0) {
+        WordProcessingLoadOptions loadOptions = new WordProcessingLoadOptions();
 
-                log.info(LogMessage.infoComplete(message));
+        File uploadFile = convert(file);
 
-                return s3Client.getUrl(bucket, fileName).toString();
-            } else {
-                log.error(LogMessage.errorNull(message));
+        System.out.println("uploadFile.toString() = " + uploadFile.toString());
 
-                throw new RuntimeException(LogMessage.errorNull(message));
-            }
-        } catch (Exception e) {
-            log.error(LogMessage.errorJoin(message));
+        Converter converter = new Converter(uploadFile.toString(), loadOptions);
 
-            throw new RuntimeException(LogMessage.errorJoin(message));
-        }
+        PdfConvertOptions options = new PdfConvertOptions();
+
+        String code = UUID.randomUUID().toString();
+
+        String pathAndPdf = "C:\\Users\\mbh\\Downloads\\" + code + ".pdf";
+
+        converter.convert(pathAndPdf, options);
+
+        File pdfFile = new File(pathAndPdf);
+
+        Converter converter1 = new Converter(pathAndPdf.toString());
+
+        ConvertOptions convertOptions = new FileType().fromExtension("jpg").getConvertOptions();
+
+        String pathAndJpg = "C:\\Users\\mbh\\Downloads\\" + code + ".jpg";
+
+        converter.convert(pathAndJpg, convertOptions);
+
+        File jpgFile = new File(pathAndJpg);
+
+        List<String> list = new ArrayList<>();
+
+        list.add(s3UploadTest.upload(jpgFile, "myfile"));
+        list.add(s3UploadTest.upload(pdfFile, "myfile"));
+
+        log.info(file.getOriginalFilename());
+        log.info(file.getName());
+
+        removeNewFile(uploadFile);
+
+        return list;
+      } else {
+        log.error(LogMessage.errorNull(message));
+
+        throw new RuntimeException(LogMessage.errorNull(message));
+      }
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
+
+      throw new RuntimeException(LogMessage.errorJoin(message));
     }
+  }
 
-    private File convert(final MultipartFile file) {
-        final String message = "UploadFile convert";
+  private String putS3(final File uploadFile, final String fileName) {
+    final String message = "UploadFile putS3";
 
-        try {
-            log.info(LogMessage.infoJoin(message));
+    log.info("업로드 파일 : {}", uploadFile);
+    try {
+      if (uploadFile != null && fileName != null) {
+        log.info(LogMessage.infoJoin(message));
 
-            if (file.getSize() != 0) {
-                final File convertFile = new File(System.getProperty("user.dir") + "/" + file.getOriginalFilename());
+        s3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
 
-                log.info("컨버트 파일 : " + convertFile);
+        log.info(LogMessage.infoComplete(message));
 
-                if (convertFile.createNewFile()) {
-                    try {
-                        final FileOutputStream fos = new FileOutputStream(convertFile);
+        return s3Client.getUrl(bucket, fileName).toString();
+      } else {
+        log.error(LogMessage.errorNull(message));
 
-                        fos.write(file.getBytes());
+        throw new RuntimeException(LogMessage.errorNull(message));
+      }
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
 
-                        return convertFile;
-                    } catch (Exception e) {
-                        log.warn(LogMessage.errorNull(message));
-
-                        throw new RuntimeException(LogMessage.errorNull(message));
-                    }
-                } else {
-                    log.warn(LogMessage.errorNull(message));
-
-                    throw new RuntimeException(LogMessage.errorNull(message));
-                }
-            } else {
-                log.error(LogMessage.errorNull(message));
-
-                throw new RuntimeException(LogMessage.errorNull(message));
-            }
-        } catch (Exception e) {
-            log.error(LogMessage.errorJoin(message));
-
-            throw new RuntimeException(LogMessage.errorJoin(message));
-        }
+      throw new RuntimeException(LogMessage.errorJoin(message));
     }
+  }
 
-    public void removeNewFile(final File file) {
-        final String message = "UploadFile removeNewFile";
+  private File convert(final MultipartFile file) {
+    final String message = "UploadFile convert";
 
-        try {
-            if (file.delete()) {
-                log.info(LogMessage.infoComplete(message));
-            } else {
-                log.warn(LogMessage.errorExist(message));
-            }
-        } catch (Exception e) {
-            log.error(LogMessage.errorJoin(message));
+    try {
+      log.info(LogMessage.infoJoin(message));
 
-            throw new RuntimeException(LogMessage.errorJoin(message));
+      if (file.getSize() != 0) {
+
+        final File convertFile = new File(System.getProperty("user.dir") + "/" + file.getOriginalFilename());
+
+        log.info("컨버트 파일 : " + convertFile);
+
+        if (convertFile.createNewFile()) {
+          try {
+            final FileOutputStream fos = new FileOutputStream(convertFile);
+
+            fos.write(file.getBytes());
+
+            return convertFile;
+          } catch (Exception e) {
+            log.warn(LogMessage.errorNull(message));
+
+            throw new RuntimeException(LogMessage.errorNull(message));
+          }
+        } else {
+          log.warn(LogMessage.errorNull(message));
+
+          throw new RuntimeException(LogMessage.errorNull(message));
         }
+      } else {
+        log.error(LogMessage.errorNull(message));
+
+        throw new RuntimeException(LogMessage.errorNull(message));
+      }
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
+
+      throw new RuntimeException(LogMessage.errorJoin(message));
     }
+  }
+
+  public void removeNewFile(final File file) {
+    final String message = "UploadFile removeNewFile";
+
+    try {
+      if (file.delete()) {
+        log.info(LogMessage.infoComplete(message));
+      } else {
+        log.warn(LogMessage.errorExist(message));
+      }
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
+
+      throw new RuntimeException(LogMessage.errorJoin(message));
+    }
+  }
+
+  public void deleteFile(final String filePath) {
+    DeleteObjectRequest deleteObjectRequest = new DeleteObjectRequest(bucket, "myfile/" + filePath);
+
+    s3Client.deleteObject(deleteObjectRequest);
+  }
+
+  //  public String fileTypeChangeUpload (final )
 }

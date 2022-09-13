@@ -4,6 +4,7 @@ import com.bitcamp221.didabara.dto.CategoryDTO;
 import com.bitcamp221.didabara.dto.FindMyJoinListDTO;
 import com.bitcamp221.didabara.dto.SubscriberDTO;
 import com.bitcamp221.didabara.model.SubscriberEntity;
+import com.bitcamp221.didabara.presistence.CategoryRepository;
 import com.bitcamp221.didabara.service.CategoryService;
 import com.bitcamp221.didabara.service.SubscriberService;
 import com.bitcamp221.didabara.util.ChangeType;
@@ -25,6 +26,9 @@ public class SubscriberController {
   private SubscriberService subscriberService;
 
   @Autowired
+  private CategoryRepository categoryRepository;
+
+  @Autowired
   private CategoryService categoryService;
 
   //  ---------------------------------------------------
@@ -34,22 +38,40 @@ public class SubscriberController {
 //  필요 데이터 : category(inviteCode)
 //  -----------------------------------------------------
   @PostMapping("/create")
-  public void create(@AuthenticationPrincipal final String userId,
-                     @RequestBody(required = false) final CategoryDTO categoryDTO) {
+  public ResponseEntity<?> create(@AuthenticationPrincipal final String userId,
+                                  @RequestBody final CategoryDTO categoryDTO) {
     final String message = "subscriber create";
 
     try {
       log.info(LogMessage.infoJoin(message));
 
-      final Long categoryId = categoryService.existsCategory(CategoryDTO.toEntity(categoryDTO));
+      final Long categoryId = categoryService.findCategoryId(categoryDTO.getInviteCode());
 
-      if (userId != null && categoryId != null) {
+      if (userId != null && categoryId != null &&
+              !subscriberService.existsByCategoryAndUser(categoryId, Long.valueOf(userId)) &&
+              !categoryService.existsByUser(categoryDTO.getInviteCode(), Long.valueOf(userId))) {
         SubscriberDTO subscriberDTO = new SubscriberDTO();
 
         subscriberDTO.setCategory(categoryId);
         subscriberDTO.setUser(Long.valueOf(userId));
 
         subscriberService.create(SubscriberDTO.toEntity(subscriberDTO));
+
+        List<FindMyJoinListDTO> list = subscriberService.findMyJoinList(Long.valueOf(userId));
+
+        return ResponseEntity.ok().body(list);
+      } else {
+        if (userId == null || categoryDTO.getInviteCode() == null) {
+          log.error(LogMessage.errorNull(message));
+
+          throw new RuntimeException(LogMessage.errorNull(message));
+        } else {
+          log.warn(LogMessage.errorMismatch(message));
+
+          List<FindMyJoinListDTO> list = subscriberService.findMyJoinList(Long.valueOf(userId));
+
+          return ResponseEntity.ok().body(list);
+        }
       }
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
@@ -102,7 +124,7 @@ public class SubscriberController {
     try {
       log.info(LogMessage.errorJoin(message));
 
-      if (!subscriberService.existsByCategoryIdAndUserId(categoryId, Long.valueOf(userId)) && userId != null && categoryId != null) {
+      if (!subscriberService.existsByCategoryAndUser(categoryId, Long.valueOf(userId)) && userId != null && categoryId != null) {
 
         List<SubscriberEntity> subscriberEntities = subscriberService.findList(categoryId);
 
@@ -132,9 +154,9 @@ public class SubscriberController {
       log.info(LogMessage.infoJoin(message));
 
       if (userId != null) {
-        List<FindMyJoinListDTO> list = subscriberService.findMyJoinList(Long.valueOf(userId));
-
         log.info(LogMessage.infoComplete(message));
+
+        List<FindMyJoinListDTO> list = subscriberService.findMyJoinList(Long.valueOf(userId));
 
         return ResponseEntity.ok().body(list);
       } else {
