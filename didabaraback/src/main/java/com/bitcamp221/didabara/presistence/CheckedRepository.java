@@ -1,10 +1,11 @@
 package com.bitcamp221.didabara.presistence;
 
+import com.bitcamp221.didabara.dto.CheckUserDTO;
+import com.bitcamp221.didabara.model.CategoryItemEntity;
 import com.bitcamp221.didabara.model.CheckedEntity;
-import com.bitcamp221.didabara.model.SubscriberEntity;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -12,19 +13,33 @@ import java.util.List;
 @Repository
 public interface CheckedRepository extends JpaRepository<CheckedEntity, Long> {
 
-    void deleteByCategoryItem(@Param("categoryItemId") final Long categoryItemId);
+  void deleteByCategoryItem(@Param("categoryItemId") final Long categoryItemId);
 
-    @Query("SELECT c.user FROM CheckedEntity c WHERE c.categoryItem = :categoryItemId")
-    List<CheckedEntity> checkUserList(@Param("categoryItemId") final Long categoryItemId);
+  String checkUserList = "SELECT new com.bitcamp221.didabara.dto.CheckUserDTO" +
+          "(u.nickname, ui.profileImageUrl)" +
+          "FROM CheckedEntity c " +
+          "INNER JOIN UserEntity u ON c.user = u.id " +
+          "INNER JOIN UserInfoEntity ui ON ui.id = u.id " +
+          "WHERE c.categoryItem = :categoryItemId AND u.id != :user";
 
-    @Query("SELECT s.user FROM SubscriberEntity s LEFT JOIN CheckedEntity c WHERE s.category = :categoryItemId AND c.id IS NULL")
-    List<SubscriberEntity> unCheckUserList(@Param("categoryItemId") final Long categoryItemId);
+  @Query(value = checkUserList)
+  List<CheckUserDTO> findCheckUserList(@Param("categoryItemId") final Long categoryItemId, @Param("user") final Long user);
 
-    List<CheckedEntity> findAllByUser(@Param("user") final Long user);
 
-    @Query("SELECT c FROM CheckedEntity c WHERE c.id = :userId")
-    List<CheckedEntity> findMyUnCheckList(@Param("userId") final Long userId);
+  String unCheckUserList = "SELECT new com.bitcamp221.didabara.dto.CheckUserDTO(u.nickname, ui.profileImageUrl)" +
+          "FROM UserEntity u LEFT OUTER JOIN CheckedEntity ch ON u.id = ch.user INNER JOIN UserInfoEntity ui ON u.id = ui.id " +
+          "WHERE u.id != :user AND ch.categoryItem = :categoryItemId";
 
-    @Query("SELECT c FROM CheckedEntity c WHERE c.user = : userId")
-    boolean existsByUser(@Param("user") final Long user);
+  @Query(value = unCheckUserList)
+  List<CheckUserDTO> findUnCheckUserList(@Param("categoryItemId") final Long categoryItemId, @Param("user") final Long user);
+
+  @Query("SELECT ci.category, ci.title, ci.preview FROM CategoryItemEntity ci LEFT OUTER JOIN CheckedEntity ch " +
+          "ON ci.id = ch.categoryItem WHERE ch.user = :user")
+  List<CategoryItemEntity> findMyCheckList(@Param("user") final Long user);
+
+  @Query("SELECT ci.category, ci.title, ci.preview FROM SubscriberEntity s INNER JOIN CategoryItemEntity ci ON s.category = ci.id " +
+          "LEFT OUTER JOIN CheckedEntity ch ON ch.id IS NULL WHERE s.user = :userId")
+  List<CategoryItemEntity> findMyUnCheckList(@Param("userId") final Long userId);
+
+  boolean existsByUser(@Param("user") final Long user);
 }

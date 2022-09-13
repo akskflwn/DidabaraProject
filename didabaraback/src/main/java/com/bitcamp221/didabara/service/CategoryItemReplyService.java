@@ -1,5 +1,7 @@
 package com.bitcamp221.didabara.service;
 
+import com.bitcamp221.didabara.dto.ItemReplyAndUserDataDTO;
+import com.bitcamp221.didabara.mapper.CategoryItemReplyMapper;
 import com.bitcamp221.didabara.model.CategoryItemReplyEntity;
 import com.bitcamp221.didabara.presistence.CategoryItemReplyRepository;
 import com.bitcamp221.didabara.util.LogMessage;
@@ -18,6 +20,9 @@ public class CategoryItemReplyService {
 
   @Autowired
   private CategoryItemReplyRepository categoryItemReplyRepository;
+
+  @Autowired
+  private CategoryItemReplyMapper categoryItemReplyMapper;
 
   //  ---------------------------------------------------
 //  작성자 : 문병훈
@@ -50,7 +55,7 @@ public class CategoryItemReplyService {
 //  메소드 정보 : list 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<CategoryItemReplyEntity> findList(final Long itemId) {
+  public List<ItemReplyAndUserDataDTO> findList(final Long itemId) {
     final String message = "itemReplyService findList";
 
     try {
@@ -60,7 +65,7 @@ public class CategoryItemReplyService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryItemReplyRepository.findAllByCategoryItem(itemId);
+      return categoryItemReplyMapper.findAllReplyData(itemId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -96,7 +101,7 @@ public class CategoryItemReplyService {
 //  메소드 정보 : Reply 생성
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<CategoryItemReplyEntity> create(final CategoryItemReplyEntity itemReplyEntity) {
+  public List<ItemReplyAndUserDataDTO> create(final CategoryItemReplyEntity itemReplyEntity) {
     final String message = "itemReplyService create";
 
     try {
@@ -108,7 +113,7 @@ public class CategoryItemReplyService {
 
       categoryItemReplyRepository.save(itemReplyEntity);
 
-      return categoryItemReplyRepository.findAllByCategoryItem(itemReplyEntity.getCategoryItem());
+      return categoryItemReplyMapper.findAllReplyData(itemReplyEntity.getCategoryItem());
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -121,7 +126,7 @@ public class CategoryItemReplyService {
 //  메소드 정보 : Reply 삭제
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<CategoryItemReplyEntity> deleteById(final Long itemReplyId) {
+  public List<ItemReplyAndUserDataDTO> deleteById(final Long itemReplyId) {
     final String message = "itemReplyService deleteById";
 
     try {
@@ -133,7 +138,7 @@ public class CategoryItemReplyService {
 
       categoryItemReplyRepository.deleteById(itemReplyId);
 
-      return categoryItemReplyRepository.findAllByCategoryItem(categoryItemId);
+      return categoryItemReplyMapper.findAllReplyData(categoryItemId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -146,7 +151,7 @@ public class CategoryItemReplyService {
 //  메소드 정보 : Reply 수정
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<CategoryItemReplyEntity> update(final CategoryItemReplyEntity itemReplyEntity) {
+  public List<ItemReplyAndUserDataDTO> update(final CategoryItemReplyEntity itemReplyEntity) {
     final String message = "itemReplyService update";
 
     try {
@@ -164,7 +169,7 @@ public class CategoryItemReplyService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryItemReplyRepository.findAllByCategoryItem(itemReplyEntity.getCategoryItem());
+      return categoryItemReplyMapper.findAllReplyData(itemReplyEntity.getCategoryItem());
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 

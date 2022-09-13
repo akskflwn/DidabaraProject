@@ -120,12 +120,18 @@ public class CategoryController {
     try {
       log.info(LogMessage.infoJoin(message));
 
-      if (userId != null && categoryDTO != null && file.getSize() != 0) {
+      if (userId != null && categoryDTO != null) {
         final String code = UUID.randomUUID().toString().substring(0, 8);
 
-        final String filePath = uploadFile.uploadCategoryImage(file);
+        if (file != null) {
+          final String filePath = uploadFile.uploadCategoryImage(file);
 
-        categoryDTO.setProfileImageUrl(filePath);
+          categoryDTO.setProfileImageUrl(filePath);
+        } else {
+
+          categoryDTO.setProfileImageUrl(categoryDTO.getProfileImageUrl());
+        }
+
         categoryDTO.setInviteCode(code);
         categoryDTO.setHost(Long.valueOf(userId));
 
@@ -180,7 +186,7 @@ public class CategoryController {
 
         log.info(LogMessage.infoComplete(message));
 
-        return ResponseEntity.ok().body(entity);
+        return ChangeType.toCategoryDTO(entity);
       } else {
         if (userId == null) {
           log.error(LogMessage.errorNull(message));
@@ -215,6 +221,8 @@ public class CategoryController {
 
       if (userId != null && Long.valueOf(userId) == categoryService.findHost(categoryId)) {
         final List<CategoryEntity> categoryEntities = categoryService.deleteById(Long.valueOf(userId), categoryId);
+
+//        uploadFile.deleteFile(categoryService.findUrl(categoryId));
 
         log.info(LogMessage.infoComplete(message));
 

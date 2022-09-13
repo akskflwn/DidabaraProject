@@ -1,7 +1,8 @@
 package com.bitcamp221.didabara.service;
 
+import com.bitcamp221.didabara.dto.CheckUserDTO;
+import com.bitcamp221.didabara.model.CategoryItemEntity;
 import com.bitcamp221.didabara.model.CheckedEntity;
-import com.bitcamp221.didabara.model.SubscriberEntity;
 import com.bitcamp221.didabara.presistence.CheckedRepository;
 import com.bitcamp221.didabara.util.LogMessage;
 import lombok.extern.slf4j.Slf4j;
@@ -50,7 +51,7 @@ public class CheckedService {
 //  메소드 정보 : Check 생성
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public void create(final CheckedEntity checkedEntity) {
+  public List<CheckUserDTO> create(final CheckedEntity checkedEntity, final Long userId) {
     final String message = "checkedService create";
 
     try {
@@ -61,6 +62,8 @@ public class CheckedService {
       checkedRepository.save(checkedEntity);
 
       log.info(LogMessage.infoComplete(message));
+
+      return checkedRepository.findCheckUserList(checkedEntity.getCategoryItem(), userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -96,8 +99,8 @@ public class CheckedService {
 //  메소드 정보 : Check 리스트 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<CheckedEntity> findCheckUserList(final Long categoryItemId) {
-    final String message = "checkedService checkUserList";
+  public List<CheckUserDTO> findCheckUserList(final Long categoryItemId, final Long userId) {
+    final String message = "checkedService findCheckUserList";
 
     try {
       log.info(LogMessage.infoJoin(message));
@@ -106,7 +109,7 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.checkUserList(categoryItemId);
+      return checkedRepository.findCheckUserList(categoryItemId, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -119,17 +122,18 @@ public class CheckedService {
 //  메소드 정보 : unCheck 리스트 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<SubscriberEntity> findUnCheckUserList(final Long categoryItemId) {
+  public List<CheckUserDTO> findUnCheckUserList(final Long categoryItemId, final Long userId) {
     final String message = "checkedService unCheckUserList";
 
     try {
       log.info(LogMessage.infoJoin(message));
 
       validateId(categoryItemId, message);
+      validateId(userId, message);
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.unCheckUserList(categoryItemId);
+      return checkedRepository.findUnCheckUserList(categoryItemId, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -142,7 +146,7 @@ public class CheckedService {
 //  메소드 정보 : 나의 Check 리스트 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<CheckedEntity> findMyCheckList(final Long userId) {
+  public List<CategoryItemEntity> findMyCheckList(final Long userId) {
     final String message = "checkedService MyCheckList";
 
     try {
@@ -152,7 +156,7 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.findAllByUser(userId);
+      return checkedRepository.findMyCheckList(userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -165,7 +169,7 @@ public class CheckedService {
 //  메소드 정보 : 나의 unCheck 리스트 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<CheckedEntity> findMyUnCheckList(final Long userId) {
+  public List<CategoryItemEntity> findMyUnCheckList(final Long userId) {
     final String message = "checkedService findMyUnCheckList";
 
     try {

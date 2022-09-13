@@ -14,35 +14,35 @@ import java.time.LocalDate;
 @NoArgsConstructor
 public class CategoryItemReplyDTO {
 
-    private Long id;
-    private Long categoryItem;
-    private Long writer;
-    private String content;
-    private LocalDate createdDate;
-    private LocalDate modifiedDate;
+  private Long id;
+  private Long categoryItem;
+  private Long writer;
+  private String content;
+  private LocalDate createdDate;
+  private LocalDate modifiedDate;
 
-    public CategoryItemReplyDTO(final CategoryItemReplyEntity itemReplyEntity) {
-        this.id = itemReplyEntity.getId();
-        this.categoryItem = itemReplyEntity.getCategoryItem();
-        this.writer = itemReplyEntity.getWriter();
-        this.content = itemReplyEntity.getContent();
-        this.createdDate = itemReplyEntity.getCreatedDate();
-        this.modifiedDate = itemReplyEntity.getModifiedDate();
-    }
+  public CategoryItemReplyDTO(final CategoryItemReplyEntity itemReplyEntity) {
+    this.id = itemReplyEntity.getId();
+    this.categoryItem = itemReplyEntity.getCategoryItem();
+    this.writer = itemReplyEntity.getWriter();
+    this.content = itemReplyEntity.getContent();
+    this.createdDate = itemReplyEntity.getCreatedDate();
+    this.modifiedDate = itemReplyEntity.getModifiedDate();
+  }
 
-    public CategoryItemReplyDTO(final Long writer, final Long categoryItem, final String content) {
-        this.writer = writer;
-        this.categoryItem = categoryItem;
-        this.content = content;
-    }
+  public CategoryItemReplyDTO(final Long writer, final Long categoryItem, final String content) {
+    this.writer = writer;
+    this.categoryItem = categoryItem;
+    this.content = content;
+  }
 
-    public static CategoryItemReplyEntity toEntity(final CategoryItemReplyDTO replyDTO) {
+  public static CategoryItemReplyEntity toEntity(final CategoryItemReplyDTO replyDTO) {
 
-        return CategoryItemReplyEntity.builder()
-                .id(replyDTO.getId())
-                .categoryItem(replyDTO.getCategoryItem())
-                .writer(replyDTO.getWriter())
-                .content(replyDTO.getContent())
-                .build();
-    }
+    return CategoryItemReplyEntity.builder()
+            .id(replyDTO.getId())
+            .categoryItem(replyDTO.getCategoryItem())
+            .writer(replyDTO.getWriter())
+            .content(replyDTO.getContent())
+            .build();
+  }
 }

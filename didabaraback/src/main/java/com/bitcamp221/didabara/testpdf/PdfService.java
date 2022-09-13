@@ -10,18 +10,18 @@ import java.util.Optional;
 @Service
 public class PdfService {
 
-    @Autowired
-    private PdfRepository pdfRepository;
+  @Autowired
+  private PdfRepository pdfRepository;
 
-    public List<UserInfoEntity> findAll() {
-        List<UserInfoEntity> userInfoEntityList = (List<UserInfoEntity>) pdfRepository.findAll();
+  public List<UserInfoEntity> findAll() {
+    List<UserInfoEntity> userInfoEntityList = (List<UserInfoEntity>) pdfRepository.findAll();
 
-        return userInfoEntityList;
-    }
+    return userInfoEntityList;
+  }
 
-    public UserInfoEntity findOne() {
-        Optional<UserInfoEntity> byId = pdfRepository.findById(1L);
+  public UserInfoEntity findOne() {
+    Optional<UserInfoEntity> byId = pdfRepository.findById(1L);
 
-        return byId.get();
-    }
+    return byId.get();
+  }
 }

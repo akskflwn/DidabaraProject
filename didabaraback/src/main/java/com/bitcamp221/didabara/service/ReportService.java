@@ -150,4 +150,23 @@ public class ReportService {
       throw new RuntimeException(LogMessage.errorJoin(message));
     }
   }
+
+  public boolean existsByCategoryAndWriter(final Long category, final Long user) {
+    final String message = "reportService existByCategoryAndWriter";
+
+    try {
+      log.info(LogMessage.infoJoin(message));
+
+      validateId(category, message);
+      validateId(user, message);
+
+      log.info(LogMessage.infoComplete(message));
+
+      return reportRepository.existsByCategoryAndWriter(category, user);
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
+
+      throw new RuntimeException(LogMessage.errorJoin(message));
+    }
+  }
 }
