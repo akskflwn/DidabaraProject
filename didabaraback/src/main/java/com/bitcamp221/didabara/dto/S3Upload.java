@@ -72,7 +72,7 @@ public class S3Upload {
   public String upload(File uploadFile, String dirName, String id) {
     String fileName = dirName + "/" + uploadFile.getName();
     String uploadImageURI = putS3(uploadFile, fileName);
-    String dBPathName = uploadImageURI.substring(0, 62);
+    String dBPathName = uploadImageURI.substring(0, 56);
     String extensionName = uploadImageURI.substring(uploadImageURI.lastIndexOf("/") + 1);
     String dbFilename = uploadImageURI.substring(uploadImageURI.lastIndexOf("/") + 1);
 

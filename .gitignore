@@ -8,6 +8,7 @@
 /dataSources.local.xml
 /.idea/
 /didabaraback/src/main/resources/application.properties
+/didabarafront/
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,react,node

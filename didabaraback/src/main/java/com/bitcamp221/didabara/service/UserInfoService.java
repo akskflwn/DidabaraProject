@@ -42,11 +42,13 @@ public class UserInfoService {
 
     if (uid.getPassword() == null) {
       uid.setPassword(byDTO.getPassword());
+    } else {
+      String encode = passwordEncoder.encode(uid.getPassword());
+
+      uid.setPassword(encode);
     }
 
-    String encode = passwordEncoder.encode(uid.getPassword());
 
-    uid.setPassword(encode);
 
     return userInfoMapper.updateUserInfoDTO(id, uid);
   }

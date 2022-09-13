@@ -15,6 +15,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
@@ -191,9 +192,21 @@ public class UserController {
 
   //삭제
   @DeleteMapping("/user")
-  public void deletUser(@RequestBody UserDTO userDTO) {
-    userService.deleteUser(userDTO.getId());
-    log.info("삭제완료");
+  public ResponseEntity<?> deletUser(@RequestBody UserDTO userDTO, @AuthenticationPrincipal String userId) {
+    System.out.println("userDTO = " + userDTO.toString());
+    System.out.println("userId = " + userId);
+
+    boolean checkPwd = userService.checkPwd(userDTO, userId);
+
+    if (checkPwd == false) {
+      return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다");
+    } else {
+      userService.deleteUser(Long.valueOf(userId));
+      log.info("삭제완료");
+      return ResponseEntity.ok().body("삭제 되었습니다.");
+    }
+
+
   }
 
 
