@@ -18,15 +18,11 @@ import java.util.UUID;
 @RequiredArgsConstructor
 public class SmsService {
 
-  private final UserRepository userRepository;
-
-  private final UserMapper userMapper;
-
-  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
-
   final String api_key = "";
-
   final String api_secret = "";
+  private final UserRepository userRepository;
+  private final UserMapper userMapper;
+  private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
   public String[] certifiedPhoneNumber(String phoneNum) {
     Message coolsms = new Message(api_key, api_secret);
@@ -97,6 +93,5 @@ public class SmsService {
     }
   }
 }
-
 
 
