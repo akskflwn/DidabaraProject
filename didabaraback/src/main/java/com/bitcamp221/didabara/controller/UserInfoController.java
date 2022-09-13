@@ -154,6 +154,7 @@ public class UserInfoController {
 
     Long userid = Long.valueOf(id);
 
+
     UserInfoEntity findUser = userInfoRepository.findById(userid).orElseThrow(() ->
             new IllegalArgumentException("해당 아이디가 없습니다."));
 
@@ -230,9 +231,25 @@ public class UserInfoController {
 
   }
 
+
   @PostMapping
   private ResponseEntity<?> uploadText(@RequestParam("images") MultipartFile files,
                                        @AuthenticationPrincipal String id) throws IOException {
     return ResponseEntity.ok().body(s3Upload.upload(files, "myfile", id));
   }
+
+  @PatchMapping("/svg")
+  private ResponseEntity<?> uploadSvg(@RequestParam("svgname") String svgName, @AuthenticationPrincipal String id) throws IOException {
+    System.out.println("svgName = " + svgName);
+    UserInfoEntity byId = userInfoRepository.findById(Long.valueOf(id))
+            .orElseThrow(() -> new RuntimeException("없는 사용자"));
+    byId.setFilename(svgName);
+
+    UserInfoEntity updateUser = userInfoRepository.save(byId);
+
+
+    return ResponseEntity.ok().body(updateUser);
+  }
+
+
 }
