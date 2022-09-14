@@ -136,9 +136,9 @@ public class CheckedController {
 //  마지막 수정자 : 문병훈
 //  필요 데이터 : categoryItem(id)
 //  -----------------------------------------------------
-  @GetMapping("/un-checkuserlist")
+  @GetMapping("/list/item/{categoryItemId}/un-checkuser")
   public ResponseEntity<?> unCheckUserList(@AuthenticationPrincipal final String userId,
-                                           @RequestParam(value = "categoryItemId", required = false) final Long categoryItemId) {
+                                           @PathVariable(value = "categoryItemId", required = false) final Long categoryItemId) {
     final String message = "checked unCheckUserList";
 
     try {
@@ -174,8 +174,6 @@ public class CheckedController {
 
     try {
       log.info(LogMessage.infoJoin(message));
-
-      //카테고리 아이디, 카테 아이템 타이틀, 카테 아이템 썸네일
 
       if (userId != null) {
         List<CategoryItemEntity> list = checkedService.findMyCheckList(Long.valueOf(userId));

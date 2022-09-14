@@ -101,17 +101,14 @@ public class CategoryItemReplyController {
   @PostMapping("/create/page/{categoryItemId}")
   public ResponseEntity<?> create(@AuthenticationPrincipal final String userId,
                                   @PathVariable(value = "categoryItemId", required = false) final Long categoryItemId,
-                                  @RequestBody(required = false) final String content) {
+                                  @RequestBody(required = false) final CategoryItemReplyDTO categoryItemReplyDTO) {
     final String message = "itemReply create";
 
     try {
       log.info(LogMessage.infoJoin(message));
 
-      final Long categoryId = categoryItemService.findCategoryId(categoryItemId);
-
-      if (userId != null && content != null && categoryItemId != null &&
-              subscriberService.existsByCategoryAndUser(categoryId, Long.valueOf(userId))) {
-        final CategoryItemReplyDTO itemReplyDTO = new CategoryItemReplyDTO(Long.valueOf(userId), categoryItemId, content);
+      if (userId != null && categoryItemReplyDTO.getContent() != null && categoryItemId != null) {
+        final CategoryItemReplyDTO itemReplyDTO = new CategoryItemReplyDTO(Long.valueOf(userId), categoryItemId, categoryItemReplyDTO.getContent());
 
         final List<ItemReplyAndUserDataDTO> list = itemReplyService.create(CategoryItemReplyDTO.toEntity(itemReplyDTO));
 

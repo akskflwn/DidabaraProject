@@ -1,5 +1,6 @@
 package com.bitcamp221.didabara.presistence;
 
+import com.bitcamp221.didabara.dto.CheckUserDTO;
 import com.bitcamp221.didabara.dto.FindMyJoinListDTO;
 import com.bitcamp221.didabara.model.SubscriberEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -18,7 +19,11 @@ public interface SubscriberRepository extends JpaRepository<SubscriberEntity, Lo
 
   void deleteByCategoryAndUser(@Param("category") final Long category, @Param("user") final Long user);
 
-  List<SubscriberEntity> findAllByCategory(@Param("category") final Long category);
+  @Query("SELECT u.id, ui.profileImageUrl FROM UserEntity u " +
+          "INNER JOIN UserInfoEntity ui ON u.id = ui.id " +
+          "INNER JOIN CheckedEntity ch ON ch.user = u.id " +
+          "WHERE ch.categoryItem = :category")
+  List<CheckUserDTO> findList(@Param("category") final Long category);
 
   boolean existsByCategoryAndUser(@Param("category") final Long category, @Param("user") final Long user);
 

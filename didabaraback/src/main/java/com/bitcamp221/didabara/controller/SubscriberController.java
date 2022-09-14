@@ -1,9 +1,9 @@
 package com.bitcamp221.didabara.controller;
 
 import com.bitcamp221.didabara.dto.CategoryDTO;
+import com.bitcamp221.didabara.dto.CheckUserDTO;
 import com.bitcamp221.didabara.dto.FindMyJoinListDTO;
 import com.bitcamp221.didabara.dto.SubscriberDTO;
-import com.bitcamp221.didabara.model.SubscriberEntity;
 import com.bitcamp221.didabara.presistence.CategoryRepository;
 import com.bitcamp221.didabara.service.CategoryService;
 import com.bitcamp221.didabara.service.SubscriberService;
@@ -124,11 +124,11 @@ public class SubscriberController {
     try {
       log.info(LogMessage.errorJoin(message));
 
-      if (!subscriberService.existsByCategoryAndUser(categoryId, Long.valueOf(userId)) && userId != null && categoryId != null) {
+      if (userId != null && categoryId != null) {
 
-        List<SubscriberEntity> subscriberEntities = subscriberService.findList(categoryId);
+        List<CheckUserDTO> list = subscriberService.findList(categoryId);
 
-        return ChangeType.toSubscriberDTO(subscriberEntities);
+        return ResponseEntity.ok().body(list);
       } else {
         log.error(LogMessage.errorNull(message));
 

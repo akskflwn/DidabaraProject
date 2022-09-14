@@ -1,5 +1,6 @@
 package com.bitcamp221.didabara.service;
 
+import com.bitcamp221.didabara.dto.CheckUserDTO;
 import com.bitcamp221.didabara.dto.FindMyJoinListDTO;
 import com.bitcamp221.didabara.model.SubscriberEntity;
 import com.bitcamp221.didabara.presistence.SubscriberRepository;
@@ -98,7 +99,7 @@ public class SubscriberService {
 //  메소드 정보 : Subscriber 리스트 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<SubscriberEntity> findList(final Long categoryId) {
+  public List<CheckUserDTO> findList(final Long categoryId) {
     final String message = "subscriberService findList";
 
     try {
@@ -106,7 +107,7 @@ public class SubscriberService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return subscriberRepository.findAllByCategory(categoryId);
+      return subscriberRepository.findList(categoryId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 

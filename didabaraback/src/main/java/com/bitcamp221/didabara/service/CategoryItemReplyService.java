@@ -109,6 +109,7 @@ public class CategoryItemReplyService {
 
       validate(itemReplyEntity, message);
 
+
       log.info(LogMessage.infoComplete(message));
 
       categoryItemReplyRepository.save(itemReplyEntity);

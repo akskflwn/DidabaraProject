@@ -1,6 +1,7 @@
 package com.bitcamp221.didabara.service;
 
 import com.bitcamp221.didabara.dto.CheckUserDTO;
+import com.bitcamp221.didabara.mapper.CategoryItemReplyMapper;
 import com.bitcamp221.didabara.model.CategoryItemEntity;
 import com.bitcamp221.didabara.model.CheckedEntity;
 import com.bitcamp221.didabara.presistence.CheckedRepository;
@@ -19,6 +20,9 @@ public class CheckedService {
 
   @Autowired
   private CheckedRepository checkedRepository;
+
+  @Autowired
+  private CategoryItemReplyMapper categoryItemReplyMapper;
 
   //  ---------------------------------------------------
 //  작성자 : 문병훈
@@ -63,7 +67,7 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.findCheckUserList(checkedEntity.getCategoryItem(), userId);
+      return categoryItemReplyMapper.findCheckUserList(checkedEntity.getCategoryItem(), userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -109,7 +113,7 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.findCheckUserList(categoryItemId, userId);
+      return categoryItemReplyMapper.findCheckUserList(categoryItemId, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -133,7 +137,7 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.findUnCheckUserList(categoryItemId, userId);
+      return categoryItemReplyMapper.findUnCheckUserList(categoryItemId, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
