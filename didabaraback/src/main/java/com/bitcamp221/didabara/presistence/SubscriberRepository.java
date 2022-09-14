@@ -19,10 +19,10 @@ public interface SubscriberRepository extends JpaRepository<SubscriberEntity, Lo
 
   void deleteByCategoryAndUser(@Param("category") final Long category, @Param("user") final Long user);
 
-  @Query("SELECT u.id, ui.profileImageUrl FROM UserEntity u " +
+  @Query("SELECT u.nickname, ui.profileImageUrl FROM UserEntity u " +
           "INNER JOIN UserInfoEntity ui ON u.id = ui.id " +
-          "INNER JOIN CheckedEntity ch ON ch.user = u.id " +
-          "WHERE ch.categoryItem = :category")
+          "INNER JOIN SubscriberEntity s ON s.user = u.id " +
+          "WHERE s.category = :category")
   List<CheckUserDTO> findList(@Param("category") final Long category);
 
   boolean existsByCategoryAndUser(@Param("category") final Long category, @Param("user") final Long user);

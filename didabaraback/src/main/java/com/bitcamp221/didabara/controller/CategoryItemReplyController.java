@@ -144,7 +144,7 @@ public class CategoryItemReplyController {
 
       final Long writer = itemReplyService.findWriter(itemReplyDTO.getId());
 
-      final Long category = itemReplyService.findCategoryId(itemReplyDTO.getId());
+      final Long category = itemReplyService.findCategoryItemId(itemReplyDTO.getId());
 
       if (userId != null && Long.valueOf(userId) == writer && categoryItemId == category) {
         itemReplyDTO.setCategoryItem(categoryItemId);
@@ -190,7 +190,12 @@ public class CategoryItemReplyController {
       log.info("데이터 " + itemReplyService.findWriter(itemReplyId));
 
       if (userId != null && Long.valueOf(userId) == itemReplyService.findWriter(itemReplyId)) {
-        final List<ItemReplyAndUserDataDTO> list = itemReplyService.deleteById(itemReplyId);
+
+        final Long categoryItemId = itemReplyService.findCategoryItemId(itemReplyId);
+
+        itemReplyService.deleteById(itemReplyId);
+
+        final List<ItemReplyAndUserDataDTO> list = itemReplyService.findList(categoryItemId);
 
         log.info(LogMessage.infoComplete(message));
 

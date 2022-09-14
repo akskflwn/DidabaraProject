@@ -41,5 +41,8 @@ public interface CheckedRepository extends JpaRepository<CheckedEntity, Long> {
           "LEFT OUTER JOIN CheckedEntity ch ON ch.id IS NULL WHERE s.user = :userId")
   List<CategoryItemEntity> findMyUnCheckList(@Param("userId") final Long userId);
 
-  boolean existsByUser(@Param("user") final Long user);
+  boolean existsByUserAndCategoryItem(@Param("user") final Long user, @Param("categoryItem") final Long categoryItem);
+
+  @Query("SELECT ch.id FROM CheckedEntity ch WHERE ch.categoryItem = :categoryItem AND ch.user = :user")
+  Long findCheck(@Param("categoryItem") final Long categoryItem, @Param("user") final Long user);
 }

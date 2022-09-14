@@ -40,13 +40,19 @@ public class CheckedController {
     try {
       log.info(LogMessage.infoJoin(message));
 
-      if (!checkedService.existsByUserId(Long.valueOf(userId)) && userId != null && categoryItemId != null &&
-              categoryService.findCategoryItemHost(categoryItemId) != Long.valueOf(userId)) {
+      final Long host = categoryService.findCategoryItemHost(categoryItemId);
+
+      final Long check = checkedService.findCheck(categoryItemId, Long.valueOf(userId));
+
+      if (check == null && userId != null && categoryItemId != null && host != Long.valueOf(userId)) {
+
         CheckedDTO checkedDTO = new CheckedDTO(Long.valueOf(userId), categoryItemId);
 
-        log.info(LogMessage.infoComplete(message));
+        checkedService.create(CheckedDTO.toEntity(checkedDTO));
 
-        List<CheckUserDTO> userDTOS = checkedService.create(CheckedDTO.toEntity(checkedDTO), Long.valueOf(userId));
+        List<CheckUserDTO> userDTOS = checkedService.findCheckUserList(categoryItemId, Long.valueOf(userId));
+
+        log.info(LogMessage.infoComplete(message));
 
         return ResponseEntity.ok().body(userDTOS);
       } else {

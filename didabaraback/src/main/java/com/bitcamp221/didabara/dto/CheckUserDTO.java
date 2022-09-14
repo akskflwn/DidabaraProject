@@ -5,6 +5,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDate;
+
 @Builder
 @Data
 @AllArgsConstructor
@@ -13,4 +15,5 @@ public class CheckUserDTO {
 
   private String nickname;
   private String profileImageUrl;
+  private LocalDate createdDate;
 }

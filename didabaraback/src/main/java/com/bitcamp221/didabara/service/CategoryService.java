@@ -18,10 +18,10 @@ public class CategoryService {
   private CategoryRepository categoryRepository;
 
   //  -----------------------------------------------------
-//  작성자 : 문병훈
-//  메소드 정보 : 받아온 데이터에 대해서 사전 검사
-//  마지막 수정자 : 문병훈
-//  -----------------------------------------------------
+  //  작성자 : 문병훈
+  //  메소드 정보 : 받아온 데이터에 대해서 사전 검사
+  //  마지막 수정자 : 문병훈
+  //  -----------------------------------------------------
   private void validate(final CategoryEntity categoryEntity, final String message) {
     if (categoryEntity == null) {
       log.error(LogMessage.errorNull(message));
@@ -31,10 +31,10 @@ public class CategoryService {
   }
 
   //  ---------------------------------------------------
-//  작성자 : 문병훈
-//  메소드 정보 : 받아온 데이터에 대해서 사전 검사
-//  마지막 수정자 : 문병훈
-//  -----------------------------------------------------
+  //  작성자 : 문병훈
+  //  메소드 정보 : 받아온 데이터에 대해서 사전 검사
+  //  마지막 수정자 : 문병훈
+  //  -----------------------------------------------------
   private void validateId(final Long id, final String message) {
     if (id == null) {
       log.error(LogMessage.errorNull(message));
@@ -52,10 +52,10 @@ public class CategoryService {
   }
 
   //  ---------------------------------------------------
-//  작성자 : 문병훈
-//  메소드 정보 : Category 생성
-//  마지막 수정자 : 문병훈
-//  -----------------------------------------------------
+  //  작성자 : 문병훈
+  //  메소드 정보 : Category 생성
+  //  마지막 수정자 : 문병훈
+  //  -----------------------------------------------------
   public Optional<CategoryEntity> create(final CategoryEntity categoryEntity) {
     final String message = "categoryService create";
 
@@ -77,10 +77,10 @@ public class CategoryService {
   }
 
   //  ---------------------------------------------------
-//  작성자 : 문병훈
-//  메소드 정보 : Category 정보 출력
-//  마지막 수정자 : 문병훈
-//  -----------------------------------------------------
+  //  작성자 : 문병훈
+  //  메소드 정보 : Category 정보 출력
+  //  마지막 수정자 : 문병훈
+  //  -----------------------------------------------------
   public Optional<CategoryEntity> findCategory(final Long categoryId) {
     final String message = "categoryService findByCategory";
 
@@ -98,10 +98,10 @@ public class CategoryService {
   }
 
   //  ---------------------------------------------------
-//  작성자 : 문병훈
-//  메소드 정보 : user본인이 생성한 Category 전체 출력
-//  마지막 수정자 : 문병훈
-//  -----------------------------------------------------
+  //  작성자 : 문병훈
+  //  메소드 정보 : user본인이 생성한 Category 전체 출력
+  //  마지막 수정자 : 문병훈
+  //  -----------------------------------------------------
   public List<CategoryEntity> findMyList(final Long userId) {
     final String message = "categoryService myList";
 
@@ -121,10 +121,10 @@ public class CategoryService {
   }
 
   //  ---------------------------------------------------
-//  작성자 : 문병훈
-//  메소드 정보 : Category 수정
-//  마지막 수정자 : 문병훈
-//  -----------------------------------------------------
+  //  작성자 : 문병훈
+  //  메소드 정보 : Category 수정
+  //  마지막 수정자 : 문병훈
+  //  -----------------------------------------------------
   public Optional<CategoryEntity> update(final CategoryEntity categoryEntity) {
     final String message = "categoryService update";
 
@@ -153,10 +153,10 @@ public class CategoryService {
   }
 
   //  ---------------------------------------------------
-//  작성자 : 문병훈
-//  메소드 정보 : Category 삭제
-//  마지막 수정자 : 문병훈
-//  -----------------------------------------------------
+  //  작성자 : 문병훈
+  //  메소드 정보 : Category 삭제
+  //  마지막 수정자 : 문병훈
+  //  -----------------------------------------------------
   public List<CategoryEntity> deleteById(final Long host, final Long categoryId) {
     final String message = "categoryService deleteById";
 
@@ -177,39 +177,39 @@ public class CategoryService {
       throw new RuntimeException(LogMessage.errorJoin(message));
     }
   }
-//
-//  //  ---------------------------------------------------
-////  작성자 : 문병훈
-////  메소드 정보 : user가 만든 카테고리에 대한 존재 여부 확인
-////  마지막 수정자 : 문병훈
-////  -----------------------------------------------------
-//  public boolean isExistCategory(final Long categoryId) {
-//    final String message = "categoryService isExistCategory";
-//
-//    try {
-//      log.info(LogMessage.infoJoin(message));
-//
-//      validateId(categoryId, message);
-//
-//      log.info(LogMessage.infoComplete(message));
-//
-//      return categoryRepository.findById(categoryId).isEmpty();
-//    } catch (Exception e) {
-//      log.error(LogMessage.errorJoin(message));
-//
-//      throw new RuntimeException(LogMessage.errorJoin(message));
-//    }
-//  }
+  //
+  //  //  ---------------------------------------------------
+  ////  작성자 : 문병훈
+  ////  메소드 정보 : user가 만든 카테고리에 대한 존재 여부 확인
+  ////  마지막 수정자 : 문병훈
+  ////  -----------------------------------------------------
+  //  public boolean isExistCategory(final Long categoryId) {
+  //    final String message = "categoryService isExistCategory";
+  //
+  //    try {
+  //      log.info(LogMessage.infoJoin(message));
+  //
+  //      validateId(categoryId, message);
+  //
+  //      log.info(LogMessage.infoComplete(message));
+  //
+  //      return categoryRepository.findById(categoryId).isEmpty();
+  //    } catch (Exception e) {
+  //      log.error(LogMessage.errorJoin(message));
+  //
+  //      throw new RuntimeException(LogMessage.errorJoin(message));
+  //    }
+  //  }
 
   //  ---------------------------------------------------
-//  작성자 : 문병훈
-//  메소드 정보 : 특정 category에 대해 호스트 아이디 찾아냄
-//  마지막 수정자 : 문병훈
-//  -----------------------------------------------------
+  //  작성자 : 문병훈
+  //  메소드 정보 : 특정 category에 대해 호스트 아이디 찾아냄
+  //  마지막 수정자 : 문병훈
+  //  -----------------------------------------------------
   public Long findHost(final Long categoryId) {
     final String message = "categoryService findHost";
 
-//    try {
+    //    try {
     log.info(LogMessage.infoJoin(message));
 
     validateId(categoryId, message);
@@ -217,18 +217,18 @@ public class CategoryService {
     log.info(LogMessage.infoComplete(message));
 
     return categoryRepository.findHost(categoryId);
-//    } catch (Exception e) {
-//      log.error(LogMessage.errorJoin(message));
-//
-//      throw new RuntimeException(LogMessage.errorJoin(message));
-//    }
+    //    } catch (Exception e) {
+    //      log.error(LogMessage.errorJoin(message));
+    //
+    //      throw new RuntimeException(LogMessage.errorJoin(message));
+    //    }
   }
 
   //  ---------------------------------------------------
-//  작성자 : 문병훈
-//  메소드 정보 : category item id로 host 찾기
-//  마지막 수정자 : 문병훈
-//  -----------------------------------------------------
+  //  작성자 : 문병훈
+  //  메소드 정보 : category item id로 host 찾기
+  //  마지막 수정자 : 문병훈
+  //  -----------------------------------------------------
   public Long findCategoryItemHost(final Long itemId) {
     final String message = "categoryService findCategoryHost";
 
@@ -248,10 +248,10 @@ public class CategoryService {
   }
 
   //  ---------------------------------------------------
-//  작성자 : 문병훈
-//  메소드 정보 : Category 일치 확인
-//  마지막 수정자 : 문병훈
-//  -----------------------------------------------------
+  //  작성자 : 문병훈
+  //  메소드 정보 : Category 일치 확인
+  //  마지막 수정자 : 문병훈
+  //  -----------------------------------------------------
   public Long findCategoryId(final String inviteCode) {
     final String message = "categoryService findCategoryId";
 
@@ -288,7 +288,7 @@ public class CategoryService {
     }
   }
 
-  public boolean existsByUser(final String inviteCode, final Long userId) {
+  public boolean existsByUser(final Long categoryId, final Long userId) {
     final String message = "CategoryService existsByUser";
 
     try {
@@ -298,7 +298,7 @@ public class CategoryService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryRepository.existsByUser(inviteCode, userId);
+      return categoryRepository.existsByIdAndHost(categoryId, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 

@@ -55,7 +55,7 @@ public class CheckedService {
 //  메소드 정보 : Check 생성
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<CheckUserDTO> create(final CheckedEntity checkedEntity, final Long userId) {
+  public void create(final CheckedEntity checkedEntity) {
     final String message = "checkedService create";
 
     try {
@@ -66,8 +66,6 @@ public class CheckedService {
       checkedRepository.save(checkedEntity);
 
       log.info(LogMessage.infoComplete(message));
-
-      return categoryItemReplyMapper.findCheckUserList(checkedEntity.getCategoryItem(), userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -191,7 +189,7 @@ public class CheckedService {
     }
   }
 
-  public boolean existsByUserId(final Long userId) {
+  public boolean existsByUserAndCategoryItem(final Long categoryItemId, final Long userId) {
     final String message = "checkedService findByUserId";
 
     try {
@@ -201,7 +199,26 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.existsByUser(userId);
+      return checkedRepository.existsByUserAndCategoryItem(categoryItemId, userId);
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
+
+      throw new RuntimeException(LogMessage.errorJoin(message));
+    }
+  }
+
+  public Long findCheck(final Long categoryItem, final Long userId) {
+    final String message = "CheckedService findCheck";
+
+    try {
+      log.info(LogMessage.infoJoin(message));
+
+      validateId(userId, message);
+      validateId(categoryItem, message);
+
+      log.info(LogMessage.infoComplete(message));
+
+      return checkedRepository.findCheck(categoryItem, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 

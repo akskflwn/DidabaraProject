@@ -127,7 +127,7 @@ public class CategoryItemReplyService {
 //  메소드 정보 : Reply 삭제
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<ItemReplyAndUserDataDTO> deleteById(final Long itemReplyId) {
+  public void deleteById(final Long itemReplyId) {
     final String message = "itemReplyService deleteById";
 
     try {
@@ -138,8 +138,6 @@ public class CategoryItemReplyService {
       final Long categoryItemId = categoryItemReplyRepository.findCategoryItemId(itemReplyId);
 
       categoryItemReplyRepository.deleteById(itemReplyId);
-
-      return categoryItemReplyMapper.findAllReplyData(categoryItemId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -201,7 +199,7 @@ public class CategoryItemReplyService {
     }
   }
 
-  public Long findCategoryId(final Long itemReplyId) {
+  public Long findCategoryItemId(final Long itemReplyId) {
     final String message = "itemReplyService findCategoryId";
 
     try {
