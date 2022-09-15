@@ -29,9 +29,10 @@ public interface CategoryItemReplyMapper {
           "WHERE ch.category_item_id = #{categoryItemId} IS NULL AND u.id != #{user}")
   List<CheckUserDTO> findUnCheckUserList(@Param("categoryItemId") final Long categoryItemId, @Param("user") final Long user);
 
-  @Select("SELECT u.nickname, ui.profile_image_url, s.created_date FROM user AS u " +
-          "INNER JOIN user_info AS ui ON u.id = ui.id " +
-          "INNER JOIN subscriber AS s ON u.id = s.user_id " +
-          "WHERE s.category_id = #{category} AND s.user_id != #{user}")
-  List<CheckUserDTO> findSubscriberList(@Param("category") final Long category, @Param("user") final Long user);
+//  @Select("SELECT u.nickname, ui.profile_image_url, s.created_date " +
+//          "FROM user AS u " +
+//          "INNER JOIN user_info AS ui ON u.id = ui.id " +
+//          "INNER JOIN subscriber AS s ON u.id = s.user_id " +
+//          "WHERE s.category_id = #{category} AND s.user_id != #{user}")
+//  List<CheckUserDTO> findSubscriberList(@Param("category") final Long category, @Param("user") final Long user);
 }

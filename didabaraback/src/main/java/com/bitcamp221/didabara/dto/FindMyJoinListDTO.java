@@ -16,4 +16,5 @@ public class FindMyJoinListDTO {
   private String categoryProfileImageUrl;
   private String nickname;
   private String userProfileImageUrl;
+  private String filename;
 }

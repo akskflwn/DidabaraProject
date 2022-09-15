@@ -3,6 +3,7 @@ package com.example.cheongju_university.security;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.StringUtils;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import javax.servlet.FilterChain;
@@ -21,9 +22,23 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
   @Override
   protected void doFilterInternal(final HttpServletRequest request, final HttpServletResponse response,
                                   final FilterChain filterChain) throws ServletException, IOException {
-    final String message = ""
-    try {
 
+    try {
+      log.info("Filter is running...");
+
+      final String token = parse
     }
+  }
+
+//  http 요청의 해더를 파싱해서 bearer 토큰을 리턴한다.
+  private String parseBearerToken(final HttpServletRequest request) {
+    final String bearerToken = request.getHeader("Authorization");
+
+    if (StringUtils.hasText(bearerToken) && bearerToken.startsWith("Bearer ")) {
+
+      return bearerToken.substring(7);
+    }
+
+    return null;
   }
 }

@@ -15,5 +15,6 @@ public class CheckUserDTO {
 
   private String nickname;
   private String profileImageUrl;
+  private String filename;
   private LocalDate createdDate;
 }

@@ -114,7 +114,7 @@ public class SubscriberService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryItemReplyMapper.findSubscriberList(categoryId, userId);
+      return subscriberRepository.findSubscriberList(categoryId, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
