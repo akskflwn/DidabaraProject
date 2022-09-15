@@ -172,7 +172,9 @@ public class UserController {
               .id(userDTO.getId())
               .nickname(userDTO.getNickname())
               .password(passwordEncoder.encode(userDTO.getPassword()))
+              .phoneNumber(userDTO.getPhoneNumber())
               .build();
+      
       UserEntity updatedUser = userService.update(userEntity);
 
       UserDTO ResponseUserDTO = UserDTO.builder()

@@ -243,6 +243,7 @@ public class UserInfoController {
     System.out.println("svgName = " + svgName);
     UserInfoEntity byId = userInfoRepository.findById(Long.valueOf(id))
             .orElseThrow(() -> new RuntimeException("없는 사용자"));
+    byId.setProfileImageUrl(byId.getProfileImageUrl());
     byId.setFilename(svgName);
 
     UserInfoEntity updateUser = userInfoRepository.save(byId);
