@@ -131,6 +131,9 @@ dependencies {
     // https://mvnrepository.com/artifact/com.google.firebase/firebase-admin
     implementation group: 'com.google.firebase', name: 'firebase-admin', version: '6.8.1'
     implementation group: 'com.squareup.okhttp3', name: 'okhttp', version: '4.2.2'
+    implementation 'org.springframework.kafka:spring-kafka'
+    implementation 'org.springframework.boot:spring-boot-starter-web'
+    implementation 'org.springframework.boot:spring-boot-starter-websocket'
 }
 
 tasks.named('test') {

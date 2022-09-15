@@ -42,6 +42,6 @@ public class WebSecurityConfig {
   public WebSecurityCustomizer webSecurityCustomizer() {
     return (web) -> web.ignoring().antMatchers("/**", "/auth/**", "home",
             "/emailconfig/**", "/userinfo/**", "/upload/**", "/pdfreport/**", "/test/**",
-            "/send*,", "/topic", "/sms/**", "/notification/**");
+            "/send*,", "/topic/**", "/sms/**", "/notification/**", "/kafka/**", "/ws-chat/**", "/api/**", "/app/**");
   }
 }
