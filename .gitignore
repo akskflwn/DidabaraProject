@@ -9,6 +9,7 @@
 /.idea/
 /didabaraback/src/main/resources/application.properties/
 /didabarafront/
+/cheongju_university/
 
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,react,node
