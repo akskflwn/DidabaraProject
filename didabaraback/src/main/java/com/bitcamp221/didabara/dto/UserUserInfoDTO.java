@@ -14,9 +14,10 @@ public class UserUserInfoDTO {
   private String password;
   private String username;
   private String realName;
+  private String phoneNumber;
 
   @Override
   public String toString() {
-    return "nickname:" + nickname + " job:" + job + " password:" + password + " username:" + username + " realName:" + realName;
+    return "nickname:" + nickname + " job:" + job + " password:" + password + " username:" + username + " realName:" + realName + "phoneNumber: " + phoneNumber;
   }
 }

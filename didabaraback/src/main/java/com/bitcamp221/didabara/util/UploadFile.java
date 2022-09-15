@@ -29,14 +29,11 @@ import java.util.UUID;
 @PropertySource(value = "application.properties")
 public class UploadFile {
 
+  private final AmazonS3Client s3Client;
+  private final S3UploadTest s3UploadTest;
+  private final String dirName = "myfile";
   @Value("${cloud.aws.s3.bucket}")
   private String bucket;
-
-  private final AmazonS3Client s3Client;
-
-  private final S3UploadTest s3UploadTest;
-
-  private final String dirName = "myfile";
 
   public String uploadCategoryImage(final MultipartFile file) {
     final String message = "UploadFile uploadCategoryImage";
@@ -104,7 +101,7 @@ public class UploadFile {
 
         String code = UUID.randomUUID().toString();
 
-        String pathAndPdf = "C:\\Users\\mbh\\Downloads\\" + code + ".pdf";
+        String pathAndPdf = "C:\\Users\\nj\\Downloads\\" + code + ".pdf";
 
         converter.convert(pathAndPdf, options);
 
@@ -114,7 +111,7 @@ public class UploadFile {
 
         ConvertOptions convertOptions = new FileType().fromExtension("jpg").getConvertOptions();
 
-        String pathAndJpg = "C:\\Users\\mbh\\Downloads\\" + code + ".jpg";
+        String pathAndJpg = "C:\\Users\\nj\\Downloads\\" + code + ".jpg";
 
         converter.convert(pathAndJpg, convertOptions);
 
