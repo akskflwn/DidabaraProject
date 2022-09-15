@@ -1,6 +1,7 @@
 package com.bitcamp221.didabara.service;
 
 import com.bitcamp221.didabara.dto.CheckUserDTO;
+import com.bitcamp221.didabara.mapper.CategoryItemReplyMapper;
 import com.bitcamp221.didabara.model.CategoryItemEntity;
 import com.bitcamp221.didabara.model.CheckedEntity;
 import com.bitcamp221.didabara.presistence.CheckedRepository;
@@ -19,6 +20,9 @@ public class CheckedService {
 
   @Autowired
   private CheckedRepository checkedRepository;
+
+  @Autowired
+  private CategoryItemReplyMapper categoryItemReplyMapper;
 
   //  ---------------------------------------------------
 //  작성자 : 문병훈
@@ -51,7 +55,7 @@ public class CheckedService {
 //  메소드 정보 : Check 생성
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<CheckUserDTO> create(final CheckedEntity checkedEntity, final Long userId) {
+  public void create(final CheckedEntity checkedEntity) {
     final String message = "checkedService create";
 
     try {
@@ -62,8 +66,6 @@ public class CheckedService {
       checkedRepository.save(checkedEntity);
 
       log.info(LogMessage.infoComplete(message));
-
-      return checkedRepository.findCheckUserList(checkedEntity.getCategoryItem(), userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -109,7 +111,7 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.findCheckUserList(categoryItemId, userId);
+      return categoryItemReplyMapper.findCheckUserList(categoryItemId, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -133,7 +135,7 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.findUnCheckUserList(categoryItemId, userId);
+      return categoryItemReplyMapper.findUnCheckUserList(categoryItemId, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
@@ -187,7 +189,7 @@ public class CheckedService {
     }
   }
 
-  public boolean existsByUserId(final Long userId) {
+  public boolean existsByUserAndCategoryItem(final Long categoryItemId, final Long userId) {
     final String message = "checkedService findByUserId";
 
     try {
@@ -197,7 +199,26 @@ public class CheckedService {
 
       log.info(LogMessage.infoComplete(message));
 
-      return checkedRepository.existsByUser(userId);
+      return checkedRepository.existsByUserAndCategoryItem(categoryItemId, userId);
+    } catch (Exception e) {
+      log.error(LogMessage.errorJoin(message));
+
+      throw new RuntimeException(LogMessage.errorJoin(message));
+    }
+  }
+
+  public Long findCheck(final Long categoryItem, final Long userId) {
+    final String message = "CheckedService findCheck";
+
+    try {
+      log.info(LogMessage.infoJoin(message));
+
+      validateId(userId, message);
+      validateId(categoryItem, message);
+
+      log.info(LogMessage.infoComplete(message));
+
+      return checkedRepository.findCheck(categoryItem, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 

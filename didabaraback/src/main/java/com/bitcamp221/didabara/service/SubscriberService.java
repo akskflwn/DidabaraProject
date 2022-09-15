@@ -1,6 +1,8 @@
 package com.bitcamp221.didabara.service;
 
+import com.bitcamp221.didabara.dto.CheckUserDTO;
 import com.bitcamp221.didabara.dto.FindMyJoinListDTO;
+import com.bitcamp221.didabara.mapper.CategoryItemReplyMapper;
 import com.bitcamp221.didabara.model.SubscriberEntity;
 import com.bitcamp221.didabara.presistence.SubscriberRepository;
 import com.bitcamp221.didabara.util.LogMessage;
@@ -18,6 +20,9 @@ public class SubscriberService {
 
   @Autowired
   private SubscriberRepository subscriberRepository;
+
+  @Autowired
+  private CategoryItemReplyMapper categoryItemReplyMapper;
 
   //  ---------------------------------------------------
 //  작성자 : 문병훈
@@ -98,15 +103,18 @@ public class SubscriberService {
 //  메소드 정보 : Subscriber 리스트 출력
 //  마지막 수정자 : 문병훈
 //  -----------------------------------------------------
-  public List<SubscriberEntity> findList(final Long categoryId) {
+  public List<CheckUserDTO> findList(final Long categoryId, final Long userId) {
     final String message = "subscriberService findList";
 
     try {
       log.info(LogMessage.infoJoin(message));
 
+      validateId(categoryId, message);
+      validateId(userId, message);
+
       log.info(LogMessage.infoComplete(message));
 
-      return subscriberRepository.findAllByCategory(categoryId);
+      return categoryItemReplyMapper.findSubscriberList(categoryId, userId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 

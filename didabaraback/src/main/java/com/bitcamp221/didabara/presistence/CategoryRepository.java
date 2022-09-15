@@ -18,7 +18,7 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
   @Query("SELECT c.host FROM CategoryEntity c WHERE c.id = :categoryId")
   Long findHost(@Param("categoryId") final Long categoryId);
 
-  @Query("SELECT c.host FROM CategoryEntity c WHERE c.id IN (SELECT ci.category FROM CategoryItemEntity ci WHERE ci.id = :itemId)")
+  @Query("SELECT c.host FROM CategoryEntity c INNER JOIN CategoryItemEntity ci ON c.id = ci.category WHERE ci.id = :itemId")
   Long findCategoryHost(@Param("itemId") final Long itemId);
 
   @Query("SELECT c.id FROM CategoryEntity c WHERE c.inviteCode = :inviteCode")
@@ -27,6 +27,5 @@ public interface CategoryRepository extends JpaRepository<CategoryEntity, Long> 
   @Query("SELECT c.profileImageUrl FROM CategoryEntity c WHERE c.id = :id")
   String findUrl(@Param("id") final Long id);
 
-  @Query("SELECT c FROM CategoryEntity c WHERE c.host = :user AND c.inviteCode = :inviteCode")
-  boolean existsByUser(@Param("inviteCode") final String inviteCode, @Param("user") final Long user);
+  boolean existsByIdAndHost(@Param("id") final Long id, @Param("host") final Long host);
 }

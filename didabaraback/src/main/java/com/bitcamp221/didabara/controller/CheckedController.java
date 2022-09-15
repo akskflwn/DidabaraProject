@@ -40,13 +40,19 @@ public class CheckedController {
     try {
       log.info(LogMessage.infoJoin(message));
 
-      if (!checkedService.existsByUserId(Long.valueOf(userId)) && userId != null && categoryItemId != null &&
-              categoryService.findCategoryItemHost(categoryItemId) != Long.valueOf(userId)) {
+      final Long host = categoryService.findCategoryItemHost(categoryItemId);
+
+      final Long check = checkedService.findCheck(categoryItemId, Long.valueOf(userId));
+
+      if (check == null && userId != null && categoryItemId != null && host != Long.valueOf(userId)) {
+
         CheckedDTO checkedDTO = new CheckedDTO(Long.valueOf(userId), categoryItemId);
 
-        log.info(LogMessage.infoComplete(message));
+        checkedService.create(CheckedDTO.toEntity(checkedDTO));
 
-        List<CheckUserDTO> userDTOS = checkedService.create(CheckedDTO.toEntity(checkedDTO), Long.valueOf(userId));
+        List<CheckUserDTO> userDTOS = checkedService.findCheckUserList(categoryItemId, Long.valueOf(userId));
+
+        log.info(LogMessage.infoComplete(message));
 
         return ResponseEntity.ok().body(userDTOS);
       } else {
@@ -136,9 +142,9 @@ public class CheckedController {
 //  마지막 수정자 : 문병훈
 //  필요 데이터 : categoryItem(id)
 //  -----------------------------------------------------
-  @GetMapping("/un-checkuserlist")
+  @GetMapping("/list/item/{categoryItemId}/un-checkuser")
   public ResponseEntity<?> unCheckUserList(@AuthenticationPrincipal final String userId,
-                                           @RequestParam(value = "categoryItemId", required = false) final Long categoryItemId) {
+                                           @PathVariable(value = "categoryItemId", required = false) final Long categoryItemId) {
     final String message = "checked unCheckUserList";
 
     try {
@@ -174,8 +180,6 @@ public class CheckedController {
 
     try {
       log.info(LogMessage.infoJoin(message));
-
-      //카테고리 아이디, 카테 아이템 타이틀, 카테 아이템 썸네일
 
       if (userId != null) {
         List<CategoryItemEntity> list = checkedService.findMyCheckList(Long.valueOf(userId));

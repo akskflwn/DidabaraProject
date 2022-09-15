@@ -4,7 +4,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3URI;
 import com.amazonaws.services.s3.model.S3Object;
 import com.bitcamp221.didabara.dto.S3Upload;
-import com.bitcamp221.didabara.presistence.UserInfoRepository;
 import com.documents4j.api.DocumentType;
 import com.documents4j.api.IConverter;
 import com.documents4j.job.LocalConverter;
@@ -31,8 +30,6 @@ public class FileUploadController {
 
   private final S3Upload s3Upload;
   private final AmazonS3Client s3Client;
-
-  private final UserInfoRepository userInfoRepository;
 
   @PostMapping("text")
   private ResponseEntity<?> uploadText(@RequestParam("images") MultipartFile files,

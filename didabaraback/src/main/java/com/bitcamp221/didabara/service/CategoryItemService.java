@@ -75,17 +75,17 @@ public class CategoryItemService {
   //  메소드 정보 : categoryItemList 출력
   //  마지막 수정자 : 문병훈
   //  -----------------------------------------------------
-  public List<CategoryItemEntity> findList(final Long categoryId) {
+  public List<CategoryItemEntity> findList(final Long categoryItemId) {
     final String message = "categoryItemService findCategoryItemList";
 
     try {
       log.info(LogMessage.infoJoin(message));
 
-      validateId(categoryId, message);
+      validateId(categoryItemId, message);
 
       log.info(LogMessage.infoComplete(message));
 
-      return categoryItemRepository.findAllByCategory(categoryId);
+      return categoryItemRepository.findAllByCategory(categoryItemId);
     } catch (Exception e) {
       log.error(LogMessage.errorJoin(message));
 
