@@ -121,6 +121,7 @@ public class CategoryController {
       log.info(LogMessage.infoJoin(message));
 
       if (userId != null && categoryDTO != null) {
+
         final String code = UUID.randomUUID().toString().substring(0, 8);
 
         if (file != null) {

@@ -28,10 +28,32 @@ public interface SubscriberRepository extends JpaRepository<SubscriberEntity, Lo
   boolean existsByCategoryAndUser(@Param("category") final Long category, @Param("user") final Long user);
 
   String findMyJoinList = "SELECT new com.bitcamp221.didabara.dto.FindMyJoinListDTO" +
-          "(c.id, c.title, c.content, c.profileImageUrl, u.nickname, ui.profileImageUrl) " +
+          "(c.id, c.title, c.content, c.profileImageUrl, u.nickname, ui.profileImageUrl, ui.filename) " +
           "FROM SubscriberEntity s INNER JOIN CategoryEntity c ON s.user = :userId AND c.id = s.category " +
           "INNER JOIN UserEntity u ON u.id = c.host INNER JOIN UserInfoEntity ui ON u.id = ui.id";
 
   @Query(value = findMyJoinList)
   List<FindMyJoinListDTO> findMyJoinList(@Param("userId") final Long userId);
+
+//  @Select("SELECT u.nickname, ui.profile_image_url, s.created_date " +
+//          "FROM user AS u " +
+//          "INNER JOIN user_info AS ui ON u.id = ui.id " +
+//          "INNER JOIN subscriber AS s ON u.id = s.user_id " +
+//          "WHERE s.category_id = #{category} AND s.user_id != #{user}")
+
+  String findSubscriberList = "SELECT new com.bitcamp221.didabara.dto.CheckUserDTO" +
+          "(u.nickname, ui.profileImageUrl, ui.filename, s.createdDate) " +
+          "FROM UserEntity u " +
+          "INNER JOIN UserInfoEntity ui ON u.id = ui.id " +
+          "INNER JOIN SubscriberEntity s ON u.id = s.user " +
+          "WHERE s.category = :category AND s.user != :user";
+
+//  String findSubscriberList = "SELECT u.nickname, ui.profile_image_url" +
+//          "FROM user AS u " +
+//          "INNER JOIN user_info AS ui ON u.id = ui.id " +
+//          "INNER JOIN subscriber AS s ON u.id = s.user_id " +
+//          "WHERE s.category_id = :category AND s.user_id != :user";
+
+  @Query(value = findSubscriberList)
+  List<CheckUserDTO> findSubscriberList(@Param("category") final Long category, @Param("user") final Long user);
 }
