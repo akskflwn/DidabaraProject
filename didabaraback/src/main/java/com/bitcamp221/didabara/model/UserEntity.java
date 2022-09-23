@@ -1,5 +1,6 @@
 package com.bitcamp221.didabara.model;
 
+import com.bitcamp221.didabara.dto.UserDTO;
 import lombok.*;
 
 import javax.persistence.*;
@@ -41,7 +42,17 @@ public class UserEntity extends BaseTimeEntity {
     this.nickname = nickname;
   }
 
-  public void changePhoneNumber(String phoneNumber) {
-    this.phoneNumber = phoneNumber;
+  public void changePhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
+
+  public static UserDTO toDTO(final UserEntity userEntity,String token) {
+    return UserDTO.builder()
+            .id(userEntity.getId())
+            .username(userEntity.getUsername())
+            //.password(userEntity.getPassword())
+            .nickname(userEntity.getNickname())
+            .realName(userEntity.getRealName())
+            .phoneNumber(userEntity.getPhoneNumber())
+            .token(token)
+            .build();
   }
 }

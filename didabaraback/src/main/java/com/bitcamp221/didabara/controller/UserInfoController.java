@@ -8,6 +8,7 @@ import com.bitcamp221.didabara.model.UserInfoEntity;
 import com.bitcamp221.didabara.presistence.UserInfoRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
 import com.bitcamp221.didabara.service.UserInfoService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.io.FilenameUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,26 +33,23 @@ import java.util.UUID;
 
 @Slf4j
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/userinfo")
 public class UserInfoController {
 
-  @Autowired
-  private UserInfoService userInfoService;
+  private final UserInfoService userInfoService;
 
-  @Autowired
-  private UserInfoRepository userInfoRepository;
+  private final UserInfoRepository userInfoRepository;
 
-  @Autowired
-  private UserInfoMapper userInfoMapper;
+  private final UserInfoMapper userInfoMapper;
 
-  @Autowired
-  private ResourceLoader resourceLoader;
+  private final ResourceLoader resourceLoader;
 
-  @Autowired
-  private S3Upload s3Upload;
 
-  @Autowired
-  private UserRepository userRepository;
+  private final S3Upload s3Upload;
+
+
+  private final UserRepository userRepository;
 
   private PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 

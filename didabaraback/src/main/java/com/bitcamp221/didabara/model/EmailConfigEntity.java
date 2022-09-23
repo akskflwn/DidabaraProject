@@ -29,4 +29,6 @@ public class EmailConfigEntity extends BaseTimeEntity {
   public void setCheck(Boolean check) {
     this.check = check;
   }
+
+
 }

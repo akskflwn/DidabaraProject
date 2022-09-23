@@ -49,6 +49,7 @@ public class CategoryItemController {
       if (userId != null && Long.valueOf(userId) == categoryService.findHost(categoryId) && categoryItemDTO != null && file.getSize() != 0) {
 
         final List<String> filePath = uploadFile.uploadCategoryItem(file);
+        log.info("fielPath:"+filePath);
 
         categoryItemDTO.setItemPath(String.valueOf(filePath.get(1)));
         categoryItemDTO.setCategory(categoryId);

@@ -28,7 +28,7 @@ import java.util.UUID;
 @RequiredArgsConstructor
 @Service
 @PropertySource(value = "application.properties")
-public class UploadFile {
+public class  UploadFile {
 
   @Value("${cloud.aws.s3.bucket}")
   private String bucket;
@@ -100,16 +100,16 @@ public class UploadFile {
       System.out.println("uploadFile.toString() = " + uploadFile.toString());
 
       Converter converter = new Converter(uploadFile.toString(), loadOptions);
+      System.out.println(converter);
 
       PdfConvertOptions options = new PdfConvertOptions();
+
+      System.out.println(options);
 
       String code = UUID.randomUUID().toString();
 
       String pathAndPdf = "C:\\Users\\mbh\\Downloads\\" + code + ".pdf";
 
-//        XFile file1 = new XFile(uploadFile.getName());
-
-//        file1.renameTo(new File(pathAndPdf));
 
       converter.convert(pathAndPdf, options);
 

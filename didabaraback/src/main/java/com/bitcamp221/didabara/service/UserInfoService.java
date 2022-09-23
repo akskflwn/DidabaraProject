@@ -3,6 +3,7 @@ package com.bitcamp221.didabara.service;
 import com.bitcamp221.didabara.dto.UserUserInfoDTO;
 import com.bitcamp221.didabara.mapper.UserInfoMapper;
 import com.bitcamp221.didabara.model.UserEntity;
+import com.bitcamp221.didabara.model.UserInfoEntity;
 import com.bitcamp221.didabara.presistence.UserInfoRepository;
 import com.bitcamp221.didabara.presistence.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -95,5 +96,14 @@ public class UserInfoService {
     } else {
       throw new Exception("패스워드가 일치하지 않습니다.");
     }
+  }
+  //유저 테이블 생성시 유저 상세 정보 테이블 생성
+
+  /**
+   * 유저 인포 객체 생성
+   */
+  public void create(UserEntity userEntity){
+    UserInfoEntity userInfo=UserInfoEntity.createUserInfoEntity(userEntity);
+    userInfoRepository.save(userInfo);
   }
 }

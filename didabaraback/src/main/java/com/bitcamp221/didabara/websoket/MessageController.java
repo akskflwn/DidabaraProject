@@ -21,8 +21,6 @@ public class MessageController {
 
     private final SimpMessageSendingOperations sendingOperations;
 
-    @Autowired
-    ChatService chatService;
 
     @MessageMapping("/chat/message")
     public void enter(ChatMessage message) {
@@ -31,22 +29,22 @@ public class MessageController {
         log.info("message.sender:" + message.getSender());
         log.info("messageRoomId:" + message.getRoomId());
         log.info("message:" + message.getType());
-        log.info("messageUrl:"+message.getProfileImg_url());
+        log.info("messageUrl:" + message.getProfileImg_url());
 
 
         if (message.getType().equals(ChatMessage.MessageType.ENTER)) {
-            message.setMessage(message.getSender() + "님이 입장하였습니다.\n" + message.getMessage());
+            message.setMessage(message.getSender() + "님이 입장하였습니다.");
         }
         sendingOperations.convertAndSend("/topic/chat/room/" + message.getRoomId(), message);
 
     }
 
     @MessageMapping("/alarm")
-    public void alert(ChatMessage message){
-        if(message.getType().equals(ChatMessage.MessageType.ALERT)){
-            message.setMessage(message.getSender()+"님이 회원님에 카테고리에 입장하셧습니다");
+    public void alert(ChatMessage message) {
+        if (message.getType().equals(ChatMessage.MessageType.ALERT)) {
+            message.setMessage(message.getSender() + "님이 회원님에 카테고리에 입장하셧습니다");
         }
-        sendingOperations.convertAndSend("/topic/invite/"+message.getNickname(),message);
+        sendingOperations.convertAndSend("/topic/invite/" + message.getNickname(), message);
 
     }
 

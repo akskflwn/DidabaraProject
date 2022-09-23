@@ -2,7 +2,6 @@ package com.bitcamp221.didabara.dto;
 
 import lombok.*;
 
-@NoArgsConstructor
 @AllArgsConstructor
 @Builder
 @Getter
@@ -16,6 +15,9 @@ public class UserUserInfoDTO {
   private String realName;
   private String phoneNumber;
 
+  public UserUserInfoDTO(){
+
+  }
   @Override
   public String toString() {
     return "nickname:" + nickname + " job:" + job + " password:" + password + " username:" + username + " realName:" + realName + "phoneNumber: " + phoneNumber;

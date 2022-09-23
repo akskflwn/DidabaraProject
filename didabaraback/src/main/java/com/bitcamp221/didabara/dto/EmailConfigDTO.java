@@ -20,18 +20,11 @@ public class EmailConfigDTO {
   private LocalDate createdDate;
   private LocalDate modifiedDate;
 
-  public EmailConfigDTO(EmailConfigEntity emailConfigEntity) {
-    this.id = emailConfigEntity.getId();
-    this.authCode = emailConfigEntity.getAuthCode();
-    this.createdDate = emailConfigEntity.getCreatedDate();
-    this.modifiedDate = emailConfigEntity.getModifiedDate();
-  }
-
   public static EmailConfigEntity toEntity(final EmailConfigDTO emailConfigDTO) {
-
     return EmailConfigEntity.builder()
             .id(emailConfigDTO.getId())
             .authCode(emailConfigDTO.getAuthCode())
             .build();
   }
+
 }
