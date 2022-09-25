@@ -12,6 +12,7 @@ import com.bitcamp221.didabara.presistence.UserRepository;
 import com.bitcamp221.didabara.security.TokenProvider;
 import com.bitcamp221.didabara.service.UserInfoService;
 import com.bitcamp221.didabara.service.UserService;
+import com.bitcamp221.didabara.util.ChangeType;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
@@ -42,27 +43,19 @@ public class UserController {
     public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
         try {
 
-            //      받은 데이터 유효성 검사
-
             if (userDTO == null || userDTO.getPassword() == null) {
                 throw new RuntimeException("Invalid Password value");
             }
-            //      요청을 이용해 저장할 유저 객체 생성
-            UserEntity userEntity = userDTO.toEntity(userDTO);
-            //      서비스를 이용해 리포지터리에 유저 저장
 
-            UserEntity registeredUser = userService.creat(userEntity);
+            UserEntity registeredUser = userService.creat(userDTO.toEntity());
             // 유저 테이블 생성시 유저 인포 테이블도 생성(JPA 사용 예정)
             userInfoService.create(registeredUser);
-
-            //응답객체 만들기(패스워드 제외)
-            UserDTO responseUserDTO = UserEntity.toDTO(registeredUser, null);
-
-            return ResponseEntity.ok().body(responseUserDTO);
+            //응답객체 만들기(패스워드,토큰 제외)
+            return ResponseEntity.ok().body(registeredUser.toDTO(null));
 
         } catch (Exception e) {
 
-            return ResponseEntity.badRequest().body(ResponseDTO.builder().error(e.getMessage()).build());
+            return ChangeType.toException(e);
         }
 
     }
@@ -75,7 +68,7 @@ public class UserController {
         try {
             return ResponseEntity.ok().body(userService.auth(userDTO.getUsername(), userDTO.getPassword()));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseDTO.builder().error(e.getMessage()).build());
+            return ChangeType.toException(e);
         }
     }
 
@@ -85,7 +78,7 @@ public class UserController {
     @PatchMapping("/user")
     public ResponseEntity<?> update(@RequestBody UserDTO userDTO, @AuthenticationPrincipal String userId) {
         try {
-            UserEntity userEntity = userDTO.toEntity(userDTO);
+            UserEntity userEntity = userDTO.toEntity();
 
             userService.update(userEntity);
 

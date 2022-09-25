@@ -12,19 +12,6 @@ import java.util.stream.Collectors;
 @Slf4j
 public class ChangeType {
 
-  public static ResponseEntity toUserDTO(final List<UserEntity> entities) {
-    final List<UserDTO> userDTOS = entities
-            .stream()
-            .map(UserDTO::new)
-            .collect(Collectors.toList());
-
-    final ResponseDTO<UserDTO> responseDTO = ResponseDTO
-            .<UserDTO>builder()
-            .resList(userDTOS)
-            .build();
-
-    return ResponseEntity.ok().body(responseDTO);
-  }
 
   public static ResponseEntity toCategoryDTO(final List<CategoryEntity> entities) {
     final List<CategoryDTO> categoryDTOS = entities
@@ -110,19 +97,6 @@ public class ChangeType {
     return ResponseEntity.ok().body(responseDTO);
   }
 
-  public static ResponseEntity toCheckedDTO(final List<UserEntity> entities) {
-    final List<UserDTO> userDTOS = entities
-            .stream()
-            .map(UserDTO::new)
-            .collect(Collectors.toList());
-
-    final ResponseDTO<UserDTO> responseDTO = ResponseDTO
-            .<UserDTO>builder()
-            .resList(userDTOS)
-            .build();
-
-    return ResponseEntity.ok().body(responseDTO);
-  }
 
   public static ResponseEntity toException(final Exception e) {
     final ResponseDTO responseDTO = ResponseDTO.builder().error(e.getMessage()).build();

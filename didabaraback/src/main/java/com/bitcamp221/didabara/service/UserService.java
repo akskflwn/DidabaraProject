@@ -56,25 +56,14 @@ public class UserService {
     public UserDTO auth(final String username, final String password) throws Exception {
 
         UserEntity originalUser = userRepository.findByUsername(username);
-
         //matches
         if (originalUser != null && passwordEncoder.matches(password, originalUser.getPassword())) {
-            //로그인할떄 유저의 아이디랑 비빌번호가 일치할때
+
             String token = tokenProvider.create(originalUser);
-            return UserEntity.toDTO(originalUser, token);
+            return originalUser.toDTO(token);
         } else {
             throw new Exception("아이디 또는 비밀번호가 일치하지 않습니다");
         }
-    }
-
-
-    //조회
-    //userid로 조회하기
-    public UserEntity findById(Long id) {
-        //orElseThrow( )는 Optional 클래스에 포함된 메서드로,
-        // Entity 조회와 예외 처리를 단 한 줄로 처리할 수 있음
-        UserEntity user = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 아이디가 없습니다."));
-        return user;
     }
 
     //수정
@@ -144,15 +133,15 @@ public class UserService {
             String find_user_token = tokenProvider.create(savedUser);
             userInfoService.create(savedUser);
 
-            return UserEntity.toDTO(savedUser, find_user_token);
+            return savedUser.toDTO(find_user_token);
 
         } else {
-        //DB에 카카오로 로그인된 정보가 있다면 token 생성해서 리턴
+            //DB에 카카오로 로그인된 정보가 있다면 token 생성해서 리턴
             UserEntity byUsername = userRepository.findByUsername(email);
             String find_user_token = tokenProvider.create(byUsername);
             br.close();
 
-            return UserEntity.toDTO(byUsername, find_user_token);
+            return byUsername.toDTO(find_user_token);
         }
 
     }

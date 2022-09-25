@@ -44,14 +44,14 @@ public class UserEntity extends BaseTimeEntity {
 
   public void changePhoneNumber(String phoneNumber) {this.phoneNumber = phoneNumber;}
 
-  public static UserDTO toDTO(final UserEntity userEntity,String token) {
+  public UserDTO toDTO(String token) {
     return UserDTO.builder()
-            .id(userEntity.getId())
-            .username(userEntity.getUsername())
+            .id(id)
+            .username(username)
             //.password(userEntity.getPassword())
-            .nickname(userEntity.getNickname())
-            .realName(userEntity.getRealName())
-            .phoneNumber(userEntity.getPhoneNumber())
+            .nickname(nickname)
+            .realName(realName)
+            .phoneNumber(phoneNumber)
             .token(token)
             .build();
   }
