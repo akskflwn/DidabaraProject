@@ -25,13 +25,6 @@ public class MessageController {
     @MessageMapping("/chat/message")
     public void enter(ChatMessage message) {
 
-        log.info("message.getmessage:" + message.getMessage());
-        log.info("message.sender:" + message.getSender());
-        log.info("messageRoomId:" + message.getRoomId());
-        log.info("message:" + message.getType());
-        log.info("messageUrl:" + message.getProfileImg_url());
-
-
         if (message.getType().equals(ChatMessage.MessageType.ENTER)) {
             message.setMessage(message.getSender() + "님이 입장하였습니다.");
         }

@@ -78,20 +78,17 @@ public class UserController {
     @PatchMapping("/user")
     public ResponseEntity<?> update(@RequestBody UserDTO userDTO, @AuthenticationPrincipal String userId) {
         try {
-            UserEntity userEntity = userDTO.toEntity();
-
-            userService.update(userEntity);
-
+            userService.update(userDTO.toEntity());
             return ResponseEntity.ok().body("업데이트 성공.");
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseDTO.builder().error(e.getMessage()).build());
+            return ChangeType.toException(e);
         }
 
     }
 
     //삭제
     @DeleteMapping("/user")
-    public ResponseEntity<?> deletUser(@RequestBody UserDTO userDTO, @AuthenticationPrincipal String userId) {
+    public ResponseEntity<?> deleteUser(@RequestBody UserDTO userDTO, @AuthenticationPrincipal String userId) {
 
         boolean checkPwd = userService.checkPwd(userDTO, userId);
 
@@ -116,7 +113,7 @@ public class UserController {
             // 배열로 받은 토큰들의 accsess_token만 createKaKaoUser 메서드로 전달
             return ResponseEntity.ok().body(userService.createKakaoUser(access_found_in_token));
         } catch (Exception e) {
-            return ResponseEntity.badRequest().body(ResponseDTO.builder().error(e.getMessage()).build());
+            return ChangeType.toException(e);
         }
     }
 
