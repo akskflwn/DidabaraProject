@@ -3,15 +3,10 @@ package com.bitcamp221.didabara.websoket;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.handler.annotation.MessageMapping;
 import org.springframework.messaging.simp.SimpMessageSendingOperations;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.List;
 
 
 @RestController
@@ -25,9 +20,6 @@ public class MessageController {
     @MessageMapping("/chat/message")
     public void enter(ChatMessage message) {
 
-        log.info(message.getMessage());
-        log.info("message id :"+message.getId());
-        log.info("message roomId:"+message.getRoomId() );
         if (message.getType().equals(ChatMessage.MessageType.ENTER)) {
             message.setMessage(message.getSender() + "님이 입장하였습니다.");
         }
