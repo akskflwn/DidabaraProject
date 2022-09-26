@@ -1,10 +1,7 @@
 package com.bitcamp221.didabara.dto;
 
 import com.bitcamp221.didabara.model.CategoryItemEntity;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.time.LocalDate;
 
@@ -12,6 +9,7 @@ import java.time.LocalDate;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@ToString
 public class CategoryItemDTO {
 
   private Long id;

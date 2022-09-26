@@ -115,7 +115,7 @@ public class CategoryController {
   public ResponseEntity<?> create(@AuthenticationPrincipal final String userId,
                                   @RequestPart(value = "categoryDTO", required = false) final CategoryDTO categoryDTO,
                                   @RequestPart(value = "file", required = false) final MultipartFile file) {
-    final String message = "category create";
+    final String message = "1.category create";
 
     try {
       log.info(LogMessage.infoJoin(message));

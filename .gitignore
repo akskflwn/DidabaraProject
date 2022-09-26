@@ -11,6 +11,8 @@
 /didabarafront/
 /cheongju_university/
 
+**/application.properties
+
 
 # Created by https://www.toptal.com/developers/gitignore/api/java,react,node
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,react,node

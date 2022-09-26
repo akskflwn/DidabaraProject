@@ -4,7 +4,6 @@ import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.DeleteObjectRequest;
 import com.amazonaws.services.s3.model.PutObjectRequest;
-import com.bitcamp221.didabara.testpdf.S3UploadTest;
 import com.groupdocs.conversion.Converter;
 import com.groupdocs.conversion.filetypes.FileType;
 import com.groupdocs.conversion.options.convert.ConvertOptions;
@@ -89,29 +88,32 @@ public class  UploadFile {
   public List<String> uploadCategoryItem(final MultipartFile file) throws IOException {
     final String message = "UploadFile uploadCategoryItem";
 
-//    try {
     log.info(LogMessage.infoJoin(message));
+    log.info("--------------------------");
+    log.info("uploadCategoryItem 실행");
+    log.info("--------------------------");
 
     if (file.getSize() != 0) {
       WordProcessingLoadOptions loadOptions = new WordProcessingLoadOptions();
 
       File uploadFile = convert(file);
 
-      System.out.println("uploadFile.toString() = " + uploadFile.toString());
+      System.out.println("1. uploadFile.toString() = " + uploadFile.toString());
 
       Converter converter = new Converter(uploadFile.toString(), loadOptions);
-      System.out.println(converter);
+      System.out.println("2. converter:"+converter);
 
       PdfConvertOptions options = new PdfConvertOptions();
 
-      System.out.println(options);
-
+      log.info("options:"+options);
       String code = UUID.randomUUID().toString();
+      log.info("3.code:"+code);
 
-      String pathAndPdf = "C:\\Users\\mbh\\Downloads\\" + code + ".pdf";
+      String pathAndPdf = "C:\\Users\\82104\\Documents\\" + code + ".pdf";
 
 
       converter.convert(pathAndPdf, options);
+      log.info("1.도착");
 
       File pdfFile = new File(pathAndPdf);
 
@@ -119,12 +121,12 @@ public class  UploadFile {
 
       ConvertOptions convertOptions = new FileType().fromExtension("jpg").getConvertOptions();
 
-      String pathAndJpg = "C:\\Users\\mbh\\Downloads\\" + code + ".jpg";
+      String pathAndJpg = "C:\\Users\\82104\\Documents\\" + code + ".jpg";
 
 //        file1.renameTo(new File(pathAndJpg));
 
       converter.convert(pathAndJpg, convertOptions);
-      log.info("도착");
+      log.info("2.도착");
 
       File jpgFile = new File(pathAndJpg);
 
@@ -140,9 +142,8 @@ public class  UploadFile {
 
       return list;
     } else {
-      log.error(LogMessage.errorNull(message));
 
-      throw new RuntimeException(LogMessage.errorNull(message));
+      throw new RuntimeException("1.업로드 파일 에러");
     }
 //    } catch (Exception e) {
 //      log.error(LogMessage.errorJoin(message));
@@ -203,12 +204,12 @@ public class  UploadFile {
       } else {
         log.warn(LogMessage.errorNull(message));
 
-        throw new RuntimeException(LogMessage.errorNull(message));
+        throw new RuntimeException("1.컨버트 에러");
       }
     } else {
       log.error(LogMessage.errorNull(message));
 
-      throw new RuntimeException(LogMessage.errorNull(message));
+      throw new RuntimeException("2. 컨버트 에러");
     }
 //    } catch (Exception e) {
 //      log.error(LogMessage.errorJoin(message));
