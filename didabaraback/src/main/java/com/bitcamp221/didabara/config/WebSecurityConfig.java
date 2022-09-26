@@ -40,6 +40,6 @@ public class WebSecurityConfig {
 
   @Bean
   public WebSecurityCustomizer webSecurityCustomizer() {
-    return (web) -> web.ignoring().antMatchers( "/auth/kakao","/auth/signup","/auth/signin", "home","/emailconfig/**");
+    return (web) -> web.ignoring().antMatchers( "/auth/kakao","/auth/signup","/auth/signin", "home","/emailconfig/**","/ws/chat/**","/chat/**");
   }
 }
