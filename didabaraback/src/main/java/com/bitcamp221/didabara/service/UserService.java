@@ -11,8 +11,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import javax.transaction.Transactional;
 import java.io.*;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -20,6 +20,7 @@ import java.net.URL;
 @Slf4j
 @Service
 @RequiredArgsConstructor
+@Transactional(readOnly = true)
 public class UserService {
 
     private final UserRepository userRepository;
@@ -28,7 +29,7 @@ public class UserService {
     private final UserInfoService userInfoService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
-
+    @Transactional
     public UserEntity creat(final UserEntity userEntity) {
 //    1. userEntity 유효성 검사.
         if (userEntity == null || userEntity.getUsername() == null) {
@@ -80,13 +81,13 @@ public class UserService {
     }
 
     //삭제
-
+    @Transactional
     public void deleteUser(Long id) {
         UserEntity findUser = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 아이디가 없습니다"));
         userRepository.delete(findUser);
     }
 
-
+    @Transactional
     public UserDTO createKakaoUser(String token) throws IOException {
 
         String reqURL = "https://kapi.kakao.com/v2/user/me";
@@ -147,6 +148,7 @@ public class UserService {
 
 
     /* 카카오 로그인 */
+    @Transactional
     public String[] getKaKaoAccessToken(String code) {
 
         String access_Token = "";
