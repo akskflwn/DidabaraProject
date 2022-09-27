@@ -48,6 +48,7 @@ public class UserController {
             }
 
             UserEntity registeredUser = userService.creat(userDTO.toEntity());
+
             // 유저 테이블 생성시 유저 인포 테이블도 생성(JPA 사용 예정)
             userInfoService.create(registeredUser);
             //응답객체 만들기(패스워드,토큰 제외)
@@ -75,7 +76,7 @@ public class UserController {
     /**
      * 수정
      */
-    @PatchMapping("/user")
+    @PutMapping("/user")
     public ResponseEntity<?> update(@RequestBody UserDTO userDTO, @AuthenticationPrincipal String userId) {
         try {
             userService.update(userDTO.toEntity());
@@ -109,9 +110,12 @@ public class UserController {
     public ResponseEntity<?> kakaoCallback(@Param("code") String code) {
         try {
             String[] access_Token = userService.getKaKaoAccessToken(code);
+
             String access_found_in_token = access_Token[0];
+
             // 배열로 받은 토큰들의 accsess_token만 createKaKaoUser 메서드로 전달
             return ResponseEntity.ok().body(userService.createKakaoUser(access_found_in_token));
+
         } catch (Exception e) {
             return ChangeType.toException(e);
         }

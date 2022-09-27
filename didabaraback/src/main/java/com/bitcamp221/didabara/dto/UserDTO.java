@@ -25,7 +25,7 @@ public class UserDTO {
     private LocalDate createdDate;
     private LocalDate modifiedDate;
 
-    private final static PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserDTO(String username, String nickname, String password) {
         this.username = username;

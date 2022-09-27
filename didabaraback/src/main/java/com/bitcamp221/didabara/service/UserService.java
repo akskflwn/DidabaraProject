@@ -70,14 +70,13 @@ public class UserService {
     @Transactional
     public UserEntity update(UserEntity userEntity) {
         UserEntity user = userRepository.findById(userEntity.getId()).orElseThrow(() -> new IllegalArgumentException("해당 아이디가 없습니다."));
-
         user.changeNickname(userEntity.getNickname());
         user.changePhoneNumber(userEntity.getPhoneNumber());
         user.changePassword(userEntity.getPassword());
 
 
-        userRepository.save(user);
-        return user;
+        UserEntity updatedUser=userRepository.save(user);
+        return updatedUser;
     }
 
     //삭제
@@ -147,8 +146,9 @@ public class UserService {
     }
 
 
-    /* 카카오 로그인(test) */
+    /* 카카오 로그인 */
     public String[] getKaKaoAccessToken(String code) {
+
         String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
@@ -167,8 +167,8 @@ public class UserService {
             BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
-            sb.append("&client_id=4af7c95054f7e1d31cff647965678936"); // TODO REST_API_KEY 입력
-            sb.append("&redirect_uri=http://localhost:3000/kakaologin"); // TODO 인가코드 받은 redirect_uri 입력
+            sb.append("&client_id=REST_API_KEY"); // TODO REST_API_KEY 입력
+            sb.append("&redirect_uri=redirect_uri"); // TODO 인가코드 받은 redirect_uri 입력
             System.out.println("code = " + code);
             sb.append("&code=" + code);
             bw.write(sb.toString());

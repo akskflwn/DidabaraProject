@@ -8,7 +8,7 @@
 /dataSources.local.xml
 /.idea/
 /didabaraback/src/main/resources/application.properties/
-/didabarafront/
+
 /cheongju_university/
 
 **/application.properties
