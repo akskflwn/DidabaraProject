@@ -61,6 +61,7 @@ public class UserEntity extends BaseTimeEntity {
             .username(username)
             .nickname(nickname)
             .realName(realName)
+            .phoneNumber(phoneNumber)
             .build();
   }
 }

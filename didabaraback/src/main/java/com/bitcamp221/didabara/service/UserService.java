@@ -1,10 +1,11 @@
 package com.bitcamp221.didabara.service;
 
+import com.bitcamp221.didabara.Exception.KakaoLoginException;
 import com.bitcamp221.didabara.dto.UserDTO;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.UserRepository;
 import com.bitcamp221.didabara.security.TokenProvider;
-import com.bitcamp221.didabara.util.LoginException;
+import com.bitcamp221.didabara.Exception.LoginException;
 import com.bitcamp221.didabara.util.ResponseMessage;
 import com.bitcamp221.didabara.util.StatusCode;
 import com.google.gson.JsonElement;
@@ -18,6 +19,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.io.*;
 import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.URL;
 
 @Slf4j
@@ -32,37 +35,40 @@ public class UserService {
     private final UserInfoService userInfoService;
     private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
+    /**
+     *
+     * @param userEntity
+     * @return userEntity
+     */
     @Transactional
     public UserEntity creat(final UserEntity userEntity) {
-//    1. userEntity 유효성 검사.
-        if (userEntity == null || userEntity.getUsername() == null) {
-            throw new RuntimeException("invalid arguments");
-        }
 
+        if (userEntity == null || userEntity.getUsername() == null) {
+            throw new LoginException(StatusCode.BAD_REQUEST,ResponseMessage.CREATED_USER_FAIL);
+        }
         final String username = userEntity.getUsername();
         final String nickname = userEntity.getNickname();
 
-        //  2. 중복 검사
         if (userRepository.existsByUsername(username)) {
-            log.warn("Username already exists {}", username);
-            throw new RuntimeException("Username already exists");
+            throw new LoginException(StatusCode.BAD_REQUEST,ResponseMessage.USERNAME_EXISTS);
         }
-        // 3. 닉네임 중복검사
         if (userRepository.existsByNickname(nickname)) {
-            log.warn("Nickname already exists {}", nickname);
-            throw new RuntimeException("Nickname already exists");
+            throw new LoginException(StatusCode.BAD_REQUEST,ResponseMessage.NICKNAME_EXISTS);
         }
         return userRepository.save(userEntity);
     }
 
-
-    //  아이디 & 비밀번호 일치 확인
+    /**
+     *
+     * @param username
+     * @param password
+     * @return userDTO
+     * @throws LoginException
+     */
     public UserDTO auth(final String username, final String password) throws LoginException {
-
         UserEntity originalUser = userRepository.findByUsername(username);
-        //matches
-        if (originalUser != null && passwordEncoder.matches(password, originalUser.getPassword())) {
 
+        if (originalUser != null && passwordEncoder.matches(password, originalUser.getPassword())) {
             String token = tokenProvider.create(originalUser);
             return originalUser.toDTO(token);
         } else {
@@ -73,7 +79,8 @@ public class UserService {
     //수정
     @Transactional
     public UserEntity update(UserEntity userEntity) {
-        UserEntity user = userRepository.findById(userEntity.getId()).orElseThrow(() -> new LoginException(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER));
+        UserEntity user = userRepository.findById(userEntity.getId()).orElseThrow(()
+                -> new LoginException(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER));
 
         user.changeNickname(userEntity.getNickname());
         user.changePhoneNumber(userEntity.getPhoneNumber());
@@ -86,65 +93,65 @@ public class UserService {
     //삭제
     @Transactional
     public void deleteUser(UserEntity userEntity) {
-        UserEntity findUser = userRepository.findById(userEntity.getId()).orElseThrow(() -> new LoginException(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER));
+        UserEntity findUser = userRepository.findById(userEntity.getId()).orElseThrow(()
+                -> new LoginException(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER));
         userRepository.delete(findUser);
     }
 
     @Transactional
     public UserDTO createKakaoUser(String token) throws IOException {
+            String reqURL = "https://kapi.kakao.com/v2/user/me";
 
-        String reqURL = "https://kapi.kakao.com/v2/user/me";
+            //access_token을 이용하여 사용자 정보 조회
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 
-        //access_token을 이용하여 사용자 정보 조회
-        URL url = new URL(reqURL);
-        HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+            conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
 
-        conn.setRequestMethod("POST");
-        conn.setDoOutput(true);
-        conn.setRequestProperty("Authorization", "Bearer " + token); //전송할 header 작성, access_token전송
+            //결과 코드가 200이라면 성공
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode : " + responseCode);
 
-        //결과 코드가 200이라면 성공
-        int responseCode = conn.getResponseCode();
-        System.out.println("responseCode : " + responseCode);
+            //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            String line = "";
+            String result = "";
 
-        //요청을 통해 얻은 JSON타입의 Response 메세지 읽어오기
-        BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
-        String line = "";
-        String result = "";
+            while ((line = br.readLine()) != null) {
+                result += line;
+            }
 
-        while ((line = br.readLine()) != null) {
-            result += line;
-        }
+            System.out.println("response body : " + result);
 
-        System.out.println("response body : " + result);
+            //Gson 라이브러리로 JSON파싱
+            JsonElement element = JsonParser.parseString(result);
 
-        //Gson 라이브러리로 JSON파싱
-        JsonElement element = JsonParser.parseString(result);
+            Long id = element.getAsJsonObject().get("id").getAsLong();
+            boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
+            String nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
+            String email = "";
+            if (hasEmail) {
+                email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
+            }
+            //DB에 카카오로 로그인된 정보가 없다면 DB에 저장시키고 dto 생성해서 리턴
+            if (!userRepository.existsByUsername(email)) {
 
-        Long id = element.getAsJsonObject().get("id").getAsLong();
-        boolean hasEmail = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("has_email").getAsBoolean();
-        String nickname = element.getAsJsonObject().get("properties").getAsJsonObject().get("nickname").getAsString();
-        String email = "";
-        if (hasEmail) {
-            email = element.getAsJsonObject().get("kakao_account").getAsJsonObject().get("email").getAsString();
-        }
-        //DB에 카카오로 로그인된 정보가 없다면 DB에 저장시키고 dto 생성해서 리턴
-        if (!userRepository.existsByUsername(email)) {
+                UserEntity user = UserEntity.builder().username(email).nickname(nickname).realName(nickname).password("").build();
+                UserEntity savedUser = userRepository.save(user);
+                String find_user_token = tokenProvider.create(savedUser);
+                userInfoService.create(savedUser);
 
-            UserEntity user = UserEntity.builder().username(email).nickname(nickname).realName(nickname).password("").build();
-            UserEntity savedUser = userRepository.save(user);
-            String find_user_token = tokenProvider.create(savedUser);
-            userInfoService.create(savedUser);
+                return savedUser.toDTO(find_user_token);
 
-            return savedUser.toDTO(find_user_token);
+            } else {
+                //DB에 카카오로 로그인된 정보가 있다면 token 생성해서 리턴
+                UserEntity byUsername = userRepository.findByUsername(email);
+                String find_user_token = tokenProvider.create(byUsername);
+                br.close();
 
-        } else {
-            //DB에 카카오로 로그인된 정보가 있다면 token 생성해서 리턴
-            UserEntity byUsername = userRepository.findByUsername(email);
-            String find_user_token = tokenProvider.create(byUsername);
-            br.close();
-
-            return byUsername.toDTO(find_user_token);
+                return byUsername.toDTO(find_user_token);
         }
 
     }

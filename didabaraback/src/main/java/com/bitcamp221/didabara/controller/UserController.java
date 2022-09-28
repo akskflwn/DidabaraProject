@@ -43,25 +43,10 @@ public class UserController {
      * 회원가입
      **/
     @PostMapping("/signup")
-    public ResponseEntity<?> registerUser(@RequestBody UserDTO userDTO) {
-        try {
-
-            if (userDTO == null || userDTO.getPassword() == null) {
-                throw new RuntimeException("Invalid Password value");
-            }
-
-            UserEntity registeredUser = userService.creat(userDTO.toEntity());
-
-            // 유저 테이블 생성시 유저 인포 테이블도 생성(JPA 사용 예정)
-            userInfoService.create(registeredUser);
-
-            return ResponseEntity.ok().body(registeredUser.toSingUpDTO());
-
-        } catch (Exception e) {
-
-            return ChangeType.toException(e);
-        }
-
+    public ResponseEntity registerUser(@RequestBody UserDTO userDTO) {
+        UserEntity registeredUser = userService.creat(userDTO.toEntity());
+        userInfoService.create(registeredUser);
+        return ResponseEntity.ok().body(DefaultRes.res(StatusCode.OK, ResponseMessage.CREATED_USER, registeredUser.toSingUpDTO()));
     }
 
     /**
@@ -88,7 +73,7 @@ public class UserController {
     @DeleteMapping("/user")
     public ResponseEntity<?> deleteUser(@RequestBody UserDTO userDTO, @AuthenticationPrincipal String userId) {
         userService.deleteUser(userDTO.toEntity());
-        return ResponseEntity.ok().body(DefaultRes.res(StatusCode.OK,ResponseMessage.DELETE_USER));
+        return ResponseEntity.ok().body(DefaultRes.res(StatusCode.OK, ResponseMessage.DELETE_USER));
     }
 
 
@@ -96,17 +81,20 @@ public class UserController {
      * /* 카카오 로그인
      */
     @GetMapping("/kakao")
-    public ResponseEntity<?> kakaoCallback(@Param("code") String code) {
+    public ResponseEntity kakaoCallback(@Param("code") String code) {
         try {
             String[] access_Token = userService.getKaKaoAccessToken(code);
 
             String access_found_in_token = access_Token[0];
 
             // 배열로 받은 토큰들의 accsess_token만 createKaKaoUser 메서드로 전달
-            return ResponseEntity.ok().body(userService.createKakaoUser(access_found_in_token));
+            return ResponseEntity.ok().body(DefaultRes.res(
+                    StatusCode.BAD_REQUEST,
+                    ResponseMessage.LOGIN_FAIL,
+                    userService.createKakaoUser(access_found_in_token)));
 
         } catch (Exception e) {
-            return ChangeType.toException(e);
+            return ResponseEntity.ok().body(DefaultRes.res(StatusCode.BAD_REQUEST, ResponseMessage.LOGIN_FAIL));
         }
     }
 

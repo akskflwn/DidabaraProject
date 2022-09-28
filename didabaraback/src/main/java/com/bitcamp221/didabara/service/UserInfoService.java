@@ -103,7 +103,7 @@ public class UserInfoService {
    * 유저 인포 객체 생성
    */
   public void create(UserEntity userEntity){
-    UserInfoEntity userInfo=UserInfoEntity.createUserInfoEntity(userEntity);
+    UserInfoEntity userInfo = UserInfoEntity.createUserInfoEntity(userEntity);
     userInfoRepository.save(userInfo);
   }
 }
