@@ -1,12 +1,10 @@
 package com.bitcamp221.didabara.dto;
 
 import com.bitcamp221.didabara.model.UserEntity;
-import com.bitcamp221.didabara.presistence.EmailConfigRepository;
 import lombok.*;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-import java.time.LocalDate;
 
 @Builder
 @Data
@@ -22,10 +20,8 @@ public class UserDTO {
     private String token;
     private String phoneNumber;
     private String realName;
-    private LocalDate createdDate;
-    private LocalDate modifiedDate;
 
-    private final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+    private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
     public UserDTO(String username, String nickname, String password) {
         this.username = username;

@@ -1,6 +1,7 @@
 package com.bitcamp221.didabara.controller;
 
 
+import com.bitcamp221.didabara.dto.DefaultRes;
 import com.bitcamp221.didabara.dto.ResponseDTO;
 import com.bitcamp221.didabara.dto.UserDTO;
 import com.bitcamp221.didabara.model.EmailConfigEntity;
@@ -13,6 +14,8 @@ import com.bitcamp221.didabara.security.TokenProvider;
 import com.bitcamp221.didabara.service.UserInfoService;
 import com.bitcamp221.didabara.service.UserService;
 import com.bitcamp221.didabara.util.ChangeType;
+import com.bitcamp221.didabara.util.ResponseMessage;
+import com.bitcamp221.didabara.util.StatusCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.ibatis.annotations.Param;
@@ -51,8 +54,8 @@ public class UserController {
 
             // 유저 테이블 생성시 유저 인포 테이블도 생성(JPA 사용 예정)
             userInfoService.create(registeredUser);
-            //응답객체 만들기(패스워드,토큰 제외)
-            return ResponseEntity.ok().body(registeredUser.toDTO(null));
+
+            return ResponseEntity.ok().body(registeredUser.toSingUpDTO());
 
         } catch (Exception e) {
 
@@ -65,41 +68,27 @@ public class UserController {
      * 로그인
      */
     @PostMapping(value = "/signin")
-    public ResponseEntity<?> authenticate(@RequestBody UserDTO userDTO) {
-        try {
-            return ResponseEntity.ok().body(userService.auth(userDTO.getUsername(), userDTO.getPassword()));
-        } catch (Exception e) {
-            return ChangeType.toException(e);
-        }
+    public ResponseEntity authenticate(@RequestBody UserDTO userDTO) {
+        UserDTO user = userService.auth(userDTO.getUsername(), userDTO.getPassword());
+        return ResponseEntity.ok().body(DefaultRes.res(StatusCode.OK, ResponseMessage.LOGIN_SUCCESS, user));
     }
 
     /**
      * 수정
      */
     @PutMapping("/user")
-    public ResponseEntity<?> update(@RequestBody UserDTO userDTO, @AuthenticationPrincipal String userId) {
-        try {
-            userService.update(userDTO.toEntity());
-            return ResponseEntity.ok().body("업데이트 성공.");
-        } catch (Exception e) {
-            return ChangeType.toException(e);
-        }
-
+    public ResponseEntity update(@RequestBody UserDTO userDTO, @AuthenticationPrincipal String userId) {
+        userService.update(userDTO.toEntity());
+        return ResponseEntity.ok().body(DefaultRes.res(StatusCode.OK, ResponseMessage.UPDATE_USER));
     }
 
-    //삭제
+    /**
+     * 삭제
+     */
     @DeleteMapping("/user")
     public ResponseEntity<?> deleteUser(@RequestBody UserDTO userDTO, @AuthenticationPrincipal String userId) {
-
-        boolean checkPwd = userService.checkPwd(userDTO, userId);
-
-        if (checkPwd == false) {
-            return ResponseEntity.badRequest().body("비밀번호가 일치하지 않습니다");
-        } else {
-            userService.deleteUser(Long.valueOf(userId));
-            return ResponseEntity.ok().body("삭제 되었습니다.");
-        }
-
+        userService.deleteUser(userDTO.toEntity());
+        return ResponseEntity.ok().body(DefaultRes.res(StatusCode.OK,ResponseMessage.DELETE_USER));
     }
 
 

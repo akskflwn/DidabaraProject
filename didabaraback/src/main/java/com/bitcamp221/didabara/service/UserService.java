@@ -4,6 +4,9 @@ import com.bitcamp221.didabara.dto.UserDTO;
 import com.bitcamp221.didabara.model.UserEntity;
 import com.bitcamp221.didabara.presistence.UserRepository;
 import com.bitcamp221.didabara.security.TokenProvider;
+import com.bitcamp221.didabara.util.LoginException;
+import com.bitcamp221.didabara.util.ResponseMessage;
+import com.bitcamp221.didabara.util.StatusCode;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 import lombok.RequiredArgsConstructor;
@@ -54,7 +57,7 @@ public class UserService {
 
 
     //  아이디 & 비밀번호 일치 확인
-    public UserDTO auth(final String username, final String password) throws Exception {
+    public UserDTO auth(final String username, final String password) throws LoginException {
 
         UserEntity originalUser = userRepository.findByUsername(username);
         //matches
@@ -63,18 +66,18 @@ public class UserService {
             String token = tokenProvider.create(originalUser);
             return originalUser.toDTO(token);
         } else {
-            throw new Exception("아이디 또는 비밀번호가 일치하지 않습니다");
+            throw new LoginException(StatusCode.BAD_REQUEST, ResponseMessage.LOGIN_FAIL);
         }
     }
 
     //수정
     @Transactional
     public UserEntity update(UserEntity userEntity) {
-        UserEntity user = userRepository.findById(userEntity.getId()).orElseThrow(() -> new IllegalArgumentException("해당 아이디가 없습니다."));
+        UserEntity user = userRepository.findById(userEntity.getId()).orElseThrow(() -> new LoginException(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER));
+
         user.changeNickname(userEntity.getNickname());
         user.changePhoneNumber(userEntity.getPhoneNumber());
         user.changePassword(userEntity.getPassword());
-
 
         UserEntity updatedUser=userRepository.save(user);
         return updatedUser;
@@ -82,8 +85,8 @@ public class UserService {
 
     //삭제
     @Transactional
-    public void deleteUser(Long id) {
-        UserEntity findUser = userRepository.findById(id).orElseThrow(() -> new IllegalArgumentException("해당 아이디가 없습니다"));
+    public void deleteUser(UserEntity userEntity) {
+        UserEntity findUser = userRepository.findById(userEntity.getId()).orElseThrow(() -> new LoginException(StatusCode.BAD_REQUEST, ResponseMessage.NOT_FOUND_USER));
         userRepository.delete(findUser);
     }
 

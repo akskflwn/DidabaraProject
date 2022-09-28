@@ -1,5 +1,6 @@
 package com.bitcamp221.didabara.model;
 
+import com.bitcamp221.didabara.dto.LoginDTO;
 import com.bitcamp221.didabara.dto.UserDTO;
 import lombok.*;
 
@@ -48,11 +49,18 @@ public class UserEntity extends BaseTimeEntity {
     return UserDTO.builder()
             .id(id)
             .username(username)
-            //.password(userEntity.getPassword())
             .nickname(nickname)
             .realName(realName)
             .phoneNumber(phoneNumber)
             .token(token)
+            .build();
+  }
+  public LoginDTO toSingUpDTO(){
+    return LoginDTO.builder()
+            .id(id)
+            .username(username)
+            .nickname(nickname)
+            .realName(realName)
             .build();
   }
 }
