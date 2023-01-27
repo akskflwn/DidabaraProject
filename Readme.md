@@ -12,7 +12,7 @@
 
 ### **같은 커뮤니티를 구독 하고 있는 사용자들만의 채팅,댓글 기능**
 
-### [노션링크](https://www.notion.so/Didabara-2e11a1d74ba34f2587894d6eeafd41ce)
+### [노션링크](https://festive-hedgehog-54c.notion.site/Didabara-2e11a1d74ba34f2587894d6eeafd41ce)
 
 <br/>
 
